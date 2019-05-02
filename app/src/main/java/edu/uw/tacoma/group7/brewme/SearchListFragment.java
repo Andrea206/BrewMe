@@ -1,6 +1,7 @@
 package edu.uw.tacoma.group7.brewme;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,25 +10,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import edu.uw.tacoma.group7.brewme.dummy.DummyContent;
-import edu.uw.tacoma.group7.brewme.dummy.DummyContent.DummyItem;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import edu.uw.tacoma.group7.brewme.model.*;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
+ * A fragment representing a list of Brewery search results.
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
 public class SearchListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private List<Brewery> mBrewList;
+    private RecyclerView mRecyclerview;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -36,15 +44,14 @@ public class SearchListFragment extends Fragment {
     public SearchListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static SearchListFragment newInstance(int columnCount) {
-        SearchListFragment fragment = new SearchListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static SearchListFragment newInstance(int columnCount) {
+//        SearchListFragment fragment = new SearchListFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_COLUMN_COUNT, columnCount);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +76,7 @@ public class SearchListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySearchListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            //recyclerView.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList.ITEMS, mListener));
         }
         return view;
     }
@@ -104,6 +111,54 @@ public class SearchListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onBrewListFragmentInteraction(Brewery item);
     }
-}
+
+    private class DownloadBrewSearch extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+                } catch (Exception e) {
+                    response = "Unable to download the list of courses, Reason: "
+                            + e.getMessage();
+                }
+                finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            try{
+                JSONObject resultObject = new JSONObject(result);
+                if(resultObject.getBoolean("success") == true){
+                    mBrewList = Brewery.parseBreweryJson(resultObject.getString("names"));
+                    //Show list
+                    if(!mBrewList.isEmpty()){
+                        mRecyclerview.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList,mListener));
+                    }
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }//end DownloadBrewSearch
+
+
+}//end SearchListFragment
