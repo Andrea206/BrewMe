@@ -1,22 +1,20 @@
 package edu.uw.tacoma.group7.brewme;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import edu.uw.tacoma.group7.brewme.model.*;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -67,16 +65,22 @@ public class SearchListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_searchlist_list, container, false);
 
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+
+        floatingActionButton.show();
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            mRecyclerview = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                mRecyclerview.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             //recyclerView.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList.ITEMS, mListener));
+            new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?by_tag=patio");
         }
         return view;
     }
@@ -110,7 +114,6 @@ public class SearchListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onBrewListFragmentInteraction(Brewery item);
     }
 
@@ -133,6 +136,8 @@ public class SearchListFragment extends Fragment {
                 } catch (Exception e) {
                     response = "Unable to download the list of courses, Reason: "
                             + e.getMessage();
+                    Log.d("", e.getMessage());
+
                 }
                 finally {
                     if (urlConnection != null)
@@ -156,6 +161,7 @@ public class SearchListFragment extends Fragment {
             } catch (JSONException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
                         .show();
+                Log.d("", e.getMessage());
             }
         }
     }//end DownloadBrewSearch

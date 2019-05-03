@@ -2,9 +2,9 @@
 
 
 <resources>
-    <color name="colorPrimaryOrig">#008577</color>
+ <!--   <color name="colorPrimaryOrig">#008577</color>
     <color name="colorPrimaryDarkOrig">#00574B</color>
-    <color name="colorAccentOrig">#D81B60</color>
+    <color name="colorAccentOrig">#D81B60</color> -->
 
     <!--https://mycolor.space/ Generated from #f2db55 input -->
     <color name="colorPrimary">#b1ab99</color>
