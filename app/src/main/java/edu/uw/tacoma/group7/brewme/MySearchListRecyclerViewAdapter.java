@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Brewery} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySearchListRecyclerViewAdapter.ViewHolder> {
 
@@ -63,7 +62,7 @@ public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySear
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
+            mIdView = (TextView) view.findViewById(R.id.name);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
