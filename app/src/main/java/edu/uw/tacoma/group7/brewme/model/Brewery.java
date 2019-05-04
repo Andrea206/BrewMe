@@ -95,7 +95,7 @@ public class Brewery implements Serializable {
             for(int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 Brewery brewery = new Brewery(obj.getString(Brewery.NAME), obj.getString(Brewery.BREWERY_TYPE), obj.getString(Brewery.STREET), obj.getString(Brewery.CITY), obj.getString(Brewery.STATE), obj.getString(Brewery.POSTAL_CODE), obj.getString(Brewery.PHONE), obj.getString(Brewery.WEBSITE));
-                 breweryList.add(brewery);
+                breweryList.add(brewery);
             }
         }
         return breweryList;

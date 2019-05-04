@@ -13,14 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import org.json.JSONException;
-import org.json.JSONObject;
 import edu.uw.tacoma.group7.brewme.model.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * A fragment representing a list of Brewery search results.
@@ -34,6 +34,9 @@ public class SearchListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private List<Brewery> mBrewList;
     private RecyclerView mRecyclerview;
+    private String mKey;
+    private String mValue;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -43,13 +46,13 @@ public class SearchListFragment extends Fragment {
     }
 
     @SuppressWarnings("unused")
-//    public static SearchListFragment newInstance(int columnCount) {
-//        SearchListFragment fragment = new SearchListFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(ARG_COLUMN_COUNT, columnCount);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    public static SearchListFragment newInstance(int columnCount) {
+        SearchListFragment fragment = new SearchListFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,9 +82,13 @@ public class SearchListFragment extends Fragment {
             } else {
                 mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            //recyclerView.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList.ITEMS, mListener));
-            new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?by_tag=patio");
+
+            //Hard coding query until can pass values
+            mKey="by_state";
+            mValue="washington";
+            new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mKey + "=" + mValue );
         }
+
         return view;
     }
 
@@ -122,22 +129,28 @@ public class SearchListFragment extends Fragment {
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
-            HttpURLConnection urlConnection = null;
+            HttpsURLConnection urlConnection = null;
             for (String url : urls) {
                 try {
                     URL urlObject = new URL(url);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    urlConnection = (HttpsURLConnection) urlObject.openConnection();
+                    urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+                    urlConnection.setRequestMethod("GET");
+                    //Added .addRequestProperty and .setRequestMethod("GET") per research about calling HTTP GET requests from Java
+                    // https://www.codingpedia.org/ama/how-to-handle-403-forbidden-http-status-code-in-java/
+                    //https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
+                    //https://stackoverflow.com/questions/24399294/android-asynctask-to-make-an-http-get-request
+
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                     String s = "";
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
+
+                        while ((s = buffer.readLine()) != null) {
+                            response += s;
+                        }
                 } catch (Exception e) {
                     response = "Unable to download the list of courses, Reason: "
                             + e.getMessage();
-                    Log.d("", e.getMessage());
-
                 }
                 finally {
                     if (urlConnection != null)
@@ -147,12 +160,17 @@ public class SearchListFragment extends Fragment {
             return response;
         }
 
+
         @Override
         protected void onPostExecute(String result){
             try{
-                JSONObject resultObject = new JSONObject(result);
-                if(resultObject.getBoolean("success") == true){
-                    mBrewList = Brewery.parseBreweryJson(resultObject.getString("names"));
+                Log.i("Response ", result);
+
+                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
+                //JSONObject resultObject = new JSONObject(result);
+                if(result != null){
+                    mBrewList = Brewery.parseBreweryJson(result);
+
                     //Show list
                     if(!mBrewList.isEmpty()){
                         mRecyclerview.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList,mListener));
@@ -161,7 +179,8 @@ public class SearchListFragment extends Fragment {
             } catch (JSONException e) {
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
                         .show();
-                Log.d("", e.getMessage());
+                Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
+
             }
         }
     }//end DownloadBrewSearch
