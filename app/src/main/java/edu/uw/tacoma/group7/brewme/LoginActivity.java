@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
