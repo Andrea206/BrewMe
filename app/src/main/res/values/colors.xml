@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+ <!--   <color name="colorPrimaryOrig">#008577</color>
+    <color name="colorPrimaryDarkOrig">#00574B</color>
+    <color name="colorAccentOrig">#D81B60</color> -->
+
+    <!--https://mycolor.space/ Generated from #f2db55 input -->
+    <color name="colorPrimary">#b1ab99</color>
+    <color name="colorPrimaryDark">#4b4737</color>
+    <color name="colorAccent">#00c0a3</color>
+
 </resources>
