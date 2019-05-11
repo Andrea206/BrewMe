@@ -14,7 +14,14 @@
     </string>
     <string name="title_activity_main">MainActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="by_city_text">Search by city</string>
+    <string name="by_state_text">Search by state</string>
+    <string name="by_name_text">Search by name</string>
+
+
+
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_search">SearchActivity</string>
 </resources>

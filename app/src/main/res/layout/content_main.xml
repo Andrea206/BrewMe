@@ -30,14 +30,15 @@
         android:layout_weight="1" >
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/SearchButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:layout_weight="1"
+            android:onClick="launchSearchActivity"
             tools:srcCompat="@tools:sample/avatars[2]" />
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/FavoritesButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
@@ -61,7 +62,7 @@
             android:layout_weight="1" >
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/ReviewButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
@@ -69,7 +70,7 @@
             tools:srcCompat="@tools:sample/avatars[6]" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/ShareButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
@@ -86,11 +87,6 @@
             android:text="Share"/>
     </TableRow>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="80dp" />
+
 
 </TableLayout>
