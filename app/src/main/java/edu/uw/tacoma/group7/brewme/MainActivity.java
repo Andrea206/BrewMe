@@ -1,5 +1,7 @@
 package edu.uw.tacoma.group7.brewme;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,20 +29,18 @@ public class MainActivity extends AppCompatActivity implements SearchListFragmen
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.brewery_fragment_container, new SearchListFragment())
-                .commit();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.brewery_fragment_container, new SearchListFragment())
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.brewery_fragment_container, new SearchListFragment())
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+//        });
     }
 
 
