@@ -14,6 +14,11 @@
     </string>
     <string name="title_activity_main">MainActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Search details page strings -->
+    <string name="brewery_details">7 Seas Brewery and Taproom 2101 Jefferson Ave Tacoma, WA 98402</string>
+    <string name="write_review_button">Write Review</string>
+    <string name="google_maps_button">Google Maps</string>
+    <string name="check_in__button">Check In</string>
+    <string name="user_reviews_button">User Reviews</string>
+    <string name="test_address">2102+Jefferson+Ave+Tacoma+WA</string>
 </resources>
