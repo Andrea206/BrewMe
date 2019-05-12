@@ -14,7 +14,9 @@ import org.json.JSONObject;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
-public class MainActivity extends AppCompatActivity implements SearchListFragment.OnListFragmentInteractionListener, SearchDetailFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity
+        implements SearchListFragment.OnListFragmentInteractionListener,
+        SearchDetailFragment.OnFragmentInteractionListener{
 
     private SearchDetailFragment mDetailFragment;
     private JSONObject mArguments;
@@ -51,14 +53,14 @@ public class MainActivity extends AppCompatActivity implements SearchListFragmen
 
     @Override
     public void onBrewListFragmentInteraction(Brewery item) {
-//        mDetailFragment = SearchDetailFragment.getCourseDetailFragment(item);
-//
-//        FragmentTransaction transaction = getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.brewery_fragment_container, mDetailFragment)
-//                .addToBackStack(null);
-//
-//        transaction.commit();
+        mDetailFragment = SearchDetailFragment.getSearchDetailFragment(item);
+
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.brewery_fragment_container, mDetailFragment)
+                .addToBackStack(null);
+
+        transaction.commit();
 
     }
 }
