@@ -3,4 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     tools:context=".SearchDetail"/>
+=======
+    tools:context=".SearchDetail">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>
+>>>>>>> e5f0702ed0775e018c10b09bb0538f85a593c02a
