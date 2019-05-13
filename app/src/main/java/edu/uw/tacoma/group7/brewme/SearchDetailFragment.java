@@ -73,14 +73,21 @@ public class SearchDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_detail2, container, false);
         mDescription = view.findViewById(R.id.brewery_description);
-        mDescription.setText(mBrewery.getName() + " " + mBrewery.getStreet()
-                            + " " + mBrewery.getCity() + " " + mBrewery.getState());
+        String type = mBrewery.getBreweryType();
+        String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
+        String phone = mBrewery.getPhone();
+        String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
+                                "-" + phone.substring(6);
+        mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
+                            "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
+                            ", " + mBrewery.getState() + "\n" + phoneFormatted +
+                            "\n" + mBrewery.getWebsite());
         mGoogleMapButton = view.findViewById(R.id.google_maps_button);
         mGoogleMapButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String uri = "geo:0,0?q=" + mBrewery.getStreet() + "+" + mBrewery.getCity()
+                String uri = "geo:0,0?q=" + mBrewery.getName() + "+" + mBrewery.getCity()
                         + "+" + mBrewery.getState();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 getContext().startActivity(intent);
