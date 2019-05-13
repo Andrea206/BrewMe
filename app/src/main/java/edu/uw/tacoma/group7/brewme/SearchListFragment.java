@@ -121,7 +121,9 @@ public class SearchListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onBrewListFragmentInteraction(Brewery item);
+        //void onBrewListFragmentInteraction(Brewery item);
+        void onBrewListFragmentInteraction(String search_key, String search_value);
+
     }
 
     private class DownloadBrewSearch extends AsyncTask<String, Void, String> {

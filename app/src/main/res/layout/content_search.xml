@@ -27,13 +27,24 @@
             android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_marginVertical="20dp"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:layout_below="@+id/imageView"
-            android:text="Search" />
+            android:text="Search"
+            />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_toRightOf="@id/editText"
+            android:layout_alignBaseline="@id/editText"
+
+            android:text="Button" />
 
         <RadioGroup
             android:layout_below="@+id/editText"
@@ -65,6 +76,8 @@
                 />
 
         </RadioGroup>
+
+
 
     </RelativeLayout>
 
