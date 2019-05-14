@@ -10,15 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-<<<<<<< HEAD
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 
-//Test
-=======
-import edu.uw.tacoma.group7.brewme.model.Brewery;
->>>>>>> origin/master
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,13 +26,9 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
 public class SearchDetailFragment extends Fragment {
 
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
-<<<<<<< HEAD
 
     private Brewery mBrewery;
 
-=======
-    private Brewery mBrewery;
->>>>>>> origin/master
     private ImageView mBreweryImage;
     private TextView mDescription;
     private Button mWriteReviewButton;
@@ -78,29 +69,17 @@ public class SearchDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-<<<<<<< HEAD
-        View view = inflater.inflate(R.layout.fragment_search_detail2, container, false);
-=======
         View view = inflater.inflate(R.layout.fragment_search_detail, container, false);
->>>>>>> origin/master
         mDescription = view.findViewById(R.id.brewery_description);
         String type = mBrewery.getBreweryType();
         String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
         String phone = mBrewery.getPhone();
         String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
-<<<<<<< HEAD
                                 "-" + phone.substring(6);
-        mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
-                            "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
-                            ", " + mBrewery.getState() + "\n" + phoneFormatted +
-                            "\n" + mBrewery.getWebsite());
-=======
-                "-" + phone.substring(6);
         mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
                 "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
                 ", " + mBrewery.getState() + "\n" + phoneFormatted +
                 "\n" + mBrewery.getWebsite());
->>>>>>> origin/master
         mGoogleMapButton = view.findViewById(R.id.google_maps_button);
         mGoogleMapButton.setOnClickListener(new View.OnClickListener() {
 

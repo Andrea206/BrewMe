@@ -10,12 +10,9 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+        completions."</string>
     <string name="title_activity_main">MainActivity</string>
 
-<<<<<<< HEAD
-=======
     <string name="by_city_text">Search by city</string>
     <string name="by_state_text">Search by state</string>
     <string name="by_name_text">Search by name</string>
@@ -35,7 +32,7 @@
     <string name="EMAIL">Email</string>
     <string name="PASSWORD">Password</string>
 
->>>>>>> origin/master
+
     <!-- Search details page strings -->
     <string name="brewery_details">7 Seas Brewery and Taproom 2101 Jefferson Ave Tacoma, WA 98402</string>
     <string name="write_review_button">Write Review</string>
@@ -43,11 +40,9 @@
     <string name="check_in__button">Check In</string>
     <string name="user_reviews_button">User Reviews</string>
     <string name="test_address">2102+Jefferson+Ave+Tacoma+WA</string>
-<<<<<<< HEAD
-=======
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_search">SearchActivity</string>
->>>>>>> origin/master
+
 </resources>

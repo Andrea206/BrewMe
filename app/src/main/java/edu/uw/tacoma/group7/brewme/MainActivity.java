@@ -15,18 +15,9 @@ import edu.uw.tacoma.group7.brewme.authenticate.SignInDialogFragment;
 public class MainActivity extends AppCompatActivity
         implements SignInDialogFragment.SignInListenerInterface {
 
-<<<<<<< HEAD
-public class MainActivity extends AppCompatActivity
-        implements SearchListFragment.OnListFragmentInteractionListener,
-        SearchDetailFragment.OnFragmentInteractionListener{
-
-    private SearchDetailFragment mDetailFragment;
-    private JSONObject mArguments;
-=======
     private SharedPreferences mSharedPreferences;
     private Button loginBtn;
     private Button logoutBtn;
->>>>>>> origin/master
 
 
     @Override
@@ -73,18 +64,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(myIntent);
     }
 
-    @Override
-<<<<<<< HEAD
-    public void onBrewListFragmentInteraction(Brewery item) {
-        mDetailFragment = SearchDetailFragment.getSearchDetailFragment(item);
-
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.brewery_fragment_container, mDetailFragment)
-                .addToBackStack(null);
-
-        transaction.commit();
-=======
     public void login(String email, String pwd) {
         boolean isLoggedIn = false;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -99,8 +78,6 @@ public class MainActivity extends AppCompatActivity
         } else if (TextUtils.isEmpty(pwd) || !pwd.equals("abc123")) {
             Bundle bundle = new Bundle();
             bundle.putString(SignInDialogFragment.SIGN_IN_EMAIL, email);
-            signInDialogFragment.setArguments(bundle);
->>>>>>> origin/master
 
             signInDialogFragment.setArguments(bundle);
             Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT)
