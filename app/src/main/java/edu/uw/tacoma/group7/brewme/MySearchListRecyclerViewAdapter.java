@@ -25,7 +25,7 @@ public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySear
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_searchlist, parent, false);
+                .inflate(R.layout.fragment_brewery, parent, false);
         return new ViewHolder(view);
     }
 

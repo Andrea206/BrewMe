@@ -49,9 +49,13 @@
     <TableRow>
         <TextView
             android:layout_gravity="center"
+            android:id="@+id/SearchText"
+
             android:text="Search"/>
         <TextView
             android:layout_gravity="center"
+            android:id="@+id/FavoritesText"
+
             android:text="Favorites"/>
     </TableRow>
 
@@ -81,9 +85,12 @@
     <TableRow>
         <TextView
             android:layout_gravity="center"
+            android:id="@+id/ReviewText"
+
             android:text="Review"/>
         <TextView
             android:layout_gravity="center"
+            android:id="@+id/ShareText"
             android:text="Share"/>
     </TableRow>
 
