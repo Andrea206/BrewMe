@@ -1,5 +1,4 @@
 package edu.uw.tacoma.group7.brewme;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import edu.uw.tacoma.group7.brewme.authenticate.SignInDialogFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -20,6 +18,7 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences mSharedPreferences;
     private Button loginBtn;
     private Button logoutBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity
     public void launchSearchActivity(View view){
         Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(myIntent);
-
     }
 
     @Override
@@ -104,3 +102,4 @@ public class MainActivity extends AppCompatActivity
         }
     }
 }
+

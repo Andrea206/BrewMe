@@ -32,13 +32,13 @@ public class SearchListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_SEARCH_KEY= "searchKey";
     private static final String ARG_SEARCH_VALUE= "searchValue";
-
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<Brewery> mBrewList;
     private RecyclerView mRecyclerview;
     private String mSearchKey;
     private String mSearchValue;
+
 
 
     /**
@@ -83,6 +83,7 @@ public class SearchListFragment extends Fragment {
         Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
                 .show();
 
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -92,7 +93,6 @@ public class SearchListFragment extends Fragment {
             } else {
                 mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
             new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mSearchKey + "=" + mSearchValue);
         }
 
