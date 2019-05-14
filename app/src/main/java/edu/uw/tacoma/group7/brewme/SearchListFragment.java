@@ -186,6 +186,5 @@ public class SearchListFragment extends Fragment {
             }
         }
     }//end DownloadBrewSearch
-
-
+    
 }//end SearchListFragment

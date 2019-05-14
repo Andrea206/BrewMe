@@ -20,7 +20,6 @@ SearchDetailFragment.OnFragmentInteractionListener{
     private String BY_NAME = "by_name";
     private static String mSearchText;
     private SearchListFragment.OnListFragmentInteractionListener mListener;
-    private SearchListFragment mSearchListFragment;
     private SearchDetailFragment mDetailFragment;
 
 
@@ -32,6 +31,8 @@ SearchDetailFragment.OnFragmentInteractionListener{
         setSupportActionBar(toolbar);
 
         final TextView searchInputTextView = findViewById(R.id.editText);
+
+
         Button searchButton = findViewById(R.id.button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
