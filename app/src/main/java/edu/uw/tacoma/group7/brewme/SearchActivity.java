@@ -31,7 +31,6 @@ SearchDetailFragment.OnFragmentInteractionListener{
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         final TextView searchInputTextView = findViewById(R.id.editText);
         Button searchButton = findViewById(R.id.button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -43,12 +42,12 @@ SearchDetailFragment.OnFragmentInteractionListener{
                 bundle.putString("searchKey", "by_state");
                 bundle.putString("searchValue", mSearchText);
 
-                mSearchListFragment = new SearchListFragment();
-                mSearchListFragment.setArguments(bundle);
+                SearchListFragment searchListFragment = new SearchListFragment();
+                searchListFragment.setArguments(bundle);
 
                 FragmentTransaction transaction = getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.search_main, mSearchListFragment)
+                        .replace(R.id.search_main, searchListFragment)
                         .addToBackStack(null);
 
                 transaction.commit();
