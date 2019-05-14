@@ -30,12 +30,15 @@ import javax.net.ssl.HttpsURLConnection;
 public class SearchListFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_SEARCH_KEY= "searchKey";
+    private static final String ARG_SEARCH_VALUE= "searchValue";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<Brewery> mBrewList;
     private RecyclerView mRecyclerview;
-    private String mKey;
-    private String mValue;
+    private String mSearchKey;
+    private String mSearchValue;
+
 
 
     /**
@@ -66,12 +69,20 @@ public class SearchListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_searchlist_list, container, false);
+        View view = inflater.inflate(R.layout.searchlist_recyclerview, container, false);
+
+        Bundle bundle = this.getArguments();
+        mSearchKey = bundle.getString(ARG_SEARCH_KEY);
+        mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
 
         floatingActionButton.show();
+
+        Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
+                .show();
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -82,11 +93,7 @@ public class SearchListFragment extends Fragment {
             } else {
                 mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-            //Hard coding query until can pass values
-            mKey="by_state";
-            mValue="washington";
-            new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mKey + "=" + mValue );
+            new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mSearchKey + "=" + mSearchValue);
         }
 
         return view;
@@ -122,6 +129,7 @@ public class SearchListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         void onBrewListFragmentInteraction(Brewery item);
+
     }
 
     private class DownloadBrewSearch extends AsyncTask<String, Void, String> {
