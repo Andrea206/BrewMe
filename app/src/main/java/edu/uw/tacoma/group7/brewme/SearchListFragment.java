@@ -129,7 +129,6 @@ public class SearchListFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         void onBrewListFragmentInteraction(Brewery item);
-        //void onBrewListFragmentInteraction(String search_key, String search_value);
 
     }
 

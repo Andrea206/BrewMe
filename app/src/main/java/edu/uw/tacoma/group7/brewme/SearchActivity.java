@@ -1,4 +1,5 @@
 package edu.uw.tacoma.group7.brewme;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,8 @@ import java.io.Serializable;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
-public class SearchActivity extends AppCompatActivity implements Serializable, View.OnClickListener, SearchListFragment.OnListFragmentInteractionListener {
+public class SearchActivity extends AppCompatActivity implements Serializable, View.OnClickListener, SearchListFragment.OnListFragmentInteractionListener,
+SearchDetailFragment.OnFragmentInteractionListener{
 
     private String BY_CITY = "by_city";
     private String BY_STATE = "by_state";
@@ -53,8 +55,6 @@ public class SearchActivity extends AppCompatActivity implements Serializable, V
             }
         });
 
-
-
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -63,7 +63,6 @@ public class SearchActivity extends AppCompatActivity implements Serializable, V
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
 
     }
 
@@ -84,4 +83,8 @@ public class SearchActivity extends AppCompatActivity implements Serializable, V
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }//end SearchActivity
