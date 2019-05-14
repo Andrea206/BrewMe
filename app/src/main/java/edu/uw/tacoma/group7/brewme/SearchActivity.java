@@ -19,6 +19,7 @@ public class SearchActivity extends AppCompatActivity implements Serializable, V
     private static String mSearchText;
     private SearchListFragment.OnListFragmentInteractionListener mListener;
     private SearchListFragment mSearchListFragment;
+    private SearchDetailFragment mDetailFragment;
 
 
     @Override
@@ -72,7 +73,14 @@ public class SearchActivity extends AppCompatActivity implements Serializable, V
 
     @Override
     public void onBrewListFragmentInteraction(Brewery item) {
+        mDetailFragment = SearchDetailFragment.getSearchDetailFragment(item);
 
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.search_main, mDetailFragment)
+                .addToBackStack(null);
+
+        transaction.commit();
 
     }
 
