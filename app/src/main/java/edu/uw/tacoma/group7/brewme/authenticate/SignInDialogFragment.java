@@ -6,13 +6,25 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import edu.uw.tacoma.group7.brewme.R;
 
+/**
+ * Dialog fragment that asks the users credentials. If the credentials are authorized, the user is
+ * logged in.
+ */
 public class SignInDialogFragment extends DialogFragment {
 
     private SignInListenerInterface mListener;
@@ -43,7 +55,6 @@ public class SignInDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.login, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO login to your account
                         mListener = (SignInListenerInterface) getActivity();
                         mListener.login(emailText.getText().toString(), pwdText.getText().toString());
                     }
@@ -57,9 +68,9 @@ public class SignInDialogFragment extends DialogFragment {
                 .setNeutralButton(R.string.register, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO register a new account.
-                        Toast.makeText(getContext(), "Not yet implemented.", Toast.LENGTH_SHORT)
-                                .show();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        RegisterDialogFragment registerDialogFragment = new RegisterDialogFragment();
+                        registerDialogFragment.show(fragmentTransaction, "Register a new account");
                     }
                 });
         return builder.create();

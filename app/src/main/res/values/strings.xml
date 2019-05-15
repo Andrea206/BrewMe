@@ -23,9 +23,13 @@
     <string name="login_message">Login to your account</string>
     <string name="email_hint">email</string>
     <string name="pwd_hint">password</string>
+    <string name="pwd_reenter_hint">re-enter password</string>
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Logout</string>
+    <string name="first_name_hint">first name</string>
+    <string name="last_name_hint">last name</string>
+
 
     <string name="register_message">Register a new account</string>
     <string name="register">Register</string>
@@ -33,6 +37,11 @@
     <string name="LOGGEDIN">loggedin</string>
     <string name="EMAIL">Email</string>
     <string name="PASSWORD">Password</string>
+    <string name="USERNAME">Username</string>
+
+    <!-- Login to facebook -->
+    <string name="facebook_app_id">2256039354651710</string>
+    <string name="fb_login_protocol_scheme">fb2256039354651710</string>
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
