@@ -43,6 +43,6 @@
     <string name="test_address">2102+Jefferson+Ave+Tacoma+WA</string>
 
 
-    <string name="title_activity_search">SearchActivity</string>
+<string name="title_activity_search">SearchActivity</string>
 
-</resources>
+    </resources>
