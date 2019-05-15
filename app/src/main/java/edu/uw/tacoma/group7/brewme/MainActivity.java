@@ -1,10 +1,8 @@
 package edu.uw.tacoma.group7.brewme;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -170,6 +167,15 @@ implements SignInDialogFragment.SignInListenerInterface,
             this.checkLoginInfo(email, pwd);
     }
 
+    /**
+     * Checks if register input text is complete (no fields missing) and passwords match.
+     * @param firstName String.
+     * @param lastName String.
+     * @param userName String.
+     * @param email String.
+     * @param pwd String.
+     * @param pwd2 String.
+     */
     @Override
     public void register(String firstName, String lastName, String userName, String email, String pwd, String pwd2) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -207,8 +213,8 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Confirm that the email and password are in the online db.
-     * @param email
-     * @param password
+     * @param email String.
+     * @param password String.
      */
     private void checkLoginInfo(String email, String password) {
 //        boolean b = false;
@@ -257,6 +263,11 @@ implements SignInDialogFragment.SignInListenerInterface,
     private class RegisterAsyncTask extends AsyncTask<String, Void, String> {
         private String Tag = "Register Tag";
 
+        /**
+         * Connects to registered user database, attempts to write to database with POST request.
+         * @param urls database url endpoint.
+         * @return String result of POST request.
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -296,7 +307,10 @@ implements SignInDialogFragment.SignInListenerInterface,
         return response;
         }
 
-
+        /**
+         * Checks if adding user to registered user database was successful, displays Toast notification of status (Registered, Unable to register, or error code).
+         * @param result JSON string returned from webservice.
+         */
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -327,6 +341,11 @@ implements SignInDialogFragment.SignInListenerInterface,
 
         private String Tag = "tag you're it";
 
+        /**
+         * Connects to registered user database to check if user exists.
+         * @param urls database url endpoint.
+         * @return String result of POST request.
+         */
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -368,6 +387,10 @@ implements SignInDialogFragment.SignInListenerInterface,
             return response;
         }
 
+        /**
+         * Checks results of login attempt, saves login status to Shared Preferences.
+         * @param result String.
+         */
         @Override
         protected void onPostExecute(String result) {
             try {
