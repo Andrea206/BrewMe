@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import edu.uw.tacoma.group7.brewme.model.Brewery;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +26,9 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
 public class SearchDetailFragment extends Fragment {
 
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
+
     private Brewery mBrewery;
+
     private ImageView mBreweryImage;
     private TextView mDescription;
     private Button mWriteReviewButton;
@@ -70,7 +75,7 @@ public class SearchDetailFragment extends Fragment {
         String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
         String phone = mBrewery.getPhone();
         String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
-                "-" + phone.substring(6);
+                                "-" + phone.substring(6);
         mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
                 "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
                 ", " + mBrewery.getState() + "\n" + phoneFormatted +

@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(myIntent);
     }
 
-    @Override
     public void login(String email, String pwd) {
         boolean isLoggedIn = false;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         } else if (TextUtils.isEmpty(pwd) || !pwd.equals("abc123")) {
             Bundle bundle = new Bundle();
             bundle.putString(SignInDialogFragment.SIGN_IN_EMAIL, email);
-            signInDialogFragment.setArguments(bundle);
 
             signInDialogFragment.setArguments(bundle);
             Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT)

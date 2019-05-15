@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BrewMe</string>
-    <string name="title_activity_main">MainActivity</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -11,9 +10,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
 
     <!--Search strings -->
     <string name="search_hint">Search</string>
@@ -36,6 +33,7 @@
     <string name="EMAIL">Email</string>
     <string name="PASSWORD">Password</string>
 
+
     <!-- Search details page strings -->
     <string name="brewery_details">7 Seas Brewery and Taproom 2101 Jefferson Ave Tacoma, WA 98402</string>
     <string name="write_review_button">Write Review</string>
@@ -46,4 +44,5 @@
 
 
     <string name="title_activity_search">SearchActivity</string>
+
 </resources>
