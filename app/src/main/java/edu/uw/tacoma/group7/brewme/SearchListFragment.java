@@ -76,8 +76,7 @@ public class SearchListFragment extends Fragment {
 
         floatingActionButton.hide();
 
-        Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
-                .show();
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {

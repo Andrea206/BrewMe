@@ -15,7 +15,6 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="search_hint">Search</string>
     <string name="by_city_text">Search by city</string>
     <string name="by_state_text">Search by state</string>
