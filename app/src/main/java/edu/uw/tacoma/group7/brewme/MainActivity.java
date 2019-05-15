@@ -1,24 +1,69 @@
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+//import com.facebook.CallbackManager;
+//import com.facebook.FacebookCallback;
+//import com.facebook.FacebookException;
+//import com.facebook.FacebookSdk;
+//import com.facebook.login.LoginResult;
+//import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import edu.uw.tacoma.group7.brewme.authenticate.RegisterDialogFragment;
 import edu.uw.tacoma.group7.brewme.authenticate.SignInDialogFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements SignInDialogFragment.SignInListenerInterface {
+implements SignInDialogFragment.SignInListenerInterface,
+        RegisterDialogFragment.RegisterListenerInterface {
+
+    public static String EMAIL = "email";
+    public static String PASSWORD = "password";
+    public static String USERNAME = "username";
+    public static String FIRST_NAME = "first";
+    public static String LAST_NAME = "last";
 
     private SharedPreferences mSharedPreferences;
     private Button loginBtn;
     private Button logoutBtn;
 
+    private String mEmail;
+    private String mPassword;
+
+    private JSONObject mArguments;
+    private JSONObject mRegisterArguments;
+
+//    private FragmentTransaction fragmentTransaction;
+
+    //Start Facebook fields....
+//    private CallbackManager callbackManager;
+//    private static final String EMAIL = "email";
+//    private LoginButton loginButton;
+    //End Facebook fields.
 
     /**
      * Checks for login, automatically logs in using SharedPreferences.
@@ -27,12 +72,43 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         loginBtn = (Button) findViewById(R.id.login_btn);
         logoutBtn = (Button) findViewById(R.id.logout_btn);
+
+        /*
+        Start Facebook login code...
+        *
+        callbackManager = CallbackManager.Factory.create();
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList(EMAIL));
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
+        /*
+        End facebook code.
+         */
 
         //Automatically log in if prefs are saved to device.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -41,6 +117,43 @@ public class MainActivity extends AppCompatActivity
             login(mSharedPreferences.getString(getString(R.string.EMAIL), null),
                     mSharedPreferences.getString(getString(R.string.PASSWORD), null));
         }
+    }
+
+    /*
+    Facebook method.
+     *
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    */
+
+    /**
+     * When the Login button is clicked, show Login dialog.
+     * @param v
+     */
+    public void onClickLoginBtn(View v) {
+        //Launch the login dialog.
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
+        signInDialogFragment.show(fragmentTransaction, "Sign in");
+    }
+
+    /**
+     * Log out of your account. Forget prefs on device.
+     * @param v
+     */
+    public void onClickLogoutBtn(View v) {
+        mSharedPreferences.edit()
+                .putBoolean(getString(R.string.LOGGEDIN), false)
+                .putString(getString(R.string.EMAIL), null)
+                .putString(getString(R.string.PASSWORD), null)
+                .commit();
+
+        logoutBtn.setVisibility(Button.GONE);
+        loginBtn.setVisibility(Button.VISIBLE);
+        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -78,37 +191,236 @@ public class MainActivity extends AppCompatActivity
         startActivity(myIntent);
     }
 
+    @Override
     public void login(String email, String pwd) {
-        boolean isLoggedIn = false;
+            this.checkLoginInfo(email, pwd);
+    }
+
+    @Override
+    public void register(String firstName, String lastName, String userName, String email, String pwd, String pwd2) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
-        if (TextUtils.isEmpty(email) || !email.equals("a@m.com")) {
-            Toast.makeText(this, "Invalid email address", Toast.LENGTH_SHORT)
-                    .show();
-            signInDialogFragment.show(fragmentTransaction, "Sign in");
+        RegisterDialogFragment registerDialogFragment = new RegisterDialogFragment();
 
-        } else if (TextUtils.isEmpty(pwd) || !pwd.equals("abc123")) {
+        //Check if the passwords match.
+        if(!pwd.equals(pwd2)) {
+            Toast.makeText(this, "Password must match", Toast.LENGTH_SHORT)
+                    .show();
             Bundle bundle = new Bundle();
-            bundle.putString(SignInDialogFragment.SIGN_IN_EMAIL, email);
+            bundle.putString(RegisterDialogFragment.FIRST_NAME, firstName);
+            bundle.putString(RegisterDialogFragment.LAST_NAME, lastName);
+            bundle.putString(RegisterDialogFragment.REGISTER_USERNAME, userName);
+            bundle.putString(RegisterDialogFragment.SIGN_IN_EMAIL, email);
+            registerDialogFragment.setArguments(bundle);
+            registerDialogFragment.show(fragmentTransaction, "Register");
 
-            signInDialogFragment.setArguments(bundle);
-            Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT)
+            //Check if not all the fields are filled.
+        } else if(firstName.equals("") || lastName.equals("") || userName.equals("") ||
+                email.equals("") || pwd.equals("") || pwd2.equals("")) {
+            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT)
                     .show();
-            signInDialogFragment.show(fragmentTransaction, "Sign in");
+            Bundle bundle = new Bundle();
+            bundle.putString(RegisterDialogFragment.FIRST_NAME, firstName);
+            bundle.putString(RegisterDialogFragment.LAST_NAME, lastName);
+            bundle.putString(RegisterDialogFragment.REGISTER_USERNAME, userName);
+            bundle.putString(RegisterDialogFragment.SIGN_IN_EMAIL, email);
+            registerDialogFragment.setArguments(bundle);
+            registerDialogFragment.show(fragmentTransaction, "Register");
         } else {
-            mSharedPreferences
-                    .edit()
-                    .putBoolean(getString(R.string.LOGGEDIN), true)
-                    .putString(getString(R.string.EMAIL), email.toString())
-                    .putString(getString(R.string.PASSWORD), pwd.toString())
-                    .commit();
+            registerLoginInfo(firstName, lastName, userName, email, pwd);
+            login(email, pwd);
+        }
+    }
 
-            loginBtn.setVisibility(Button.GONE);
-            logoutBtn.setVisibility(Button.VISIBLE);
+    /**
+     * Confirm that the email and password are in the online db.
+     * @param email
+     * @param password
+     */
+    private void checkLoginInfo(String email, String password) {
+//        boolean b = false;
+        StringBuilder url = new StringBuilder(getString(R.string.post_login));
 
-            isLoggedIn = true;
-            Toast.makeText(this, "Signed in as: " + email.toString(), Toast.LENGTH_SHORT)
-                    .show();
+        mEmail = email;
+        mPassword = password;
+
+        mArguments = new JSONObject();
+        try {
+            mArguments.put(EMAIL, email);
+            mArguments.put(PASSWORD, password);
+            new CheckLoginAsyncTask().execute(url.toString());
+        } catch (JSONException e) {
+            Toast.makeText(this, "error making json object: " + e.getMessage(),
+                    Toast.LENGTH_SHORT);
+        }
+    }
+
+    /**
+     * Attempt to register a new account to the db.
+     *
+     */
+    private void registerLoginInfo(String firstName, String lastName, String userName, String email,
+                                   String password) {
+        StringBuilder url = new StringBuilder(getString(R.string.post_register));
+        mEmail = email;
+        mPassword = password;
+        mRegisterArguments = new JSONObject();
+        try {
+            mRegisterArguments.put(FIRST_NAME, firstName);
+            mRegisterArguments.put(LAST_NAME, lastName);
+            mRegisterArguments.put(USERNAME, userName);
+            mRegisterArguments.put(EMAIL, email);
+            mRegisterArguments.put(PASSWORD, password);
+            new RegisterAsyncTask().execute(url.toString());
+        } catch (JSONException e) {
+            Toast.makeText(this,"error making json object: " + e.getMessage(),
+                    Toast.LENGTH_SHORT);
+        }
+    }
+
+    /**
+     * Private class to access db and add a new account.
+     */
+    private class RegisterAsyncTask extends AsyncTask<String, Void, String> {
+        private String Tag = "Register Tag";
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for(String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setRequestProperty("Content-type", "application/json");
+                    urlConnection.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                    Log.i(Tag, mRegisterArguments.toString());
+                    wr.write(mRegisterArguments.toString());
+                    wr.flush();
+                    wr.close();
+
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+
+                } catch (MalformedURLException e) {
+                    response = "Unable to reach database";
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if(urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+        return response;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject resultObject = new JSONObject(result);
+                if(resultObject.getBoolean("success") == true) {
+
+                    Toast.makeText(getApplicationContext(), "Registered " + mEmail, Toast.LENGTH_SHORT)
+                            .show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unable to register your account" +
+                            resultObject.toString(), Toast.LENGTH_LONG)
+                            .show();
+                    Log.i("debug tag", resultObject.toString());
+
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    /**
+     * Private class to access db and check for authenticity.
+     */
+    private class CheckLoginAsyncTask extends AsyncTask<String, Void, String> {
+
+        private String Tag = "tag you're it";
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for(String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setRequestProperty("Content-type", "application/json");
+                    urlConnection.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                    Log.i(Tag, mArguments.toString());
+                    wr.write(mArguments.toString());
+                    wr.flush();
+                    wr.close();
+
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+
+                } catch (MalformedURLException e) {
+                    response = "Unable to reach database";
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if(urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+
+            }
+
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject resultObject = new JSONObject(result);
+                if(resultObject.getBoolean("success") == true) {
+
+                    mSharedPreferences
+                            .edit()
+                            .putBoolean(getString(R.string.LOGGEDIN), true)
+                            .putString(getString(R.string.EMAIL), mEmail.toString())
+                            .putString(getString(R.string.PASSWORD), mPassword.toString())
+                            .commit();
+
+                    loginBtn.setVisibility(Button.GONE);
+                    logoutBtn.setVisibility(Button.VISIBLE);
+
+                    Toast.makeText(getApplicationContext(), "Signed in as :" + mEmail, Toast.LENGTH_SHORT)
+                            .show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unable to sign in", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                        .show();
+            }
         }
     }
 }

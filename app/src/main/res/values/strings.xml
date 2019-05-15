@@ -26,12 +26,24 @@
     <string name="cancel">Cancel</string>
     <string name="logout">Logout</string>
 
+    <!-- Sign in fragment strings -->
+    <string name="pwd_reenter_hint">re-enter password</string>
+
+    <string name="first_name_hint">first name</string>
+    <string name="last_name_hint">last name</string>
+
+
     <string name="register_message">Register a new account</string>
     <string name="register">Register</string>
     <string name="LOGIN_PREFS">edu.uw.tacoma.group7.brewme.PREFS</string>
     <string name="LOGGEDIN">loggedin</string>
     <string name="EMAIL">Email</string>
     <string name="PASSWORD">Password</string>
+    <string name="USERNAME">Username</string>
+
+    <!-- Login to facebook -->
+    <string name="facebook_app_id">2256039354651710</string>
+    <string name="fb_login_protocol_scheme">fb2256039354651710</string>
 
 
     <!-- Search details page strings -->
@@ -44,5 +56,8 @@
 
 
 <string name="title_activity_search">SearchActivity</string>
+
+
+
 
     </resources>

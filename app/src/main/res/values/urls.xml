@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="get_brew">https://api.openbrewerydb.org/breweries</string>
+    <string name="post_login">https://jamess33-services-backend.herokuapp.com/login</string>
+    <string name="post_register">https://jamess33-services-backend.herokuapp.com/register</string>
 
 </resources>
