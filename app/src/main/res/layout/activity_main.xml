@@ -33,14 +33,6 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
 
-        <Button
-            android:id="@+id/login_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="@string/login"
-            android:visibility="visible"
-            android:onClick="onClickLoginBtn"/>
 
         <Button
             android:id="@+id/logout_btn"
@@ -67,15 +59,6 @@
             android:text="@string/login"
             android:visibility="visible"
             android:onClick="onClickLoginBtn"/>
-
-        <Button
-            android:id="@+id/logout_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="@string/logout"
-            android:visibility="gone"
-            android:onClick="onClickLogoutBtn"/>
 
     </android.support.design.widget.AppBarLayout>
 

@@ -129,32 +129,32 @@ implements SignInDialogFragment.SignInListenerInterface,
     }
     */
 
-    /**
-     * When the Login button is clicked, show Login dialog.
-     * @param v
-     */
-    public void onClickLoginBtn(View v) {
-        //Launch the login dialog.
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
-        signInDialogFragment.show(fragmentTransaction, "Sign in");
-    }
-
-    /**
-     * Log out of your account. Forget prefs on device.
-     * @param v
-     */
-    public void onClickLogoutBtn(View v) {
-        mSharedPreferences.edit()
-                .putBoolean(getString(R.string.LOGGEDIN), false)
-                .putString(getString(R.string.EMAIL), null)
-                .putString(getString(R.string.PASSWORD), null)
-                .commit();
-
-        logoutBtn.setVisibility(Button.GONE);
-        loginBtn.setVisibility(Button.VISIBLE);
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-    }
+//    /**
+//     * When the Login button is clicked, show Login dialog.
+//     * @param v
+//     */
+//    public void onClickLoginBtn(View v) {
+//        //Launch the login dialog.
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
+//        signInDialogFragment.show(fragmentTransaction, "Sign in");
+//    }
+//
+//    /**
+//     * Log out of your account. Forget prefs on device.
+//     * @param v
+//     */
+//    public void onClickLogoutBtn(View v) {
+//        mSharedPreferences.edit()
+//                .putBoolean(getString(R.string.LOGGEDIN), false)
+//                .putString(getString(R.string.EMAIL), null)
+//                .putString(getString(R.string.PASSWORD), null)
+//                .commit();
+//
+//        logoutBtn.setVisibility(Button.GONE);
+//        loginBtn.setVisibility(Button.VISIBLE);
+//        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+//    }
 
     /**
      * Launches the login dialog.
