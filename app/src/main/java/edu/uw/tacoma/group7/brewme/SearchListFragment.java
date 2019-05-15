@@ -39,8 +39,6 @@ public class SearchListFragment extends Fragment {
     private String mSearchKey;
     private String mSearchValue;
 
-
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -74,15 +72,11 @@ public class SearchListFragment extends Fragment {
         Bundle bundle = this.getArguments();
         mSearchKey = bundle.getString(ARG_SEARCH_KEY);
         mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
-
-        FloatingActionButton floatingActionButton = (FloatingActionButton)
-                getActivity().findViewById(R.id.fab);
-
-        floatingActionButton.show();
-
-        Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
-                .show();
-
+//        FloatingActionButton floatingActionButton = (FloatingActionButton)
+//                getActivity().findViewById(R.id.fab);
+//        floatingActionButton.show();
+//        Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
+//                .show();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -192,6 +186,5 @@ public class SearchListFragment extends Fragment {
             }
         }
     }//end DownloadBrewSearch
-
 
 }//end SearchListFragment

@@ -20,6 +20,10 @@ public class MainActivity extends AppCompatActivity
     private Button logoutBtn;
 
 
+    /**
+     * Checks for login, automatically logs in using SharedPreferences.
+     * @param savedInstanceState a Bundle object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -39,15 +43,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Launches the login dialog.
+     * @param v a View object
+     */
     public void onClickLoginBtn(View v) {
-        //Launch the login dialog.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
         signInDialogFragment.show(fragmentTransaction, "Sign in");
     }
 
+    /**
+     * Logs the user out of the application.
+     * @param v a View object
+     */
     public void onClickLogoutBtn(View v) {
-        //TODO logout of your account.
         mSharedPreferences.edit()
                 .putBoolean(getString(R.string.LOGGEDIN), false)
                 .putString(getString(R.string.EMAIL), null)
@@ -59,6 +69,10 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Called by the search button to launch the SearchActivity.
+     * @param view a View object
+     */
     public void launchSearchActivity(View view){
         Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(myIntent);
@@ -68,13 +82,11 @@ public class MainActivity extends AppCompatActivity
         boolean isLoggedIn = false;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
-        //TODO compare email with database of emails.
         if (TextUtils.isEmpty(email) || !email.equals("a@m.com")) {
             Toast.makeText(this, "Invalid email address", Toast.LENGTH_SHORT)
                     .show();
             signInDialogFragment.show(fragmentTransaction, "Sign in");
 
-            //TODO compare email with database password. Include hashing.
         } else if (TextUtils.isEmpty(pwd) || !pwd.equals("abc123")) {
             Bundle bundle = new Bundle();
             bundle.putString(SignInDialogFragment.SIGN_IN_EMAIL, email);
