@@ -70,11 +70,14 @@ public class SearchListFragment extends Fragment {
         Bundle bundle = this.getArguments();
         mSearchKey = bundle.getString(ARG_SEARCH_KEY);
         mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
-//        FloatingActionButton floatingActionButton = (FloatingActionButton)
-//                getActivity().findViewById(R.id.fab);
-//        floatingActionButton.show();
-//        Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
-//                .show();
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+
+        floatingActionButton.hide();
+
+        Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
+                .show();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
