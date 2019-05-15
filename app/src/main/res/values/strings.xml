@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">BrewMe</string>
+    <string name="title_activity_main">BrewMe</string>
+    <string name="title_activity_search">Search</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -11,8 +14,6 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."</string>
-    <string name="title_activity_main">MainActivity</string>
-
     <string name="by_city_text">Search by city</string>
     <string name="by_state_text">Search by state</string>
     <string name="by_name_text">Search by name</string>
@@ -24,7 +25,6 @@
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Logout</string>
-
     <string name="register_message">Register a new account</string>
     <string name="register">Register</string>
     <string name="LOGIN_PREFS">edu.uw.tacoma.group7.brewme.PREFS</string>
@@ -42,7 +42,6 @@
     <string name="test_address">2102+Jefferson+Ave+Tacoma+WA</string>
 
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_search">SearchActivity</string>
+
 
 </resources>

@@ -3,6 +3,7 @@ package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -66,6 +67,11 @@ public class SearchFieldFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
         final TextView searchInputTextView = view.findViewById(R.id.editText);
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton)
+                getActivity().findViewById(R.id.fab);
+        floatingActionButton.hide();
+
         mSearchButton = view.findViewById(R.id.button);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override

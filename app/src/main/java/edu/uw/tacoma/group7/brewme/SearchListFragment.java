@@ -78,7 +78,7 @@ public class SearchListFragment extends Fragment {
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
 
-        floatingActionButton.show();
+        floatingActionButton.hide();
 
         Toast.makeText(getContext(), bundle.getString(ARG_SEARCH_KEY) + " " + bundle.getString(ARG_SEARCH_VALUE) , Toast.LENGTH_SHORT)
                 .show();
