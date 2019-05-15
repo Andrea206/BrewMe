@@ -76,8 +76,6 @@ public class SearchListFragment extends Fragment {
 
         floatingActionButton.hide();
 
-
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
