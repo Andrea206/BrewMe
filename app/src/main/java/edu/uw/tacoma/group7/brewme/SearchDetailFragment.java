@@ -1,12 +1,18 @@
 package edu.uw.tacoma.group7.brewme;
-
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import edu.uw.tacoma.group7.brewme.model.Brewery;
+
 
 
 /**
@@ -14,18 +20,21 @@ import android.view.ViewGroup;
  * Activities that contain this fragment must implement the
  * {@link SearchDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchDetailFragment#newInstance} factory method to
+ * Use the {@link SearchDetailFragment#getSearchDetailFragment(Brewery)} factory method to
  * create an instance of this fragment.
  */
 public class SearchDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
+
+    private Brewery mBrewery;
+
+    private ImageView mBreweryImage;
+    private TextView mDescription;
+    private Button mWriteReviewButton;
+    private Button mGoogleMapButton;
+    private Button mCheckInButton;
+    private Button mUserReviewsButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,16 +46,14 @@ public class SearchDetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param param A Brewery.
      * @return A new instance of fragment SearchDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchDetailFragment newInstance(String param1, String param2) {
+    public static SearchDetailFragment getSearchDetailFragment(Brewery param) {
         SearchDetailFragment fragment = new SearchDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(BREWERY_DETAILS_PARAM, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,16 +62,36 @@ public class SearchDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mBrewery = (Brewery) getArguments().getSerializable(BREWERY_DETAILS_PARAM);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_detail2, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_detail, container, false);
+        mDescription = view.findViewById(R.id.brewery_description);
+        String type = mBrewery.getBreweryType();
+        String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
+        String phone = mBrewery.getPhone();
+        String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
+                                "-" + phone.substring(6);
+        mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
+                "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
+                ", " + mBrewery.getState() + "\n" + phoneFormatted +
+                "\n" + mBrewery.getWebsite());
+        mGoogleMapButton = view.findViewById(R.id.google_maps_button);
+        mGoogleMapButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String uri = "geo:0,0?q=" + mBrewery.getName() + "+" + mBrewery.getCity()
+                        + "+" + mBrewery.getState();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                getContext().startActivity(intent);
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

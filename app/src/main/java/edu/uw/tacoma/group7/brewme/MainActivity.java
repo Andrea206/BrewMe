@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 
 //import com.facebook.CallbackManager;
 //import com.facebook.FacebookCallback;
@@ -65,7 +65,10 @@ implements SignInDialogFragment.SignInListenerInterface,
 //    private LoginButton loginButton;
     //End Facebook fields.
 
-
+    /**
+     * Checks for login, automatically logs in using SharedPreferences.
+     * @param savedInstanceState a Bundle object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -153,10 +156,39 @@ implements SignInDialogFragment.SignInListenerInterface,
         Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Launches the login dialog.
+     * @param v a View object
+     */
+    public void onClickLoginBtn(View v) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
+        signInDialogFragment.show(fragmentTransaction, "Sign in");
+    }
+
+    /**
+     * Logs the user out of the application.
+     * @param v a View object
+     */
+    public void onClickLogoutBtn(View v) {
+        mSharedPreferences.edit()
+                .putBoolean(getString(R.string.LOGGEDIN), false)
+                .putString(getString(R.string.EMAIL), null)
+                .putString(getString(R.string.PASSWORD), null)
+                .commit();
+
+        logoutBtn.setVisibility(Button.GONE);
+        loginBtn.setVisibility(Button.VISIBLE);
+        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Called by the search button to launch the SearchActivity.
+     * @param view a View object
+     */
     public void launchSearchActivity(View view){
         Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(myIntent);
-
     }
 
     @Override
@@ -392,3 +424,4 @@ implements SignInDialogFragment.SignInListenerInterface,
         }
     }
 }
+

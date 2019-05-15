@@ -1,92 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:id="@+id/brewery_main"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TableRow
-        android:id="@+id/LogoRow"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center_horizontal|center_vertical">
         <ImageView
-            android:id="@+id/BrewMe_Logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            tools:srcCompat="@tools:sample/avatars[3]" />
-    </TableRow>
+            android:src="@drawable/brewme_logo"/>
+    </LinearLayout>
 
-    <TableRow
-        android:id="@+id/MainRow1"
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="0dp"
-        android:layout_weight="1" >
-
-        <ImageButton
-            android:id="@+id/SearchButton"
-            android:layout_width="match_parent"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
             android:onClick="launchSearchActivity"
-            tools:srcCompat="@tools:sample/avatars[2]" />
-        <ImageButton
-            android:id="@+id/FavoritesButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars[3]" />
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:layout_gravity="center"
             android:text="Search"/>
-        <TextView
-            android:layout_gravity="center"
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="Favorites"/>
-    </TableRow>
-
-        <TableRow
-            android:id="@+id/MainRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-        <ImageButton
-            android:id="@+id/ReviewButton"
-            android:layout_width="match_parent"
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars[6]" />
-
-        <ImageButton
-            android:id="@+id/ShareButton"
-            android:layout_width="match_parent"
+            android:text="Review" />
+        <Button
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
+            android:layout_width="0dp"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars[1]" />
-        </TableRow>
-
-    <TableRow>
-        <TextView
-            android:layout_gravity="center"
-            android:text="Review"/>
-        <TextView
-            android:layout_gravity="center"
             android:text="Share"/>
-    </TableRow>
-
-
-
-</TableLayout>
+    </LinearLayout>
+</LinearLayout>

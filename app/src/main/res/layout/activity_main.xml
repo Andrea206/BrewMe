@@ -59,6 +59,24 @@
             android:layout_gravity="end" />
         -->
 
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/login"
+            android:visibility="visible"
+            android:onClick="onClickLoginBtn"/>
+
+        <Button
+            android:id="@+id/logout_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/logout"
+            android:visibility="gone"
+            android:onClick="onClickLogoutBtn"/>
+
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main" />
@@ -70,6 +88,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email"
+
         android:visibility="invisible"/>
 
 </android.support.design.widget.CoordinatorLayout>
