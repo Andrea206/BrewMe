@@ -17,7 +17,6 @@ public class SearchActivity extends AppCompatActivity
         SearchFieldFragment.OnSearchFieldFragmentInteractionListener {
 
     private SearchListFragment.OnListFragmentInteractionListener mListener;
-    private SearchListFragment mSearchListFragment;
     private SearchDetailFragment mDetailFragment;
 
 
@@ -31,16 +30,6 @@ public class SearchActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_search_container, new SearchFieldFragment())
                 .commit();
-
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
     }
 
     @Override
