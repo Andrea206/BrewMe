@@ -19,7 +19,10 @@ public class SearchActivity extends AppCompatActivity
     private SearchListFragment.OnListFragmentInteractionListener mListener;
     private SearchDetailFragment mDetailFragment;
 
-
+    /**
+     * Launches SearchFieldFragment, which contains input field for search function.
+     * @param savedInstanceState Bundle object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,11 @@ public class SearchActivity extends AppCompatActivity
     public void onClick(View v) {
     }
 
+    /**
+     * Launches Detail Fragment when a list item is selected. Brewery data object is passed to
+     * Detail Fragment to display more information than the search result list provides.
+     * @param item Brewery object containing JSON data.
+     */
     @Override
     public void onBrewListFragmentInteraction(Brewery item) {
         mDetailFragment = SearchDetailFragment.getSearchDetailFragment(item);

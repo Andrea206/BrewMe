@@ -39,10 +39,7 @@ public class SearchListFragment extends Fragment {
     private String mSearchKey;
     private String mSearchValue;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+
     public SearchListFragment() {
     }
 
@@ -63,6 +60,7 @@ public class SearchListFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
