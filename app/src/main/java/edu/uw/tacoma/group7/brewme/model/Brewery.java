@@ -86,7 +86,12 @@ public class Brewery implements Serializable {
     }
 
 
-
+    /**
+     * Parses JSON array into a List data structure containing custom Brewery objects.
+     * @param breweryJson JSON string search results returned from web service.
+     * @return List containing Brewery objects.
+     * @throws JSONException
+     */
     public static List<Brewery> parseBreweryJson(String breweryJson) throws JSONException {
         ArrayList<Brewery> breweryList = new ArrayList<>();
         if(breweryJson != null){
