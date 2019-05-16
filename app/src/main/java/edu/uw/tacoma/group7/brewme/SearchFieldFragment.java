@@ -100,7 +100,7 @@ public class SearchFieldFragment extends Fragment {
     }
 
     /**
-     * Passes uri object to OnSearchFieldFragmentInteractionListener when button pressed.
+     * Passes uri object to OnSearchFieldFragmentInteractionListener.
      * @param uri Uri object.
      */
     public void onButtonPressed(Uri uri) {

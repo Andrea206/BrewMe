@@ -119,6 +119,9 @@ public class SearchListFragment extends Fragment {
     }
 
 
+    /**
+     * Sets OnListFragmentInteractionListener to null on detach.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
