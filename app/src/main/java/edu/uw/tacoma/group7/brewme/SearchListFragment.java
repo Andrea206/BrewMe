@@ -52,6 +52,10 @@ public class SearchListFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Checks for column count available for device being used (determined by screen size).
+     * @param savedInstanceState Bundle.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,13 @@ public class SearchListFragment extends Fragment {
     }
 
 
+    /**
+     * Creates view for fragment based on device (phone vs. tablet), starts brewery search download.
+     * @param inflater LayoutInflater.
+     * @param container ViewGroup.
+     * @param savedInstanceState Bundle.
+     * @return View.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,6 +103,10 @@ public class SearchListFragment extends Fragment {
     }
 
 
+    /**
+     * Attaches required OnListFragmentInteractionListener, throws error if listener not implemented.
+     * @param context Context object.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -103,6 +118,7 @@ public class SearchListFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -110,20 +126,16 @@ public class SearchListFragment extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Custom onBrewListFragmentInteraction, with Brewery item parameter implemented in this interface.
      */
     public interface OnListFragmentInteractionListener {
         void onBrewListFragmentInteraction(Brewery item);
 
     }
 
+    /**
+     * AsyncTask class used for connecting to database webservice.
+     */
     private class DownloadBrewSearch extends AsyncTask<String, Void, String> {
 
         @Override
@@ -161,6 +173,10 @@ public class SearchListFragment extends Fragment {
         }
 
 
+        /**
+         * Uses JSON string response fetched from webservice to parse into list object and pass to ListView.
+         * @param result String to be parsed.
+         */
         @Override
         protected void onPostExecute(String result){
             try{

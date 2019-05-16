@@ -21,7 +21,7 @@ public class SearchActivity extends AppCompatActivity
 
     /**
      * Launches SearchFieldFragment, which contains input field for search function.
-     * @param savedInstanceState Bundle object
+     * @param savedInstanceState Bundle object.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
