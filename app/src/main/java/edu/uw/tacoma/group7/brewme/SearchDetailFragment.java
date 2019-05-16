@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
 import android.content.Intent;
@@ -13,15 +18,12 @@ import android.widget.TextView;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
-
-
 /**
- * A simple {@link Fragment} subclass.
+ * SearchDetailFragment displays extended information about a brewery that is selected
+ * from the search results list.
  * Activities that contain this fragment must implement the
  * {@link SearchDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchDetailFragment#getSearchDetailFragment(Brewery)} factory method to
- * create an instance of this fragment.
  */
 public class SearchDetailFragment extends Fragment {
 

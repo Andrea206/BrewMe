@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +14,8 @@ import edu.uw.tacoma.group7.brewme.model.*;
 import java.util.List;
 
 /**
+ * MySearchListRecyclerViewAdapter is used to create a list view of the search results,
+ * which is displayed in the SearchListFragment.
  * {@link RecyclerView.Adapter} that can display a {@link Brewery} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */

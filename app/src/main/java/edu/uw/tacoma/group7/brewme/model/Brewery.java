@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme.model;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,6 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Brewery class that defines custom data structure for holding brewery information.
+ */
 public class Brewery implements Serializable {
     private String mName;
     private String mBreweryType;

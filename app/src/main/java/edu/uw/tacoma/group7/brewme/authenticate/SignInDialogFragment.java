@@ -1,3 +1,9 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
+
 package edu.uw.tacoma.group7.brewme.authenticate;
 import android.app.AlertDialog;
 import android.app.Dialog;

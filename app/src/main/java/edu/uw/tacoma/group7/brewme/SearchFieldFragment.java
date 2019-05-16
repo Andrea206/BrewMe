@@ -1,5 +1,9 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,12 +20,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 /**
- * A simple {@link Fragment} subclass.
+ * SearchFieldFragment allows the user to choose what type of search and input search text.
  * Activities that contain this fragment must implement the
  * {@link SearchFieldFragment.OnSearchFieldFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchFieldFragment#getSearchFieldFragment()} factory method to
- * create an instance of this fragment.
  */
 public class SearchFieldFragment extends Fragment {
 
