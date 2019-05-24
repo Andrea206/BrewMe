@@ -1,5 +1,9 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,12 +20,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 /**
- * A simple {@link Fragment} subclass.
+ * SearchFieldFragment allows the user to choose what type of search and input search text.
  * Activities that contain this fragment must implement the
  * {@link SearchFieldFragment.OnSearchFieldFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchFieldFragment#getSearchFieldFragment()} factory method to
- * create an instance of this fragment.
  */
 public class SearchFieldFragment extends Fragment {
 
@@ -44,10 +46,8 @@ public class SearchFieldFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @return A new instance of fragment SearchFieldFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SearchFieldFragment getSearchFieldFragment() {
         SearchFieldFragment fragment = new SearchFieldFragment();
         return fragment;
@@ -56,12 +56,17 @@ public class SearchFieldFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
+    /**
+     * Creates view for search input that includes OnClickListener for search button. When search button
+     * is clicked the input text from user and search type is captured in a Bundle object and passed to
+     * a new SearchListFragment.
+     * @param inflater LayoutInflater.
+     * @param container ViewGroup.
+     * @param savedInstanceState Bundle.
+     * @return View object.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,13 +101,20 @@ public class SearchFieldFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    /**
+     * Passes uri object to OnSearchFieldFragmentInteractionListener.
+     * @param uri Uri object.
+     */
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onSearchFieldFragmentInteraction(uri);
         }
     }
 
+    /**
+     * Attaches required OnSearchFieldFragmentInteractionListener, throws error if listener not implemented.
+     * @param context Context object.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -114,6 +126,9 @@ public class SearchFieldFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets OnSearchFieldFragmentInteractionListener to null when fragment is detached.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
@@ -121,20 +136,17 @@ public class SearchFieldFragment extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * Custom onSearchFieldFragmentInteraction, with Brewery item parameter implemented in this interface.
      */
     public interface OnSearchFieldFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onSearchFieldFragmentInteraction(Uri uri);
     }
 
+    /**
+     * Toggles the search type string needed to correctly format the GET statement passed to the webservice.
+     * For example to search for a brewery by name the search key must be "by_name" in the GET statement.
+     * @return search 'key' string.
+     */
     private String getSearchKey() {
         String result;
         mRadioGroup = (RadioGroup) getActivity().findViewById(R.id.radio_group);

@@ -1,5 +1,10 @@
-package edu.uw.tacoma.group7.brewme.authenticate;
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 
+package edu.uw.tacoma.group7.brewme.authenticate;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -26,6 +31,12 @@ public class RegisterDialogFragment extends DialogFragment {
     public static final String FIRST_NAME = "first";
     public static final String LAST_NAME = "last";
 
+    /**
+     * Dialog that opens when a user wants to register for the BrewMe app. Input boxes
+     * for first name, last name, email, password and associated buttons are in this method.
+     * @param savedInstanceState Bundle.
+     * @return Dialog object.
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@NonNull Bundle savedInstanceState) {
@@ -97,6 +108,9 @@ public class RegisterDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Custom listener interface that passes the string values of a new user's information.
+     */
     public interface RegisterListenerInterface {
         void register(String firstName, String lastName, String userName, String email, String pwd, String pwd2);
     }

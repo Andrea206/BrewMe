@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
 import android.content.Intent;
@@ -13,15 +18,12 @@ import android.widget.TextView;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
-
-
 /**
- * A simple {@link Fragment} subclass.
+ * SearchDetailFragment displays extended information about a brewery that is selected
+ * from the search results list.
  * Activities that contain this fragment must implement the
  * {@link SearchDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchDetailFragment#getSearchDetailFragment(Brewery)} factory method to
- * create an instance of this fragment.
  */
 public class SearchDetailFragment extends Fragment {
 
@@ -44,12 +46,11 @@ public class SearchDetailFragment extends Fragment {
 
     /**
      * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * SearchDetailFragment using the provided parameters.
      *
-     * @param param A Brewery.
-     * @return A new instance of fragment SearchDetailFragment.
+     * @param param a Brewery object.
+     * @return new instance of fragment SearchDetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SearchDetailFragment getSearchDetailFragment(Brewery param) {
         SearchDetailFragment fragment = new SearchDetailFragment();
         Bundle args = new Bundle();
@@ -58,6 +59,10 @@ public class SearchDetailFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Retrieves Brewery object selected from SearchListFragment.
+     * @param savedInstanceState Bundle.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,14 @@ public class SearchDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Creates view of formatted Brewery information text, and links to more features such as
+     * launching a map of the brewery.
+     * @param inflater LayoutInflater.
+     * @param container ViewGroup.
+     * @param savedInstanceState Bundle.
+     * @return View object.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -94,13 +107,20 @@ public class SearchDetailFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    /**
+     * Passes uri object to onFragmentInteraction.
+     * @param uri Uri object.
+     */
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
+    /**
+     * Attaches required OnFragmentInteractionListener, throws error if listener not implemented.
+     * @param context Context object.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -112,24 +132,17 @@ public class SearchDetailFragment extends Fragment {
         }
     }
 
+    /**
+     * Sets OnFragmentInteractionListener to null on detach.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

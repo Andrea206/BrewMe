@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +15,9 @@ import java.io.Serializable;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
+/**
+ * SearchActivity is parent of search field, search list, search detail fragments.
+ */
 public class SearchActivity extends AppCompatActivity
         implements Serializable, View.OnClickListener,
         SearchListFragment.OnListFragmentInteractionListener,
@@ -21,7 +29,7 @@ public class SearchActivity extends AppCompatActivity
 
     /**
      * Launches SearchFieldFragment, which contains input field for search function.
-     * @param savedInstanceState Bundle object
+     * @param savedInstanceState Bundle object.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

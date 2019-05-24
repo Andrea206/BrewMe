@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +39,9 @@ import java.net.URL;
 import edu.uw.tacoma.group7.brewme.authenticate.RegisterDialogFragment;
 import edu.uw.tacoma.group7.brewme.authenticate.SignInDialogFragment;
 
+/**
+ * MainActivity launches at start up of app, and is parent to login and register fragments.
+ */
 public class MainActivity extends AppCompatActivity
 implements SignInDialogFragment.SignInListenerInterface,
         RegisterDialogFragment.RegisterListenerInterface {
