@@ -230,7 +230,8 @@ implements SignInDialogFragment.SignInListenerInterface,
             new CheckLoginAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             Toast.makeText(this, "error making json object: " + e.getMessage(),
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -253,7 +254,8 @@ implements SignInDialogFragment.SignInListenerInterface,
             new RegisterAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             Toast.makeText(this,"error making json object: " + e.getMessage(),
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
