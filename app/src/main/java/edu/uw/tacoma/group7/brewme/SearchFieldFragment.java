@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -36,6 +39,7 @@ public class SearchFieldFragment extends Fragment {
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButton;
     private Button mSearchButton;
+
 
     private OnSearchFieldFragmentInteractionListener mListener;
 
@@ -70,8 +74,16 @@ public class SearchFieldFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        String[] exampleArray = {"example0", "example1", "example2", "example3", "example4"};
+
+
         final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
-        final TextView searchInputTextView = view.findViewById(R.id.editText);
+        final AutoCompleteTextView searchInputTextView = view.findViewById(R.id.autoCompleteSearchInput);
+
+        ArrayAdapter<String> searchHistoryAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1, exampleArray);
+        searchInputTextView.setAdapter(searchHistoryAdapter);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
