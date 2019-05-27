@@ -4,6 +4,7 @@ BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -454,5 +455,12 @@ implements SignInDialogFragment.SignInListenerInterface,
             }
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
 }
 

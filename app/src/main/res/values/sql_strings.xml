@@ -2,7 +2,7 @@
 <resources>
     <string name="CREATE_HISTORY_SQL">
         CREATE TABLE IF NOT EXISTS History
-        (id TEXT PRIMARY KEY, searchInput TEXT)
+        (searchInput TEXT PRIMARY KEY)
     </string>
     
     <string name="DROP_HISTORY_SQL">
