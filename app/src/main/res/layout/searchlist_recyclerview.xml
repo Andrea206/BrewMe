@@ -9,4 +9,9 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".SearchListFragment"
-    tools:listitem="@layout/fragment_brewery" />
+    tools:listitem="@layout/fragment_brewery">
+
+ 
+</android.support.v7.widget.RecyclerView>
+
+
