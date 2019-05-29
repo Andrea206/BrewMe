@@ -18,6 +18,12 @@ android {
     }
     productFlavors {
     }
+    android {
+        // added code for the junit tests of parseJSON
+        testOptions {
+            unitTests.returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {

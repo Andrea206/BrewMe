@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import org.json.JSONException;
 import edu.uw.tacoma.group7.brewme.model.*;
@@ -146,6 +147,15 @@ public class SearchListFragment extends Fragment {
      */
     private class DownloadBrewSearch extends AsyncTask<String, Void, String> {
 
+        private ProgressBar mProgressBar;
+
+        @Override
+        protected void onProgressUpdate(Void... progress) {
+            mProgressBar = getActivity().findViewById(R.id.progressBar);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.getProgress();
+        }
+
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -164,6 +174,7 @@ public class SearchListFragment extends Fragment {
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                     String s = "";
+                    publishProgress();
 
                         while ((s = buffer.readLine()) != null) {
                             response += s;
@@ -187,6 +198,7 @@ public class SearchListFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(String result){
+            mProgressBar.setVisibility(View.GONE);
             try{
                 Log.i("Response ", result);
 
@@ -201,7 +213,7 @@ public class SearchListFragment extends Fragment {
                     }
                 }
             } catch (JSONException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                Toast.makeText(getContext(), "No search results found", Toast.LENGTH_LONG)
                         .show();
                 Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
 
