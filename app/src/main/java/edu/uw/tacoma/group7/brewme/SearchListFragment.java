@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -94,7 +95,6 @@ public class SearchListFragment extends Fragment {
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
-
         floatingActionButton.hide();
 
         // Set the adapter
@@ -218,12 +218,18 @@ public class SearchListFragment extends Fragment {
                         mRecyclerview.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
                     }
+
                 }
             } catch (JSONException e) {
                 Toast.makeText(getContext(), "No search results found", Toast.LENGTH_LONG)
                         .show();
-                Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
-
+                SearchFieldFragment searchFieldFragment = new SearchFieldFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_search_container, searchFieldFragment)
+                        .addToBackStack(null);
+                transaction.commit();
+                //Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
             }
         }
     }//end DownloadBrewSearch
