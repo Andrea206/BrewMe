@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/search_main">
+        android:id="@+id/search_main"
+        android:gravity="center_horizontal">
 
 
         <ImageView
@@ -18,39 +19,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="-128dp"
-            android:layout_weight="1"
+            android:layout_marginTop="128dp"
             android:layout_marginVertical="20dp"
             android:src="@drawable/beer"
+            android:layout_alignParentTop="true"
              />
 
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteSearchInput"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:ems="10"
-            android:inputType="text"
-            android:layout_below="@+id/imageView"
-            android:hint="Enter Search Details"
-            android:layout_marginLeft="40dp">
-        <requestFocus/>
-        </AutoCompleteTextView>
+            android:orientation="horizontal"
+            android:id="@+id/search_input_and_button"
+            android:layout_below="@id/imageView"
+            android:gravity="center_horizontal|center_vertical"
+            >
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteSearchInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:ems="12"
+                android:inputType="text"
+                android:hint="Enter Search Details"
+                >
+                <requestFocus/>
+            </AutoCompleteTextView>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_toRightOf="@id/autoCompleteSearchInput"
-            android:layout_alignBaseline="@id/autoCompleteSearchInput"
-            android:text="Search"
-            />
+        </LinearLayout>
+
 
         <RadioGroup
             android:id="@+id/radio_group"
-            android:layout_below="@id/autoCompleteSearchInput"
+            android:layout_below="@id/search_input_and_button"
             android:layout_width="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginVertical="20dp"

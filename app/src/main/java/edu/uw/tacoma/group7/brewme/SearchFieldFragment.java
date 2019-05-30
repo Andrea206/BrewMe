@@ -82,7 +82,6 @@ public class SearchFieldFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
         mAutoCompleteTextView = view.findViewById(R.id.autoCompleteSearchInput);
 
@@ -93,10 +92,6 @@ public class SearchFieldFragment extends Fragment {
         //Attach search history and adapter only if Sqlite db has values present
         if(!mSearchHistoryDB.isTableEmpty()){
             mHistoryArrayList = mSearchHistoryDB.getHistory();
-
-            //***Debugging***
-            Log.e("TESTING getStringArray()", Arrays.toString(getStringArray(mHistoryArrayList)));
-
             //This adapter displays the search history  autocomplete text
             //**Must pass a String array to this adapter
             ArrayAdapter<String> searchHistoryAdapter = new ArrayAdapter<String>(getContext(),
@@ -124,7 +119,7 @@ public class SearchFieldFragment extends Fragment {
                 }
                 mSearchHistoryDB.insertSearchHistory(mSearchText);
                 //***Debugging***
-                Log.e("INSERT INTO HISTORY", mSearchHistoryDB.getHistory().toString());
+                //Log.e("INSERT INTO HISTORY", mSearchHistoryDB.getHistory().toString());
 
                 //Pass search input and search type to SearchListFragment
                 Bundle bundle = new Bundle();
@@ -138,9 +133,9 @@ public class SearchFieldFragment extends Fragment {
                         .beginTransaction()
                         .replace(R.id.fragment_search_container, searchListFragment)
                         .addToBackStack(null);
-
                 transaction.commit();
 
+                //Clear text view so text does not remain on back navigation
                 mAutoCompleteTextView.setText("");
             }
         });
