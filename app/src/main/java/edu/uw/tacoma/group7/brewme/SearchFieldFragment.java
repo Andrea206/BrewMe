@@ -44,6 +44,7 @@ public class SearchFieldFragment extends Fragment {
     private static String mSearchText;
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButton;
+    private AutoCompleteTextView mAutoCompleteTextView;
     private Button mSearchButton;
     private SearchHistoryDB mSearchHistoryDB;
     private OnSearchFieldFragmentInteractionListener mListener;
@@ -80,14 +81,10 @@ public class SearchFieldFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        DateFormat df = new SimpleDateFormat("yyMMddHHmmss");
-//        final String date = df.format(Calendar.getInstance().getTime());
 
-
-        //String[] exampleArray = {"example0", "example1", "example2", "example3", "example4"};
 
         final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
-        final AutoCompleteTextView searchInputTextView = view.findViewById(R.id.autoCompleteSearchInput);
+        mAutoCompleteTextView = view.findViewById(R.id.autoCompleteSearchInput);
 
         if(mSearchHistoryDB == null){
             mSearchHistoryDB = new SearchHistoryDB(getActivity());
@@ -104,7 +101,7 @@ public class SearchFieldFragment extends Fragment {
             //**Must pass a String array to this adapter
             ArrayAdapter<String> searchHistoryAdapter = new ArrayAdapter<String>(getContext(),
                     android.R.layout.simple_list_item_1, getStringArray(mHistoryArrayList));
-            searchInputTextView.setAdapter(searchHistoryAdapter);
+            mAutoCompleteTextView.setAdapter(searchHistoryAdapter);
         }
 
 
@@ -120,7 +117,7 @@ public class SearchFieldFragment extends Fragment {
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSearchText = searchInputTextView.getText().toString();
+                mSearchText = mAutoCompleteTextView.getText().toString();
 
                 if(mSearchHistoryDB == null){
                     mSearchHistoryDB = new SearchHistoryDB(getActivity());
@@ -143,6 +140,8 @@ public class SearchFieldFragment extends Fragment {
                         .addToBackStack(null);
 
                 transaction.commit();
+
+                mAutoCompleteTextView.setText("");
             }
         });
         return view;
@@ -181,6 +180,8 @@ public class SearchFieldFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * Custom onSearchFieldFragmentInteraction, with Brewery item parameter implemented in this interface.
