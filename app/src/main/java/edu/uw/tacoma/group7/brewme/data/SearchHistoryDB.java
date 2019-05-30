@@ -1,3 +1,8 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
 package edu.uw.tacoma.group7.brewme.data;
 import android.content.ContentValues;
 import android.content.Context;
@@ -78,7 +83,9 @@ public class SearchHistoryDB {
 
 }//end SearchHistoryDB
 
-
+/**
+ * SearchHistoryDBHelper for creating sqlite tables.
+ */
 class SearchHistoryDBHelper extends SQLiteOpenHelper {
     private final String CREATE_HISTORY_SQL;
     private final String DROP_HISTORY_SQL;
@@ -88,17 +95,26 @@ class SearchHistoryDBHelper extends SQLiteOpenHelper {
         CREATE_HISTORY_SQL = context.getString(R.string.CREATE_HISTORY_SQL);
         DROP_HISTORY_SQL = context.getString(R.string.DROP_HISTORY_SQL);
     }
+
+    /**
+     * OnCreate for executing table creation.
+     * @param sqLiteDatabase search history local database.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_HISTORY_SQL);
     }
 
+    /**
+     * onUpgrade execute drop table sql command.
+     * @param sqLiteDatabase search history local database.
+     * @param i integer value.
+     * @param i1 second integer value.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(DROP_HISTORY_SQL);
         onCreate(sqLiteDatabase);
     }
-
-
 
 }//end SearchHistoryDBHelper
