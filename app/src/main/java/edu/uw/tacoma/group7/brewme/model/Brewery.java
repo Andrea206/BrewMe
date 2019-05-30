@@ -122,4 +122,6 @@ public class Brewery implements Serializable {
     }//end parseBreweryJson
 
 
+
+
 }//end Brewery

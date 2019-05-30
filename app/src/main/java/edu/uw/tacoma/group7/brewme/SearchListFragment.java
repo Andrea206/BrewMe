@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,8 @@ import java.net.URL;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import static android.widget.LinearLayout.HORIZONTAL;
 
 /**
  * A fragment representing a list of Brewery search results.
@@ -84,6 +87,7 @@ public class SearchListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchlist_recyclerview, container, false);
 
+
         Bundle bundle = this.getArguments();
         mSearchKey = bundle.getString(ARG_SEARCH_KEY);
         mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
@@ -102,6 +106,7 @@ public class SearchListFragment extends Fragment {
             } else {
                 mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+
             new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mSearchKey + "=" + mSearchValue);
         }
 
@@ -210,6 +215,8 @@ public class SearchListFragment extends Fragment {
                     //Show list
                     if(!mBrewList.isEmpty()){
                         mRecyclerview.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList,mListener));
+                        mRecyclerview.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
                     }
                 }
             } catch (JSONException e) {

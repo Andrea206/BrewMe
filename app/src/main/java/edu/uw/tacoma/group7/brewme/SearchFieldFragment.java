@@ -14,10 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+
+import edu.uw.tacoma.group7.brewme.data.SearchHistoryDB;
 
 /**
  * SearchFieldFragment allows the user to choose what type of search and input search text.
@@ -28,7 +38,6 @@ import android.widget.TextView;
 public class SearchFieldFragment extends Fragment {
 
     private static final String SEARCH_FIELD_PARAM = "searchfieldparam";
-
     private String BY_CITY = "by_city";
     private String BY_STATE = "by_state";
     private String BY_NAME = "by_name";
@@ -36,8 +45,9 @@ public class SearchFieldFragment extends Fragment {
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButton;
     private Button mSearchButton;
-
+    private SearchHistoryDB mSearchHistoryDB;
     private OnSearchFieldFragmentInteractionListener mListener;
+    private ArrayList<String> mHistoryArrayList;
 
     public SearchFieldFragment() {
         // Required empty public constructor
@@ -70,9 +80,38 @@ public class SearchFieldFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
-        final TextView searchInputTextView = view.findViewById(R.id.editText);
+//        DateFormat df = new SimpleDateFormat("yyMMddHHmmss");
+//        final String date = df.format(Calendar.getInstance().getTime());
 
+
+        //String[] exampleArray = {"example0", "example1", "example2", "example3", "example4"};
+
+        final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
+        final AutoCompleteTextView searchInputTextView = view.findViewById(R.id.autoCompleteSearchInput);
+
+        if(mSearchHistoryDB == null){
+            mSearchHistoryDB = new SearchHistoryDB(getActivity());
+        }
+
+        //Attach search history and adapter only if Sqlite db has values present
+        if(!mSearchHistoryDB.isTableEmpty()){
+            mHistoryArrayList = mSearchHistoryDB.getHistory();
+
+            //***Debugging***
+            Log.e("TESTING getStringArray()", Arrays.toString(getStringArray(mHistoryArrayList)));
+
+            //This adapter displays the search history  autocomplete text
+            //**Must pass a String array to this adapter
+            ArrayAdapter<String> searchHistoryAdapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_list_item_1, getStringArray(mHistoryArrayList));
+            searchInputTextView.setAdapter(searchHistoryAdapter);
+        }
+
+
+
+
+
+        //Currently not using this button
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
@@ -83,6 +122,14 @@ public class SearchFieldFragment extends Fragment {
             public void onClick(View v) {
                 mSearchText = searchInputTextView.getText().toString();
 
+                if(mSearchHistoryDB == null){
+                    mSearchHistoryDB = new SearchHistoryDB(getActivity());
+                }
+                mSearchHistoryDB.insertSearchHistory(mSearchText);
+                //***Debugging***
+                Log.e("INSERT INTO HISTORY", mSearchHistoryDB.getHistory().toString());
+
+                //Pass search input and search type to SearchListFragment
                 Bundle bundle = new Bundle();
                 bundle.putString("searchKey", getSearchKey());
                 bundle.putString("searchValue", mSearchText);
@@ -162,5 +209,13 @@ public class SearchFieldFragment extends Fragment {
             result = BY_NAME;
         }
         return result;
+    }
+
+    private String[] getStringArray(ArrayList<String> searchHistoryList) {
+        String[] arr = new String[searchHistoryList.size()];
+        for (int i = 0; i < searchHistoryList.size(); i++) {
+            arr[i] = searchHistoryList.get(i);
+        }
+        return arr;
     }
 }

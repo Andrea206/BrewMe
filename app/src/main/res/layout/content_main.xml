@@ -18,40 +18,56 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/brewme_logo"/>
+            android:src="@drawable/brewme_logo"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal|center_vertical">
+
+        <!-- Button design generated at http://angrytools.com/android/button/ -->
+
         <Button
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/angry_btn_search"
+            android:layout_width="270dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/buttonshape"
             android:onClick="launchSearchActivity"
-            android:text="Search"/>
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="5"
+            android:text="Search"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:drawableStart="@drawable/search32px"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            />
+        <!--android:drawableStart="@drawable/search"-->
         <Button
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Favorites"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <Button
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Review" />
-        <Button
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="Share"/>
+            android:id="@+id/angry_btn"
+            android:text="Favorites"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:layout_width="270dp"
+            android:layout_height="60dp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="5"
+            android:drawableStart="@drawable/star32px"
+            android:padding="10dp"/>
+            <!--android:drawableStart="@drawable/star2"-->
+
+
     </LinearLayout>
 </LinearLayout>
