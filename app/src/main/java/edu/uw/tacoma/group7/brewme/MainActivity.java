@@ -63,13 +63,14 @@ implements SignInDialogFragment.SignInListenerInterface,
     private JSONObject mArguments;
     private JSONObject mRegisterArguments;
 
-//    private FragmentTransaction fragmentTransaction;
+    //private FragmentTransaction fragmentTransaction;
 
-    //Start Facebook fields....
-//    private CallbackManager callbackManager;
-//    private static final String EMAIL = "email";
-//    private LoginButton loginButton;
+    /*Start Facebook fields....
+    private CallbackManager callbackManager;
+    private static final String EMAIL = "email";
+    private LoginButton loginButton;
     //End Facebook fields.
+    */
 
     /**
      * Checks for login, automatically logs in using SharedPreferences.
@@ -78,7 +79,7 @@ implements SignInDialogFragment.SignInListenerInterface,
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-//        FacebookSdk.sdkInitialize(getApplicationContext());
+        //FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -134,33 +135,6 @@ implements SignInDialogFragment.SignInListenerInterface,
         super.onActivityResult(requestCode, resultCode, data);
     }
     */
-
-//    /**
-//     * When the Login button is clicked, show Login dialog.
-//     * @param v
-//     */
-//    public void onClickLoginBtn(View v) {
-//        //Launch the login dialog.
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
-//        signInDialogFragment.show(fragmentTransaction, "Sign in");
-//    }
-//
-//    /**
-//     * Log out of your account. Forget prefs on device.
-//     * @param v
-//     */
-//    public void onClickLogoutBtn(View v) {
-//        mSharedPreferences.edit()
-//                .putBoolean(getString(R.string.LOGGEDIN), false)
-//                .putString(getString(R.string.EMAIL), null)
-//                .putString(getString(R.string.PASSWORD), null)
-//                .commit();
-//
-//        logoutBtn.setVisibility(Button.GONE);
-//        loginBtn.setVisibility(Button.VISIBLE);
-//        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-//    }
 
     /**
      * Launches the login dialog.
@@ -265,7 +239,8 @@ implements SignInDialogFragment.SignInListenerInterface,
             new CheckLoginAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             Toast.makeText(this, "error making json object: " + e.getMessage(),
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -288,7 +263,8 @@ implements SignInDialogFragment.SignInListenerInterface,
             new RegisterAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             Toast.makeText(this,"error making json object: " + e.getMessage(),
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 

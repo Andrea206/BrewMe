@@ -12,6 +12,7 @@
     tools:listitem="@layout/fragment_brewery">
 
 
+
 </android.support.v7.widget.RecyclerView>
 
 
