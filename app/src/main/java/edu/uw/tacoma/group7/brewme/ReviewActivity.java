@@ -21,10 +21,10 @@ public class ReviewActivity extends AppCompatActivity
         implements View.OnClickListener, Serializable,
         NewReviewFragment.OnFragmentInteractionListener {
 
-    private String mBreweryName;
-    private int mBreweryId;
-
-
+    /**
+     * ReviewActivity onCreate retrieves Brewery object from the SearchDetailFragment.
+     * @param savedInstanceState Bundle object.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +36,24 @@ public class ReviewActivity extends AppCompatActivity
         Intent detailIntent = getIntent();
         Brewery reviewBrewery =(Brewery) detailIntent.getSerializableExtra("ReviewBrewery");
 
-        mBreweryName = reviewBrewery.getName();
-        mBreweryId = reviewBrewery.getBreweryId();
-
+        int breweryId = reviewBrewery.getBreweryId();
+        String breweryName = reviewBrewery.getName();
         //**Debugging**
-        Log.e("Brewery intent data: " ,reviewBrewery.getName());
-        Log.e("Bundle intent brewery ID: " , Integer.toString(reviewBrewery.getBreweryId()));
+        //Log.e("Brewery intent data: " ,reviewBrewery.getName());
+        //Log.e("Bundle intent brewery ID: " , Integer.toString(reviewBrewery.getBreweryId()));
 
+        //Pass brewery name and brewery id to NewReviewFragment
+        Bundle bundle = new Bundle();
+        bundle.putInt("breweryId", breweryId);
+        bundle.putString("breweryName", breweryName);
 
+        NewReviewFragment newReviewFragment = new NewReviewFragment();
+        newReviewFragment.setArguments(bundle);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_review_container, new NewReviewFragment())
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_review_container, newReviewFragment)
+                .addToBackStack(null)
                 .commit();
     }
 
