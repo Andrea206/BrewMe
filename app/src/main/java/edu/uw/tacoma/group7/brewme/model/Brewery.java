@@ -23,6 +23,7 @@ public class Brewery implements Serializable {
     private String mPostalCode;
     private String mPhone;
     private String mWebsite;
+    private int mBrewId;
 
     public static final String NAME = "name";
     public static final String BREWERY_TYPE = "brewery_type";
@@ -32,9 +33,11 @@ public class Brewery implements Serializable {
     public static final String POSTAL_CODE = "postal_code";
     public static final String PHONE = "phone";
     public static final String WEBSITE = "website_url";
+    public static final String ID = "id";
+
 
     public Brewery(String name, String breweryType, String street, String city, String state,
-                   String postalCode, String phone, String website) {
+                   String postalCode, String phone, String website, int brewId) {
         this.mName = name;
         this.mBreweryType = breweryType;
         this.mStreet = street;
@@ -43,6 +46,7 @@ public class Brewery implements Serializable {
         this.mPostalCode = postalCode;
         this.mPhone = phone;
         this.mWebsite = website;
+        this.mBrewId = brewId;
     }
 
     public String getName() {
@@ -93,7 +97,12 @@ public class Brewery implements Serializable {
     public void setWebsite(String mWebsite) {
         this.mWebsite = mWebsite;
     }
-
+    public int getBreweryId() {
+        return mBrewId;
+    }
+    public void setBreweryId(int brewId) {
+        this.mBrewId = brewId;
+    }
 
     /**
      * Parses JSON array into a List data structure containing custom Brewery objects.
@@ -114,14 +123,16 @@ public class Brewery implements Serializable {
 
             for(int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
-                Brewery brewery = new Brewery(obj.getString(Brewery.NAME), obj.getString(Brewery.BREWERY_TYPE), obj.getString(Brewery.STREET), obj.getString(Brewery.CITY), obj.getString(Brewery.STATE), obj.getString(Brewery.POSTAL_CODE), obj.getString(Brewery.PHONE), obj.getString(Brewery.WEBSITE));
+                Brewery brewery = new Brewery(obj.getString(Brewery.NAME),
+                        obj.getString(Brewery.BREWERY_TYPE), obj.getString(Brewery.STREET),
+                        obj.getString(Brewery.CITY), obj.getString(Brewery.STATE),
+                        obj.getString(Brewery.POSTAL_CODE), obj.getString(Brewery.PHONE),
+                        obj.getString(Brewery.WEBSITE), obj.getInt(Brewery.ID));
                 breweryList.add(brewery);
             }
         }
         return breweryList;
     }//end parseBreweryJson
-
-
 
 
 }//end Brewery

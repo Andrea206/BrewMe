@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
@@ -30,14 +32,12 @@ public class SearchDetailFragment extends Fragment {
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
 
     private Brewery mBrewery;
-
     private ImageView mBreweryImage;
     private TextView mDescription;
     private Button mWriteReviewButton;
     private Button mGoogleMapButton;
     private Button mCheckInButton;
     private Button mUserReviewsButton;
-
     private OnFragmentInteractionListener mListener;
 
     public SearchDetailFragment() {
@@ -104,6 +104,19 @@ public class SearchDetailFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+
+        Button writeReviewButton = view.findViewById(R.id.write_review_button);
+        writeReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
+                //Bundle breweryBundle = new Bundle();
+                //breweryBundle.putSerializable("breweryObject", mBrewery);
+                myIntent.putExtra("ReviewBrewery", mBrewery);
+                //Log.e("Brewery Passed to Review Acivity: ", mBrewery.toString());
+                startActivity(myIntent);
+            }
+        });
         return view;
     }
 
@@ -143,6 +156,10 @@ public class SearchDetailFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
+        //void launchUserReviews(View view);
         void onFragmentInteraction(Uri uri);
     }
+
+
+
 }
