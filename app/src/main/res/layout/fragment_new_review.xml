@@ -19,8 +19,10 @@
             android:id="@+id/brewery_name_display"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="50dp"
-            android:autoLink="all"/>
+            android:layout_marginTop="50dp"
+            android:autoLink="all"
+            android:layout_weight="0.7"
+            android:textSize="20sp"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -29,7 +31,10 @@
             android:inputType="text"
             android:hint="@string/review_title_hint"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
             android:layout_below="@id/brewery_name_display"
+            android:background="#F5F5F5"
+            android:ems="12"
             />
 
         <RatingBar
@@ -46,7 +51,12 @@
             android:id="@+id/review_edit_text"
             android:layout_below="@id/rating_bar"
             android:inputType="textMultiLine"
-            android:hint="@string/review_input_hint"/>
+            android:hint="@string/review_input_hint"
+            android:scrollbars="vertical"
+            android:minLines="2"
+            android:maxLines="6"
+            android:ems="12"
+            android:background="#F5F5F5"/>
 
 
 
