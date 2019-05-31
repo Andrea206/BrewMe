@@ -12,19 +12,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-//import com.facebook.CallbackManager;
-//import com.facebook.FacebookCallback;
-//import com.facebook.FacebookException;
-//import com.facebook.FacebookSdk;
-//import com.facebook.login.LoginResult;
-//import com.facebook.login.widget.LoginButton;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -35,9 +26,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import edu.uw.tacoma.group7.brewme.authenticate.RegisterDialogFragment;
 import edu.uw.tacoma.group7.brewme.authenticate.SignInDialogFragment;
+import edu.uw.tacoma.group7.brewme.data.SearchHistoryDB;
 
 /**
  * MainActivity launches at start up of app, and is parent to login and register fragments.
@@ -51,24 +42,15 @@ implements SignInDialogFragment.SignInListenerInterface,
     public static String USERNAME = "username";
     public static String FIRST_NAME = "first";
     public static String LAST_NAME = "last";
-
     private SharedPreferences mSharedPreferences;
     private Button loginBtn;
     private Button logoutBtn;
-
     private String mEmail;
     private String mPassword;
-
     private JSONObject mArguments;
     private JSONObject mRegisterArguments;
+    private SearchHistoryDB mSearchHistoryDB;
 
-//    private FragmentTransaction fragmentTransaction;
-
-    //Start Facebook fields....
-//    private CallbackManager callbackManager;
-//    private static final String EMAIL = "email";
-//    private LoginButton loginButton;
-    //End Facebook fields.
 
     /**
      * Checks for login, automatically logs in using SharedPreferences.
@@ -77,43 +59,19 @@ implements SignInDialogFragment.SignInListenerInterface,
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-//        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mSearchHistoryDB = new SearchHistoryDB(this);
+        //If History table has velues from previous session, delete table
+        if (!mSearchHistoryDB.isTableEmpty()) {
+            mSearchHistoryDB.deleteHistory();   // New table created in SearchFieldFragment
+        }
+
         loginBtn = (Button) findViewById(R.id.login_btn);
         logoutBtn = (Button) findViewById(R.id.logout_btn);
 
-        /*
-        Start Facebook login code...
-        *
-        callbackManager = CallbackManager.Factory.create();
-
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList(EMAIL));
-        // If you are using in a fragment, call loginButton.setFragment(this);
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-            }
-        });
-        /*
-        End facebook code.
-         */
 
         //Automatically log in if prefs are saved to device.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -124,42 +82,6 @@ implements SignInDialogFragment.SignInListenerInterface,
         }
     }
 
-    /*
-    Facebook method.
-     *
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    */
-
-//    /**
-//     * When the Login button is clicked, show Login dialog.
-//     * @param v
-//     */
-//    public void onClickLoginBtn(View v) {
-//        //Launch the login dialog.
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        SignInDialogFragment signInDialogFragment = new SignInDialogFragment();
-//        signInDialogFragment.show(fragmentTransaction, "Sign in");
-//    }
-//
-//    /**
-//     * Log out of your account. Forget prefs on device.
-//     * @param v
-//     */
-//    public void onClickLogoutBtn(View v) {
-//        mSharedPreferences.edit()
-//                .putBoolean(getString(R.string.LOGGEDIN), false)
-//                .putString(getString(R.string.EMAIL), null)
-//                .putString(getString(R.string.PASSWORD), null)
-//                .commit();
-//
-//        logoutBtn.setVisibility(Button.GONE);
-//        loginBtn.setVisibility(Button.VISIBLE);
-//        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-//    }
 
     /**
      * Launches the login dialog.
@@ -264,7 +186,8 @@ implements SignInDialogFragment.SignInListenerInterface,
             new CheckLoginAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             Toast.makeText(this, "error making json object: " + e.getMessage(),
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -287,7 +210,8 @@ implements SignInDialogFragment.SignInListenerInterface,
             new RegisterAsyncTask().execute(url.toString());
         } catch (JSONException e) {
             Toast.makeText(this,"error making json object: " + e.getMessage(),
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -454,5 +378,12 @@ implements SignInDialogFragment.SignInListenerInterface,
             }
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
 }
 

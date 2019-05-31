@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import org.json.JSONException;
 import edu.uw.tacoma.group7.brewme.model.*;
@@ -26,6 +29,8 @@ import java.net.URL;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import static android.widget.LinearLayout.HORIZONTAL;
 
 /**
  * A fragment representing a list of Brewery search results.
@@ -83,13 +88,13 @@ public class SearchListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchlist_recyclerview, container, false);
 
+
         Bundle bundle = this.getArguments();
         mSearchKey = bundle.getString(ARG_SEARCH_KEY);
         mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
-
         floatingActionButton.hide();
 
         // Set the adapter
@@ -101,6 +106,7 @@ public class SearchListFragment extends Fragment {
             } else {
                 mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+
             new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mSearchKey + "=" + mSearchValue);
         }
 
@@ -146,6 +152,15 @@ public class SearchListFragment extends Fragment {
      */
     private class DownloadBrewSearch extends AsyncTask<String, Void, String> {
 
+        private ProgressBar mProgressBar;
+
+        @Override
+        protected void onProgressUpdate(Void... progress) {
+            mProgressBar = getActivity().findViewById(R.id.progressBar);
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.getProgress();
+        }
+
         @Override
         protected String doInBackground(String... urls) {
             String response = "";
@@ -164,6 +179,7 @@ public class SearchListFragment extends Fragment {
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                     String s = "";
+                    publishProgress();
 
                         while ((s = buffer.readLine()) != null) {
                             response += s;
@@ -187,6 +203,7 @@ public class SearchListFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(String result){
+            mProgressBar.setVisibility(View.GONE);
             try{
                 Log.i("Response ", result);
 
@@ -198,13 +215,21 @@ public class SearchListFragment extends Fragment {
                     //Show list
                     if(!mBrewList.isEmpty()){
                         mRecyclerview.setAdapter(new MySearchListRecyclerViewAdapter(mBrewList,mListener));
+                        mRecyclerview.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
                     }
+
                 }
             } catch (JSONException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                Toast.makeText(getContext(), "No search results found", Toast.LENGTH_LONG)
                         .show();
-                Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
-
+                SearchFieldFragment searchFieldFragment = new SearchFieldFragment();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_search_container, searchFieldFragment)
+                        .addToBackStack(null);
+                transaction.commit();
+                //Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
             }
         }
     }//end DownloadBrewSearch

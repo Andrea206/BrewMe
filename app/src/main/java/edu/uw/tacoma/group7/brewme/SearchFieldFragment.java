@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
+import java.util.ArrayList;
+import edu.uw.tacoma.group7.brewme.data.SearchHistoryDB;
 
 /**
  * SearchFieldFragment allows the user to choose what type of search and input search text.
@@ -28,16 +31,17 @@ import android.widget.TextView;
 public class SearchFieldFragment extends Fragment {
 
     private static final String SEARCH_FIELD_PARAM = "searchfieldparam";
-
     private String BY_CITY = "by_city";
     private String BY_STATE = "by_state";
     private String BY_NAME = "by_name";
     private static String mSearchText;
     private RadioGroup mRadioGroup;
     private RadioButton mRadioButton;
+    private AutoCompleteTextView mAutoCompleteTextView;
     private Button mSearchButton;
-
+    private SearchHistoryDB mSearchHistoryDB;
     private OnSearchFieldFragmentInteractionListener mListener;
+    private ArrayList<String> mHistoryArrayList;
 
     public SearchFieldFragment() {
         // Required empty public constructor
@@ -70,9 +74,29 @@ public class SearchFieldFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
-        final TextView searchInputTextView = view.findViewById(R.id.editText);
 
+        final View view = inflater.inflate(R.layout.fragment_search_field, container, false);
+        mAutoCompleteTextView = view.findViewById(R.id.autoCompleteSearchInput);
+
+        if(mSearchHistoryDB == null){
+            mSearchHistoryDB = new SearchHistoryDB(getActivity());
+        }
+
+        //Attach search history and adapter only if Sqlite db has values present
+        if(!mSearchHistoryDB.isTableEmpty()){
+            mHistoryArrayList = mSearchHistoryDB.getHistory();
+            //This adapter displays the search history  autocomplete text
+            //**Must pass a String array to this adapter
+            ArrayAdapter<String> searchHistoryAdapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_list_item_1, getStringArray(mHistoryArrayList));
+            mAutoCompleteTextView.setAdapter(searchHistoryAdapter);
+        }
+
+
+
+
+
+        //Currently not using this button
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
@@ -81,8 +105,16 @@ public class SearchFieldFragment extends Fragment {
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSearchText = searchInputTextView.getText().toString();
+                mSearchText = mAutoCompleteTextView.getText().toString();
 
+                if(mSearchHistoryDB == null){
+                    mSearchHistoryDB = new SearchHistoryDB(getActivity());
+                }
+                mSearchHistoryDB.insertSearchHistory(mSearchText);
+                //***Debugging***
+                //Log.e("INSERT INTO HISTORY", mSearchHistoryDB.getHistory().toString());
+
+                //Pass search input and search type to SearchListFragment
                 Bundle bundle = new Bundle();
                 bundle.putString("searchKey", getSearchKey());
                 bundle.putString("searchValue", mSearchText);
@@ -94,8 +126,10 @@ public class SearchFieldFragment extends Fragment {
                         .beginTransaction()
                         .replace(R.id.fragment_search_container, searchListFragment)
                         .addToBackStack(null);
-
                 transaction.commit();
+
+                //Clear text view so text does not remain on back navigation
+                mAutoCompleteTextView.setText("");
             }
         });
         return view;
@@ -135,6 +169,8 @@ public class SearchFieldFragment extends Fragment {
         mListener = null;
     }
 
+
+
     /**
      * Custom onSearchFieldFragmentInteraction, with Brewery item parameter implemented in this interface.
      */
@@ -162,5 +198,13 @@ public class SearchFieldFragment extends Fragment {
             result = BY_NAME;
         }
         return result;
+    }
+
+    private String[] getStringArray(ArrayList<String> searchHistoryList) {
+        String[] arr = new String[searchHistoryList.size()];
+        for (int i = 0; i < searchHistoryList.size(); i++) {
+            arr[i] = searchHistoryList.get(i);
+        }
+        return arr;
     }
 }

@@ -33,7 +33,8 @@ public class Brewery implements Serializable {
     public static final String PHONE = "phone";
     public static final String WEBSITE = "website_url";
 
-    public Brewery(String name, String breweryType, String street, String city, String state, String postalCode, String phone, String website) {
+    public Brewery(String name, String breweryType, String street, String city, String state,
+                   String postalCode, String phone, String website) {
         this.mName = name;
         this.mBreweryType = breweryType;
         this.mStreet = street;
@@ -103,7 +104,13 @@ public class Brewery implements Serializable {
     public static List<Brewery> parseBreweryJson(String breweryJson) throws JSONException {
         ArrayList<Brewery> breweryList = new ArrayList<>();
         if(breweryJson != null){
+            /**
+             *
+             */
+            if(!breweryJson.contains("\"id\":"))
+                throw new JSONException("Could not parse breweryJSON due to formatting.");
             JSONArray arr = new JSONArray(breweryJson);
+
 
             for(int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
@@ -113,6 +120,8 @@ public class Brewery implements Serializable {
         }
         return breweryList;
     }//end parseBreweryJson
+
+
 
 
 }//end Brewery

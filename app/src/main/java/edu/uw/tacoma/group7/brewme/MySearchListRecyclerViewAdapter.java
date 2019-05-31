@@ -4,6 +4,7 @@ BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import edu.uw.tacoma.group7.brewme.SearchListFragment.OnListFragmentInteractionListener;
 import edu.uw.tacoma.group7.brewme.model.*;
 import java.util.List;
+
+import static android.widget.LinearLayout.HORIZONTAL;
 
 /**
  * MySearchListRecyclerViewAdapter is used to create a list view of the search results,
@@ -95,6 +98,7 @@ public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySear
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.name);
             mContentView = (TextView) view.findViewById(R.id.content);
+
         }
 
         @Override
