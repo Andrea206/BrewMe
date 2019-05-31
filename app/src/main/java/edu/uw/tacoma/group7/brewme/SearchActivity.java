@@ -4,6 +4,7 @@ BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +23,7 @@ public class SearchActivity extends AppCompatActivity
         implements Serializable, View.OnClickListener,
         SearchListFragment.OnListFragmentInteractionListener,
         SearchDetailFragment.OnFragmentInteractionListener,
-        SearchFieldFragment.OnSearchFieldFragmentInteractionListener {
+        SearchFieldFragment.OnSearchFieldFragmentInteractionListener{
 
     private SearchListFragment.OnListFragmentInteractionListener mListener;
     private SearchDetailFragment mDetailFragment;
@@ -74,4 +75,19 @@ public class SearchActivity extends AppCompatActivity
     public void onSearchFieldFragmentInteraction(Uri uri) {
 
     }
+
+//    /**
+//     * Called by the "New Review" button to launch the ReviewActivity.
+//     * @param view a View object
+//     */
+//    @Override
+//    public void launchUserReviews(View view){
+//        Intent myIntent = new Intent(this, ReviewActivity.class);
+//        myIntent.putExtra("ReviewBrewery", mDetailFragment.getArguments());
+//        mDetailFragment.startActivity(myIntent);
+//    }
+
+
+
+
 }//end SearchActivity

@@ -13,15 +13,16 @@
         android:id="@+id/brewery_description"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:autoLink="all"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <Button
         android:id="@+id/write_review_button"
