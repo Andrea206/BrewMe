@@ -4,16 +4,23 @@ BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
+
+
 
 /**
  * SearchActivity is parent of search field, search list, search detail fragments.
@@ -26,6 +33,7 @@ public class SearchActivity extends AppCompatActivity
 
     private SearchListFragment.OnListFragmentInteractionListener mListener;
     private SearchDetailFragment mDetailFragment;
+    public static int PICK_CONTACT = 1;
 
     /**
      * Launches SearchFieldFragment, which contains input field for search function.
@@ -74,4 +82,5 @@ public class SearchActivity extends AppCompatActivity
     public void onSearchFieldFragmentInteraction(Uri uri) {
 
     }
+
 }//end SearchActivity

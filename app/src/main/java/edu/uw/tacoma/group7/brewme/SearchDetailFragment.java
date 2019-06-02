@@ -4,17 +4,28 @@ BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
@@ -35,8 +46,13 @@ public class SearchDetailFragment extends Fragment {
     private TextView mDescription;
     private Button mWriteReviewButton;
     private Button mGoogleMapButton;
-    private Button mCheckInButton;
+    private Button mShareButton;
     private Button mUserReviewsButton;
+    private String mContactNumber;
+
+    private final int PICK_CONTACT = 1;
+    private final int REQUEST_READ_CONTACTS = 2;
+    private final int REQUEST_SEND_SMS = 3;
 
     private OnFragmentInteractionListener mListener;
 
@@ -105,7 +121,120 @@ public class SearchDetailFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+        mShareButton = view.findViewById(R.id.share_button);
+        mShareButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+                } else if(ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_DENIED) {
+                    requestReadContactsPermission();
+
+                } else if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS)
+                        == PackageManager.PERMISSION_DENIED) {
+                    requestSendSMSPermission();
+                }
+            }
+        });
         return view;
+    }
+
+    protected void requestReadContactsPermission() {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.READ_CONTACTS},
+                    REQUEST_READ_CONTACTS);
+    }
+
+    protected void requestSendSMSPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.SEND_SMS},
+                REQUEST_SEND_SMS);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_READ_CONTACTS: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+
+                } else {
+
+                    // permission denied,Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            case REQUEST_SEND_SMS: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+
+                } else {
+
+                    // permission denied,Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == PICK_CONTACT){
+            if(resultCode==Activity.RESULT_OK){
+
+                Uri uri = data.getData();
+                ContentResolver contentResolver = getActivity().getContentResolver();
+                Cursor contentCursor = contentResolver.query(uri, null, null,null, null);
+
+                if(contentCursor.moveToFirst()){
+                    String id = contentCursor.getString(contentCursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+                    String hasPhone =
+                            contentCursor.getString(contentCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                    if (hasPhone.equalsIgnoreCase("1"))
+                    {
+                        Cursor phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,null, null);
+                        phones.moveToFirst();
+                        mContactNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        Log.i("phoneNUmber", "The phone number is "+ mContactNumber);
+
+                    } else {
+                        mContactNumber = "";
+                    }
+                }
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+            try {
+                String message = "https://www.google.com/maps/search/?api=1&query="
+                        + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
+                        + mBrewery.getState();
+                message = message.replaceAll(" ", "%20");
+                SmsManager.getDefault().sendTextMessage(mContactNumber, null,
+                        message,null, null);
+                Toast.makeText(getContext(), "Text Sent Successfully", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private String formatPhoneNumber(String num) {
