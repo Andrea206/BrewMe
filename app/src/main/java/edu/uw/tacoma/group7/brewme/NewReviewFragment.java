@@ -37,10 +37,11 @@ public class NewReviewFragment extends Fragment {
     private String mBreweryName;
     private Review mReview;
     private SharedPreferences mSharedPreferences;
+    private TextView mBreweryNameTextView;
+
 
     private static final String BREWERY_ID_PARAM = "breweryId";
     private static final String BREWERY_NAME_PARAM = "breweryName";
-    private TextView mBreweryNameTextView;
 
 
 
@@ -100,8 +101,11 @@ public class NewReviewFragment extends Fragment {
                 //Put review values into Review object to pass into webservice interaction
                 mReview = new Review(mBreweryId, mBreweryName,
                         mSharedPreferences.getString("Email", null), reviewTitle.getText().toString(),
-                        reviewRating.getRating(), review.getText().toString());
-                Log.e("Review object: ", mReview.getReview());
+                        (double)reviewRating.getRating(), review.getText().toString());
+                // *** Debugging ***
+                //Log.e("Review object: ", mReview.getReview());
+                mListener.onNewReviewFragmentInteraction(mReview);
+
 
             }
         });

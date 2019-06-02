@@ -1,6 +1,14 @@
 package edu.uw.tacoma.group7.brewme.model;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Review class that defines a custom data structure for holding review data.
+ */
 public class Review implements Serializable {
 
     private int mBreweryId;
@@ -9,6 +17,14 @@ public class Review implements Serializable {
     private String mTitle;
     private double mRating;
     private String mReview;
+
+    public static final String BREWERY_ID = "brewery_id";
+    public static final String BREWERY_NAME = "brewery_name";
+    public static final String USERNAME = "username";
+    public static final String TITLE = "title";
+    public static final String RATING = "rating";
+    public static final String REVIEW = "review";
+
 
     public Review(int breweryId, String breweryName,
                   String username, String title,
@@ -37,7 +53,7 @@ public class Review implements Serializable {
         this.mRating = mRating;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
@@ -60,4 +76,50 @@ public class Review implements Serializable {
     public void setBreweryId(int mBreweryId) {
         this.mBreweryId = mBreweryId;
     }
-}
+
+    public String getUsername() {
+        return mUsername;
+    }
+
+    public void setUsername(String username) {
+        this.mUsername = username;
+    }
+
+    /**
+     * Returns a List populated with Review objects returned from database call
+     */
+    public static List<Review> parseReviewJson(String reviewJson) throws JSONException {
+        ArrayList<Review> reviewList = new ArrayList<>();
+        if(reviewJson != null){
+            if(!reviewJson.contains("\"brewery_id\":"))
+                throw new JSONException("Could not parse breweryJSON due to formatting.");
+            JSONArray arr = new JSONArray(reviewJson);
+
+            for(int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                Review review = new Review(obj.getInt(Review.BREWERY_ID), obj.getString(Review.BREWERY_NAME),
+                        obj.getString(Review.USERNAME), obj.getString(Review.TITLE), obj.getDouble(Review.RATING),
+                        obj.getString(Review.REVIEW));
+                reviewList.add(review);
+            }
+        }
+        return reviewList;
+    }//end parseBreweryJson
+
+}// end Review class
+
+/*
+CREATE TABLE Reviews
+(brewery_id INT PRIMARY KEY,
+brewery_name VARCHAR(255) NOT NULL,
+username VARCHAR(20) PRIMARY KEY,
+title VARCHAR(255) NOT NULL,
+rating DECIMAL(2,1)
+       CONSTRAINT check_Ratings
+       CHECK (rating >= 0 AND Ratings <= 5) NOT NULL,
+review text);
+ */
+
+
+
+

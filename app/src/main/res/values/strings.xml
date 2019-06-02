@@ -50,6 +50,7 @@
     <!-- Review strings -->
     <string name="review_title_hint">Enter review title</string>
     <string name="review_input_hint">Write review here</string>
+    <string name="add_review_endpoint">https://jamess33-services-backend.herokuapp.com/reviews/addreview</string>
 
 
 
