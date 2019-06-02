@@ -87,8 +87,6 @@ public class SearchDetailFragment extends Fragment {
         String type = mBrewery.getBreweryType();
         String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
         String phone = mBrewery.getPhone();
-//        String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
-//                                "-" + phone.substring(6);
         String phoneFormatted = formatPhoneNumber(phone);
         mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
                 "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +

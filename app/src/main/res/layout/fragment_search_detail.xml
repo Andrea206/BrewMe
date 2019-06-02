@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".SearchDetailFragment">
 
-    <!-- Hardcoded temporary details -->
 
     <TextView
         android:id="@+id/brewery_description"

@@ -5,6 +5,7 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
+import edu.uw.tacoma.group7.brewme.model.Review;
 
 /**
  * NewReviewFragment takes the review input from the user and put it in a database.
@@ -30,6 +35,8 @@ public class NewReviewFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private int mBreweryId;
     private String mBreweryName;
+    private Review mReview;
+    private SharedPreferences mSharedPreferences;
 
     private static final String BREWERY_ID_PARAM = "breweryId";
     private static final String BREWERY_NAME_PARAM = "breweryName";
@@ -73,20 +80,39 @@ public class NewReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_new_review, container, false);
 
+        mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+
         Bundle bundle = this.getArguments();
         mBreweryId = bundle.getInt(BREWERY_ID_PARAM);
         mBreweryName = bundle.getString(BREWERY_NAME_PARAM);
-        Log.e("mBreweryName: ", mBreweryName);
+        //Log.e("mBreweryName: ", mBreweryName);
         mBreweryNameTextView = view.findViewById(R.id.brewery_name_display);
         mBreweryNameTextView.setText(mBreweryName);
 
+        final EditText reviewTitle = view.findViewById(R.id.title_edit_text);
+        final RatingBar reviewRating = view.findViewById(R.id.rating_bar);
+        final EditText review = view.findViewById(R.id.review_edit_text);
+        Button postButton = view.findViewById(R.id.post_review_button);
 
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Put review values into Review object to pass into webservice interaction
+                mReview = new Review(mBreweryId, mBreweryName,
+                        mSharedPreferences.getString("Email", null), reviewTitle.getText().toString(),
+                        reviewRating.getRating(), review.getText().toString());
+                Log.e("Review object: ", mReview.getReview());
+
+            }
+        });
         return view;
+
+
     }
 
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Review review) {
         if (mListener != null) {
-            mListener.onNewReviewFragmentInteraction(uri);
+            mListener.onNewReviewFragmentInteraction(review);
         }
     }
 
@@ -118,6 +144,6 @@ public class NewReviewFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onNewReviewFragmentInteraction(Uri uri);
+        void onNewReviewFragmentInteraction(Review review);
     }
 }

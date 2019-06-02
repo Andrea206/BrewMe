@@ -15,6 +15,7 @@ import android.view.View;
 import java.io.Serializable;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
+import edu.uw.tacoma.group7.brewme.model.Review;
 
 
 public class ReviewActivity extends AppCompatActivity
@@ -65,7 +66,7 @@ public class ReviewActivity extends AppCompatActivity
 
 
     @Override
-    public void onNewReviewFragmentInteraction(Uri uri) {
+    public void onNewReviewFragmentInteraction(Review review) {
 
     }
 }
