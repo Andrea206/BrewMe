@@ -230,6 +230,7 @@ implements SignInDialogFragment.SignInListenerInterface,
         }
     }
 
+
     /**
      * Private class to access db and add a new account.
      */

@@ -92,10 +92,6 @@ public class SearchFieldFragment extends Fragment {
             mAutoCompleteTextView.setAdapter(searchHistoryAdapter);
         }
 
-
-
-
-
         //Currently not using this button
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);

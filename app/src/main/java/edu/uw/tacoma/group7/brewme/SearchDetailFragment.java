@@ -6,7 +6,6 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 package edu.uw.tacoma.group7.brewme;
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -43,7 +42,6 @@ public class SearchDetailFragment extends Fragment {
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
 
     private Brewery mBrewery;
-
     private ImageView mBreweryImage;
     private TextView mDescription;
     private Button mWriteReviewButton;
@@ -58,6 +56,7 @@ public class SearchDetailFragment extends Fragment {
     private final int REQUEST_SEND_SMS = 3;
 
     private OnAddToFavoritesFragmentInteractionListener mListener;
+
 
     public SearchDetailFragment() {
         // Required empty public constructor
@@ -124,6 +123,7 @@ public class SearchDetailFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+
         mShareButton = view.findViewById(R.id.share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {
 
@@ -160,6 +160,19 @@ public class SearchDetailFragment extends Fragment {
         } else {
             fab.hide();
         }
+
+        Button writeReviewButton = view.findViewById(R.id.write_review_button);
+        writeReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
+                //Bundle breweryBundle = new Bundle();
+                //breweryBundle.putSerializable("breweryObject", mBrewery);
+                myIntent.putExtra("ReviewBrewery", mBrewery);
+                //Log.e("Brewery Passed to Review Acivity: ", mBrewery.toString());
+                startActivity(myIntent);
+            }
+        });
         return view;
     }
 
@@ -341,4 +354,7 @@ public class SearchDetailFragment extends Fragment {
     public interface OnAddToFavoritesFragmentInteractionListener {
         void onAddToFavoritesFragmentInteraction(String id, String name, String city, String state);
     }
+
+
+
 }

@@ -2,7 +2,7 @@
     <string name="app_name">BrewMe</string>
     <string name="title_activity_main">BrewMe</string>
     <string name="title_activity_search">Search</string>
-
+    <string name="title_review">Review</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -38,10 +38,6 @@
     <string name="PASSWORD">Password</string>
     <string name="USERNAME">Username</string>
 
-    <!-- Login to facebook -->
-    <string name="facebook_app_id">2256039354651710</string>
-    <string name="fb_login_protocol_scheme">fb2256039354651710</string>
-
 
     <!-- Search details page strings -->
     <string name="brewery_details">7 Seas Brewery and Taproom 2101 Jefferson Ave Tacoma, WA 98402</string>
@@ -51,6 +47,14 @@
     <string name="share_button">Share via SMS</string>
     <string name="user_reviews_button">User Reviews</string>
     <string name="test_address">2102+Jefferson+Ave+Tacoma+WA</string>
+
+    <!-- Review strings -->
+    <string name="review_title_hint">Enter review title</string>
+    <string name="review_input_hint">Write review here</string>
+
+
+
+
 
 </resources>
 

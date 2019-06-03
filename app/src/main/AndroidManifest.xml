@@ -15,7 +15,12 @@
         android:roundIcon="@mipmap/ic_beer_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".FavoritesActivity"></activity>
+
+        <activity android:name=".ReviewActivity"
+            android:label="@string/title_review"/>
+
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"

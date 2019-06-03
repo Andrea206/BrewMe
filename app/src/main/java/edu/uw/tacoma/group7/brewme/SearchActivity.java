@@ -4,6 +4,7 @@ BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -30,7 +31,6 @@ import java.net.URL;
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 
-
 /**
  * SearchActivity is parent of search field, search list, search detail fragments.
  */
@@ -39,6 +39,7 @@ public class SearchActivity extends AppCompatActivity
         SearchListFragment.OnListFragmentInteractionListener,
         SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener,
         SearchFieldFragment.OnSearchFieldFragmentInteractionListener {
+
 
     private SearchListFragment.OnListFragmentInteractionListener mListener;
     private SearchDetailFragment mDetailFragment;
@@ -179,4 +180,19 @@ public class SearchActivity extends AppCompatActivity
         }
 
     }
+
+//    /**
+//     * Called by the "New Review" button to launch the ReviewActivity.
+//     * @param view a View object
+//     */
+//    @Override
+//    public void launchUserReviews(View view){
+//        Intent myIntent = new Intent(this, ReviewActivity.class);
+//        myIntent.putExtra("ReviewBrewery", mDetailFragment.getArguments());
+//        mDetailFragment.startActivity(myIntent);
+//    }
+
+
+
+
 }//end SearchActivity
