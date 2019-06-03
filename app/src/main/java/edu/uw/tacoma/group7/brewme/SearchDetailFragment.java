@@ -11,11 +11,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-<<<<<<< HEAD
-=======
 import android.content.pm.PackageManager;
 import android.database.Cursor;
->>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,33 +20,23 @@ import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-<<<<<<< HEAD
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.DividerItemDecoration;
-=======
 import android.telephony.SmsManager;
->>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
-
 import javax.net.ssl.HttpsURLConnection;
-
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 import edu.uw.tacoma.group7.brewme.model.Review;
 
@@ -72,11 +59,8 @@ public class SearchDetailFragment extends Fragment {
     private Button mShareButton;
     private FloatingActionButton mAddToFavsButton;
     private Button mUserReviewsButton;
-<<<<<<< HEAD
-    private OnFragmentInteractionListener mListener;
     private SharedPreferences mSharedPreferences;
     private List<Review> mReviewList;
-=======
     private String mContactNumber;
 
     private final int PICK_CONTACT = 1;
@@ -84,7 +68,7 @@ public class SearchDetailFragment extends Fragment {
     private final int REQUEST_SEND_SMS = 3;
 
     private OnAddToFavoritesFragmentInteractionListener mListener;
->>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
+
 
 
     public SearchDetailFragment() {
@@ -152,12 +136,10 @@ public class SearchDetailFragment extends Fragment {
             }
         });
 
-<<<<<<< HEAD
         Log.e("Url params: ", mBrewery.getBreweryId() + mSharedPreferences.getString("Email", null));
         new DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
                 mBrewery.getBreweryId() + "&username=" + mSharedPreferences.getString("Email", null));
 
-=======
         mShareButton = view.findViewById(R.id.share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {
 
@@ -194,7 +176,6 @@ public class SearchDetailFragment extends Fragment {
         } else {
             fab.hide();
         }
->>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 
         Button writeReviewButton = view.findViewById(R.id.write_review_button);
         writeReviewButton.setOnClickListener(new View.OnClickListener() {
@@ -386,6 +367,9 @@ public class SearchDetailFragment extends Fragment {
     public interface OnAddToFavoritesFragmentInteractionListener {
         void onAddToFavoritesFragmentInteraction(String id, String name, String city, String state);
     }
+
+
+
 
 
 
