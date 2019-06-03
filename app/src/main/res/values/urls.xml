@@ -3,5 +3,6 @@
     <string name="get_brew">https://api.openbrewerydb.org/breweries</string>
     <string name="post_login">https://jamess33-services-backend.herokuapp.com/login</string>
     <string name="post_register">https://jamess33-services-backend.herokuapp.com/register</string>
+    <string name="favorites">https://jamess33-services-backend.herokuapp.com/favorites</string>
 
 </resources>

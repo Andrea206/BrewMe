@@ -45,6 +45,7 @@ implements SignInDialogFragment.SignInListenerInterface,
     private SharedPreferences mSharedPreferences;
     private Button loginBtn;
     private Button logoutBtn;
+    private Button mFavsButton;
     private String mEmail;
     private String mPassword;
     private JSONObject mArguments;
@@ -64,14 +65,14 @@ implements SignInDialogFragment.SignInListenerInterface,
         setSupportActionBar(toolbar);
 
         mSearchHistoryDB = new SearchHistoryDB(this);
-        //If History table has velues from previous session, delete table
+        //If History table has values from previous session, delete table
         if (!mSearchHistoryDB.isTableEmpty()) {
             mSearchHistoryDB.deleteHistory();   // New table created in SearchFieldFragment
         }
 
         loginBtn = (Button) findViewById(R.id.login_btn);
         logoutBtn = (Button) findViewById(R.id.logout_btn);
-
+        mFavsButton = findViewById(R.id.angry_btn);
 
         //Automatically log in if prefs are saved to device.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -116,6 +117,20 @@ implements SignInDialogFragment.SignInListenerInterface,
     public void launchSearchActivity(View view){
         Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
         startActivity(myIntent);
+    }
+
+    /**
+     * Called by the search button to launch the FavoritesActivity.
+     * @param view a View object
+     */
+    public void launchFavoritesActivity(View view) {
+        if (mSharedPreferences.getBoolean(getString(R.string.LOGGEDIN), false)) {
+            Intent myIntent = new Intent(MainActivity.this, FavoritesActivity.class);
+            startActivity(myIntent);
+        } else {
+            Toast.makeText(this, "Must be logged in to view favorites", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     @Override
@@ -384,6 +399,7 @@ implements SignInDialogFragment.SignInListenerInterface,
         super.onDestroy();
 
     }
+
 
 }
 
