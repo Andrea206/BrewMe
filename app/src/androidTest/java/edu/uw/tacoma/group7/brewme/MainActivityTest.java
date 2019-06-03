@@ -40,7 +40,15 @@ public class MainActivityTest {
 
     @Test
     public void testLaunchFavorites() {
-        //TODO
+        // Login
+        onView(withId(R.id.login_btn)).perform(click());
+        onView(allOf(withHint(R.string.email_hint))).perform(typeText("a@m.com"));
+        onView(allOf(withHint(R.string.pwd_hint))).perform(typeText("abc123"));
+        onView(allOf(withText("Login"))).perform(click());
+
+        onView(withId(R.id.angry_btn)).perform(click());
+        onView(allOf(withId(R.id.list))).inRoot(withDecorView(not(is(mActivityRule.getActivity()
+                .getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
