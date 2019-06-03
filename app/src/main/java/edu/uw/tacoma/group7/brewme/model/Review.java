@@ -106,19 +106,14 @@ public class Review implements Serializable {
         return reviewList;
     }//end parseBreweryJson
 
+    @Override
+    public String toString(){
+        return this.getBreweryId() + ", " +  this.mBreweryName +", " + this.getUsername() +", " +
+                this.getTitle() + ", " + this.getRating() + ", " + this.getRating();
+    }
+
 }// end Review class
 
-/*
-CREATE TABLE Reviews
-(brewery_id INT PRIMARY KEY,
-brewery_name VARCHAR(255) NOT NULL,
-username VARCHAR(20) PRIMARY KEY,
-title VARCHAR(255) NOT NULL,
-rating DECIMAL(2,1)
-       CONSTRAINT check_Ratings
-       CHECK (rating >= 0 AND Ratings <= 5) NOT NULL,
-review text);
- */
 
 
 
