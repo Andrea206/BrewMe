@@ -138,7 +138,7 @@ public class SearchDetailFragment extends Fragment {
 
         Log.e("Url params: ", mBrewery.getBreweryId() + mSharedPreferences.getString("Email", null));
         new DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
-                mBrewery.getBreweryId() + "&username=" + mSharedPreferences.getString("Email", null));
+                mBrewery.getBreweryId());
 
         mShareButton = view.findViewById(R.id.share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {

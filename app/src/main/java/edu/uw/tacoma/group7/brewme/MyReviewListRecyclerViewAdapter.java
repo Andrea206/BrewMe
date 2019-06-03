@@ -7,21 +7,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import edu.uw.tacoma.group7.brewme.ReviewListFragment.OnListFragmentInteractionListener;
-import edu.uw.tacoma.group7.brewme.dummy.DummyContent.DummyItem;
+import edu.uw.tacoma.group7.brewme.model.Review;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Review} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyReviewListRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Review> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyReviewListRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyReviewListRecyclerViewAdapter(List<Review> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,19 +35,13 @@ public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyRevi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getBreweryName());
+        holder.mContentView.setText(mValues.get(position).getUsername());
+        holder.mContentView.setText(mValues.get(position).getTitle());
+        //***Rating bar goes here ***
+        holder.mContentView.setText(mValues.get(position).getReview());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+
     }
 
     @Override
@@ -60,7 +53,7 @@ public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyRevi
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Review mItem;
 
         public ViewHolder(View view) {
             super(view);
