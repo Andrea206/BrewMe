@@ -17,6 +17,8 @@ import static org.junit.Assert.assertNull;
 
 public class BreweryTest {
 
+
+    private final static int mBrewId = 5793;
     /**
      * Test the Brewery constructor with working inputs.
      */
