@@ -19,7 +19,7 @@
             android:id="@+id/brewery_name_display"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:autoLink="all"
             android:layout_weight="0.7"
             android:textSize="20sp"/>
@@ -56,8 +56,22 @@
             android:minLines="2"
             android:maxLines="6"
             android:ems="12"
-            android:background="#F5F5F5"/>
+            android:background="#F5F5F5"
+            android:minHeight="150dp"/>
 
+        <Button
+            android:id="@+id/post_review_button"
+            android:text="Post Review"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="5"
+            android:layout_below="@+id/review_edit_text"/>
 
 
 
