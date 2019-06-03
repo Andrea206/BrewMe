@@ -3,16 +3,32 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+<<<<<<< HEAD
+=======
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+>>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+<<<<<<< HEAD
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
+=======
+import android.telephony.SmsManager;
+>>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +57,7 @@ import edu.uw.tacoma.group7.brewme.model.Review;
  * SearchDetailFragment displays extended information about a brewery that is selected
  * from the search results list.
  * Activities that contain this fragment must implement the
- * {@link SearchDetailFragment.OnFragmentInteractionListener} interface
+ * {@link SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener} interface
  * to handle interaction events.
  */
 public class SearchDetailFragment extends Fragment {
@@ -53,11 +69,22 @@ public class SearchDetailFragment extends Fragment {
     private TextView mDescription;
     private Button mWriteReviewButton;
     private Button mGoogleMapButton;
-    private Button mCheckInButton;
+    private Button mShareButton;
+    private FloatingActionButton mAddToFavsButton;
     private Button mUserReviewsButton;
+<<<<<<< HEAD
     private OnFragmentInteractionListener mListener;
     private SharedPreferences mSharedPreferences;
     private List<Review> mReviewList;
+=======
+    private String mContactNumber;
+
+    private final int PICK_CONTACT = 1;
+    private final int REQUEST_READ_CONTACTS = 2;
+    private final int REQUEST_SEND_SMS = 3;
+
+    private OnAddToFavoritesFragmentInteractionListener mListener;
+>>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 
 
     public SearchDetailFragment() {
@@ -125,10 +152,49 @@ public class SearchDetailFragment extends Fragment {
             }
         });
 
+<<<<<<< HEAD
         Log.e("Url params: ", mBrewery.getBreweryId() + mSharedPreferences.getString("Email", null));
         new DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
                 mBrewery.getBreweryId() + "&username=" + mSharedPreferences.getString("Email", null));
 
+=======
+        mShareButton = view.findViewById(R.id.share_button);
+        mShareButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                        android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+                } else if(ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_CONTACTS)
+                        == PackageManager.PERMISSION_DENIED) {
+                    requestReadContactsPermission();
+
+                } else if(ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS)
+                        == PackageManager.PERMISSION_DENIED) {
+                    requestSendSMSPermission();
+                }
+            }
+        });
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mListener.onAddToFavoritesFragmentInteraction(mBrewery.getBreweryId(), mBrewery.getName(), mBrewery.getCity(), mBrewery.getState());
+            }
+        });
+        fab.setImageResource(R.drawable.add_to_favorites_icon);
+        fab.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        SharedPreferences sp = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+        if(sp.getBoolean(getString(R.string.LOGGEDIN), false)) {
+            fab.show();
+        } else {
+            fab.hide();
+        }
+>>>>>>> a10ada592144e39fc85d3e59c4cc5ec84f418e27
 
         Button writeReviewButton = view.findViewById(R.id.write_review_button);
         writeReviewButton.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +216,127 @@ public class SearchDetailFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Opens a window requesting permissions to send SMS messages.
+     */
+    protected void requestReadContactsPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.READ_CONTACTS},
+                REQUEST_READ_CONTACTS);
+    }
+
+    /**
+     * Opens a window requesting permissions to send SMS messages.
+     */
+    protected void requestSendSMSPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.SEND_SMS},
+                REQUEST_SEND_SMS);
+    }
+
+    /**
+     * Listens for the results of all permission requests.
+     *
+     * @param requestCode a number identifying which permission request was returned
+     * @param permissions an array of Strings listing permissions
+     * @param grantResults an array of numbers detailing the results of the request
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_READ_CONTACTS: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+
+                }
+                return;
+            }
+
+            case REQUEST_SEND_SMS: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                    startActivityForResult(intent, PICK_CONTACT);
+
+                }
+                return;
+            }
+
+        }
+    }
+
+    /**
+     * Grabs the contact's phone number from the data returned by the previous Intent and then
+     * prepares an SMS message with the details about the brewery to share and send an SMS message
+     * to the contact that was chosen.
+     *
+     * @param requestCode a number identifying which Intent returned
+     * @param resultCode a number identifying whether the actions was successful or not
+     * @param data the data returned from the Intent
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == PICK_CONTACT){
+            if(resultCode==Activity.RESULT_OK){
+
+                Uri uri = data.getData();
+                ContentResolver contentResolver = getActivity().getContentResolver();
+                Cursor contentCursor = contentResolver.query(uri, null, null,null, null);
+
+                if(contentCursor.moveToFirst()){
+                    String id = contentCursor.getString(contentCursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
+                    String hasPhone =
+                            contentCursor.getString(contentCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+
+                    if (hasPhone.equalsIgnoreCase("1"))
+                    {
+                        Cursor phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,null, null);
+                        phones.moveToFirst();
+                        mContactNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        Log.i("phoneNUmber", "The phone number is "+ mContactNumber);
+
+                    } else {
+                        mContactNumber = "";
+                    }
+                }
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+            try {
+//                String message = "https://www.google.com/maps/search/?api=1&query="
+//                        + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
+//                        + mBrewery.getState();
+                String mapLink = "https://www.google.com/maps/search/?api=1&query="
+                        + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
+                        + mBrewery.getState();
+                mapLink = mapLink.replaceAll(" ", "%20");
+                String message = "Check out this brewery I found...\n" + mBrewery.getName() +"\n"
+                                 + mBrewery.getWebsite();
+
+                SmsManager.getDefault().sendTextMessage(mContactNumber, null,
+                        message,null, null);
+                SmsManager.getDefault().sendTextMessage(mContactNumber, null,
+                        mapLink,null, null);
+                Toast.makeText(getContext(), "Text Sent Successfully", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "There was an error sending the text.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /**
+     * Formats a String of ten numbers into a nicely formatted String to print.
+     *
+     * @param num the phone number
+     * @return a String representation of a phone number
+     */
     private String formatPhoneNumber(String num) {
         String result;
         if(num.isEmpty()) {
@@ -167,7 +354,7 @@ public class SearchDetailFragment extends Fragment {
      */
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onAddToFavoritesFragmentInteraction(null, null, null, null);
         }
     }
 
@@ -178,8 +365,8 @@ public class SearchDetailFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnAddToFavoritesFragmentInteractionListener) {
+            mListener = (OnAddToFavoritesFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -196,9 +383,8 @@ public class SearchDetailFragment extends Fragment {
     }
 
 
-    public interface OnFragmentInteractionListener {
-        //void launchUserReviews(View view);
-        void onFragmentInteraction(Uri uri);
+    public interface OnAddToFavoritesFragmentInteractionListener {
+        void onAddToFavoritesFragmentInteraction(String id, String name, String city, String state);
     }
 
 

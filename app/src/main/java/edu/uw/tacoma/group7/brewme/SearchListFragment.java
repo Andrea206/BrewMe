@@ -150,7 +150,7 @@ public class SearchListFragment extends Fragment {
     /**
      * AsyncTask class used for connecting to database webservice.
      */
-    private class DownloadBrewSearch extends AsyncTask<String, Void, String> {
+    public class DownloadBrewSearch extends AsyncTask<String, Void, String> {
 
         private ProgressBar mProgressBar;
 
