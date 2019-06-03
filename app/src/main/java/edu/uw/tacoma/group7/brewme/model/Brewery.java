@@ -23,7 +23,7 @@ public class Brewery implements Serializable {
     private String mPostalCode;
     private String mPhone;
     private String mWebsite;
-    private int mBrewId;
+    private String mBrewId;
 
     public static final String NAME = "name";
     public static final String BREWERY_TYPE = "brewery_type";
@@ -37,7 +37,7 @@ public class Brewery implements Serializable {
 
 
     public Brewery(String name, String breweryType, String street, String city, String state,
-                   String postalCode, String phone, String website, int brewId) {
+                   String postalCode, String phone, String website, String brewId) {
         this.mName = name;
         this.mBreweryType = breweryType;
         this.mStreet = street;
@@ -97,10 +97,10 @@ public class Brewery implements Serializable {
     public void setWebsite(String mWebsite) {
         this.mWebsite = mWebsite;
     }
-    public int getBreweryId() {
+    public String getBreweryId() {
         return mBrewId;
     }
-    public void setBreweryId(int brewId) {
+    public void setBreweryId(String brewId) {
         this.mBrewId = brewId;
     }
 
@@ -127,12 +127,13 @@ public class Brewery implements Serializable {
                         obj.getString(Brewery.BREWERY_TYPE), obj.getString(Brewery.STREET),
                         obj.getString(Brewery.CITY), obj.getString(Brewery.STATE),
                         obj.getString(Brewery.POSTAL_CODE), obj.getString(Brewery.PHONE),
-                        obj.getString(Brewery.WEBSITE), obj.getInt(Brewery.ID));
+                        obj.getString(Brewery.WEBSITE), obj.getString(Brewery.ID));
                 breweryList.add(brewery);
             }
         }
         return breweryList;
     }//end parseBreweryJson
+
 
 
 }//end Brewery
