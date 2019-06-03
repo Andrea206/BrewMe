@@ -6,6 +6,7 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,8 @@ public class SearchDetailFragment extends Fragment {
     private Button mCheckInButton;
     private Button mUserReviewsButton;
     private OnFragmentInteractionListener mListener;
+    private SharedPreferences mSharedPreferences;
+
 
     public SearchDetailFragment() {
         // Required empty public constructor
@@ -108,12 +111,16 @@ public class SearchDetailFragment extends Fragment {
         writeReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
-                //Bundle breweryBundle = new Bundle();
-                //breweryBundle.putSerializable("breweryObject", mBrewery);
-                myIntent.putExtra("ReviewBrewery", mBrewery);
-                //Log.e("Brewery Passed to Review Acivity: ", mBrewery.toString());
-                startActivity(myIntent);
+                mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+                if(mSharedPreferences.getBoolean("loggedin", true)) {
+                    Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
+                    myIntent.putExtra("ReviewBrewery", mBrewery);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast.makeText(getActivity(), "Must be logged in to write a review", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
         return view;
