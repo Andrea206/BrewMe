@@ -36,7 +36,7 @@ public class ReviewActivity extends AppCompatActivity
         Intent detailIntent = getIntent();
         Brewery reviewBrewery =(Brewery) detailIntent.getSerializableExtra("ReviewBrewery");
 
-        int breweryId = reviewBrewery.getBreweryId();
+        String breweryId = reviewBrewery.getBreweryId();
         String breweryName = reviewBrewery.getName();
         //**Debugging**
         //Log.e("Brewery intent data: " ,reviewBrewery.getName());
@@ -44,7 +44,7 @@ public class ReviewActivity extends AppCompatActivity
 
         //Pass brewery name and brewery id to NewReviewFragment
         Bundle bundle = new Bundle();
-        bundle.putInt("breweryId", breweryId);
+        bundle.putString("breweryId", breweryId);
         bundle.putString("breweryName", breweryName);
 
         NewReviewFragment newReviewFragment = new NewReviewFragment();
