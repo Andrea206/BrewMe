@@ -51,7 +51,6 @@ implements SignInDialogFragment.SignInListenerInterface,
     private JSONObject mRegisterArguments;
     private SearchHistoryDB mSearchHistoryDB;
 
-
     /**
      * Checks for login, automatically logs in using SharedPreferences.
      * @param savedInstanceState a Bundle object
@@ -366,7 +365,7 @@ implements SignInDialogFragment.SignInListenerInterface,
                     loginBtn.setVisibility(Button.GONE);
                     logoutBtn.setVisibility(Button.VISIBLE);
 
-                    Toast.makeText(getApplicationContext(), "Signed in as :" + mEmail, Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(), "Signed in as: " + mEmail, Toast.LENGTH_SHORT)
                             .show();
 
                 } else {

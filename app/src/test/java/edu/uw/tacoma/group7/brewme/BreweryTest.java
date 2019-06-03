@@ -24,7 +24,11 @@ public class BreweryTest {
     public void testBreweryConstructor() {
         assertNotNull(new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId));
+=======
+                "http://www.eclipticbrewing.com/", 5739));
+>>>>>>> Stashed changes
     }
 
     /**
@@ -34,7 +38,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullName() {
         Brewery brewery = new Brewery(null, "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getName());
     }
 
@@ -45,7 +53,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullBreweryType() {
         Brewery brewery = new Brewery("Ecliptic Brewing", null, "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getBreweryType());
     }
 
@@ -56,7 +68,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullStreet() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", null,
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getStreet());
     }
 
@@ -67,7 +83,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullCity() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 null, "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getCity());
     }
 
@@ -78,7 +98,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullState() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", null, "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getState());
     }
 
@@ -89,7 +113,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullPostalCode() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", null, "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getPostalCode());
     }
 
@@ -100,7 +128,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullPhone() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", null,
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getPhone());
     }
 
@@ -111,7 +143,11 @@ public class BreweryTest {
     public void testBreweryConstructorNullWebsite() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 null, mBrewId);
+=======
+                null, 5739);
+>>>>>>> Stashed changes
         assertNull(brewery.getWebsite());
     }
 
@@ -122,7 +158,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyName() {
         Brewery brewery = new Brewery("", "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getName());
     }
 
@@ -133,7 +173,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyBreweryType() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getBreweryType());
     }
 
@@ -144,7 +188,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyStreet() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getStreet());
     }
 
@@ -155,7 +203,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyCity() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getCity());
     }
 
@@ -166,7 +218,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyState() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getState());
     }
 
@@ -177,7 +233,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyPostalCode() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", "", "5032658002",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getPostalCode());
     }
 
@@ -188,7 +248,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyPhone() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "",
+<<<<<<< Updated upstream
                 "http://www.eclipticbrewing.com/", mBrewId);
+=======
+                "http://www.eclipticbrewing.com/", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getPhone());
     }
 
@@ -199,7 +263,11 @@ public class BreweryTest {
     public void testBreweryConstructorEmptyWebsite() {
         Brewery brewery = new Brewery("Ecliptic Brewing", "micro", "825 N Cook St",
                 "Portland", "Oregon", "97227-1503", "5032658002",
+<<<<<<< Updated upstream
                 "", mBrewId);
+=======
+                "", 5739);
+>>>>>>> Stashed changes
         assertEquals("", brewery.getWebsite());
     }
 
