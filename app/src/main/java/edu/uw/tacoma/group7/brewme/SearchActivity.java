@@ -76,16 +76,6 @@ public class SearchActivity extends AppCompatActivity
 
     }
 
-//    /**
-//     * Called by the "New Review" button to launch the ReviewActivity.
-//     * @param view a View object
-//     */
-//    @Override
-//    public void launchUserReviews(View view){
-//        Intent myIntent = new Intent(this, ReviewActivity.class);
-//        myIntent.putExtra("ReviewBrewery", mDetailFragment.getArguments());
-//        mDetailFragment.startActivity(myIntent);
-//    }
 
 
 

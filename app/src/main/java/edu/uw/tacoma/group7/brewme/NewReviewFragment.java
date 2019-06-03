@@ -6,10 +6,8 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import edu.uw.tacoma.group7.brewme.model.Brewery;
 import edu.uw.tacoma.group7.brewme.model.Review;
 
 /**
@@ -105,8 +101,6 @@ public class NewReviewFragment extends Fragment {
                 // *** Debugging ***
                 //Log.e("Review object: ", mReview.getReview());
                 mListener.onNewReviewFragmentInteraction(mReview);
-
-
             }
         });
         return view;
@@ -142,10 +136,7 @@ public class NewReviewFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * onNewReviewFragmentInteraction accepts a Review object.
      */
     public interface OnFragmentInteractionListener {
         void onNewReviewFragmentInteraction(Review review);
