@@ -3,6 +3,7 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
 import android.Manifest;
 import android.app.Activity;
@@ -149,7 +150,7 @@ public class SearchDetailFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                mListener.onAddToFavoritesFragmentInteraction("14", mBrewery.getName(), mBrewery.getCity(), mBrewery.getState());
+                mListener.onAddToFavoritesFragmentInteraction(mBrewery.getBreweryId(), mBrewery.getName(), mBrewery.getCity(), mBrewery.getState());
             }
         });
         fab.setImageResource(R.drawable.add_to_favorites_icon);
@@ -201,7 +202,7 @@ public class SearchDetailFragment extends Fragment {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_READ_CONTACTS: {
 
@@ -211,10 +212,6 @@ public class SearchDetailFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     startActivityForResult(intent, PICK_CONTACT);
 
-                } else {
-
-                    // permission denied,Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
             }
@@ -227,10 +224,6 @@ public class SearchDetailFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     startActivityForResult(intent, PICK_CONTACT);
 
-                } else {
-
-                    // permission denied,Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
             }

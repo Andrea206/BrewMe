@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".FavoritesActivity"
+            android:label="Favorites"/>
 
         <activity android:name=".ReviewActivity"
             android:label="@string/title_review"/>

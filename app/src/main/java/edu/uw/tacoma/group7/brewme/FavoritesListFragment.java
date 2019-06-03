@@ -1,6 +1,7 @@
 package edu.uw.tacoma.group7.brewme;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -41,9 +43,11 @@ public class FavoritesListFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnFavoritesListFragmentInteractionListener mListener;
-    private List<Brewery> mFavsList;
-    private List<Integer> mFavsIds;
+    public List<Brewery> mFavsList;
+    public List<Integer> mFavsIds;
     private RecyclerView mRecyclerView;
+    public List<Brewery> mTempBrews;
+    public HashMap<Integer, String> myFavs;
 
 
     /**
@@ -86,11 +90,12 @@ public class FavoritesListFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            new DownloadFavoritesTask().execute(getString(R.string.favorites));
+            SharedPreferences sp = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
+            String email = sp.getString(getString(R.string.EMAIL), null);
+            new DownloadFavoritesTask().execute(getString(R.string.get_favorites) + email);
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -121,7 +126,7 @@ public class FavoritesListFragment extends Fragment {
      */
     public interface OnFavoritesListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFavoritesListFragmentInteraction(Integer brewery);
+        void onFavoritesListFragmentInteraction(String brewery);
     }
 
     private class DownloadFavoritesTask extends AsyncTask<String, Void, String> {
@@ -152,8 +157,7 @@ public class FavoritesListFragment extends Fragment {
                 } catch (Exception e) {
                     response = "Unable to download the list of favorites, Reason: "
                             + e.getMessage();
-                }
-                finally {
+                } finally {
                     if (urlConnection != null)
                         urlConnection.disconnect();
                 }
@@ -165,30 +169,95 @@ public class FavoritesListFragment extends Fragment {
         protected void onPostExecute(String result) {
             try {
                 JSONObject resultObject = new JSONObject(result);
-                if(resultObject.getBoolean("success") == true) {
-                    mFavsIds = parseFavoritesJSON(resultObject.getString("names"));
-                    //everything is good, show list of courses
-                    Log.i("Brewery id from favorites table", mFavsIds.get(0).toString());
-                    if(!mFavsIds.isEmpty()) {
-                        mRecyclerView.setAdapter(new MyFavoritesListRecyclerViewAdapter(mFavsIds, mListener));
+                if (resultObject.getBoolean("success") == true) {
+                    // get brewery_ids from returned JSON
+                    myFavs = parseFavoritesJSON(resultObject.getString("names"));
+                    //Log.i("Brewery id from favorites table", mFavsIds.get(0).toString());
+                    List favsList = new ArrayList(myFavs.values());
+                    if (!myFavs.isEmpty()) {
+                        mRecyclerView.setAdapter(new MyFavoritesListRecyclerViewAdapter(favsList, mListener));
                     }
                 }
             } catch (JSONException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                Toast.makeText(getContext(), "Error retrieving favorites from database", Toast.LENGTH_SHORT)
                         .show();
             }
         }
+
+        private HashMap<Integer, String> parseFavoritesJSON(String favsJson) throws JSONException {
+            ArrayList<Integer> idList = new ArrayList<>();
+            HashMap<Integer, String> favs = new HashMap<>();
+            if (favsJson != null) {
+                JSONArray arr = new JSONArray(favsJson);
+                for (int i = 0; i < arr.length(); i++) {
+                    JSONObject obj = arr.getJSONObject(i);
+                    idList.add(obj.getInt(SearchActivity.BREWERY_ID));
+                    favs.put(obj.getInt(SearchActivity.BREWERY_ID), obj.getString(SearchActivity.BREWERY_NAME));
+                }
+            }
+            return favs;
+        }
     }
 
-    private List<Integer> parseFavoritesJSON(String favsJson) throws JSONException {
-        ArrayList<Integer> idList = new ArrayList<>();
-        if(favsJson != null) {
-            JSONArray arr = new JSONArray(favsJson);
-            for(int i = 0; i < arr.length(); i++) {
-                JSONObject obj = arr.getJSONObject(i);
-                idList.add(obj.getInt(SearchActivity.BREWERY_ID));
+    /**
+     * AsyncTask class used for connecting to database webservice.
+     */
+    public class DownloadBrewSearch extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpsURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpsURLConnection) urlObject.openConnection();
+                    urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+                    urlConnection.setRequestMethod("GET");
+                    //Added .addRequestProperty and .setRequestMethod("GET") per research about calling HTTP GET requests from Java
+                    // https://www.codingpedia.org/ama/how-to-handle-403-forbidden-http-status-code-in-java/
+                    //https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
+                    //https://stackoverflow.com/questions/24399294/android-asynctask-to-make-an-http-get-request
+
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+                } catch (Exception e) {
+                    response = "Unable to download the brewery, Reason: "
+                            + e.getMessage();
+                }
+                finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+
+        /**
+         * Uses JSON string response fetched from webservice to parse into list object and pass to ListView.
+         * @param result String to be parsed.
+         */
+        @Override
+        protected void onPostExecute(String result){
+            try{
+                Log.i("Response ", result);
+
+                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
+                //JSONObject resultObject = new JSONObject(result);
+                if(result != null){
+                    mTempBrews = Brewery.parseBreweryJson(result);
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getContext(), "Error retrieving favorites", Toast.LENGTH_LONG)
+                        .show();
+                //Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
             }
         }
-        return idList;
     }
 }

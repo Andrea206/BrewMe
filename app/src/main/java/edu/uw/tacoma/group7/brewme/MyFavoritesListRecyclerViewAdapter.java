@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collection;
 import java.util.List;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
@@ -17,10 +18,10 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
  */
 public class MyFavoritesListRecyclerViewAdapter extends RecyclerView.Adapter<MyFavoritesListRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Integer> mValues;
+    private final List<String> mValues;
     private final FavoritesListFragment.OnFavoritesListFragmentInteractionListener mListener;
 
-    public MyFavoritesListRecyclerViewAdapter(List<Integer> items, FavoritesListFragment.OnFavoritesListFragmentInteractionListener listener) {
+    public MyFavoritesListRecyclerViewAdapter(List<String> items, FavoritesListFragment.OnFavoritesListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -57,7 +58,7 @@ public class MyFavoritesListRecyclerViewAdapter extends RecyclerView.Adapter<MyF
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public Integer mItem;
+        public String mItem;
 
         public ViewHolder(View view) {
             super(view);

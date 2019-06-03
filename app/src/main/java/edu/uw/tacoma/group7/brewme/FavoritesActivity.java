@@ -16,7 +16,7 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesLis
     }
 
     @Override
-    public void onFavoritesListFragmentInteraction(Integer brewery) {
+    public void onFavoritesListFragmentInteraction(String brewery) {
 
     }
 }

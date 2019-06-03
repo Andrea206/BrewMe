@@ -57,6 +57,7 @@ public class SearchActivity extends AppCompatActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("creating searchActivity", "onCreate call");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -97,9 +98,10 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void onAddToFavoritesFragmentInteraction(String id, String name, String city, String state) {
+        Log.i("add to favs button", "in the listener");
         SharedPreferences sp = getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
         String email = sp.getString(getString(R.string.EMAIL), null);
-        StringBuilder url = new StringBuilder(getString(R.string.favorites));
+        StringBuilder url = new StringBuilder(getString(R.string.add_favorite));
 
         //construct a JSONObject to build a formatted message to send
         mFavArguments = new JSONObject();
@@ -123,6 +125,7 @@ public class SearchActivity extends AppCompatActivity
 
         @Override
         protected String doInBackground(String... urls) {
+            Log.i("doInBackground counter", "working");
             String response = "";
             HttpURLConnection urlConnection = null;
             for (String url : urls) {
@@ -167,7 +170,6 @@ public class SearchActivity extends AppCompatActivity
                     Toast.makeText(getApplicationContext(),
                             "Added to favorites successfully!", Toast.LENGTH_SHORT)
                             .show();
-                    getSupportFragmentManager().popBackStackImmediate();
                 } else {
                     Toast.makeText(getApplicationContext(), "This brewery is already in your favorites", Toast.LENGTH_SHORT)
                             .show();
