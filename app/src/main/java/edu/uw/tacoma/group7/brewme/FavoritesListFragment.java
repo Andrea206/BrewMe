@@ -122,7 +122,6 @@ public class FavoritesListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFavoritesListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFavoritesListFragmentInteraction(String brewery);
     }
 

@@ -7,6 +7,7 @@ package edu.uw.tacoma.group7.brewme;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,7 @@ import edu.uw.tacoma.group7.brewme.model.Review;
  */
 public class ReviewActivity extends AppCompatActivity
         implements View.OnClickListener, Serializable,
-        NewReviewFragment.OnFragmentInteractionListener {
+        NewReviewFragment.OnFragmentInteractionListener{
     private JSONObject mArguments;
 
     /**
@@ -98,6 +99,7 @@ public class ReviewActivity extends AppCompatActivity
                     , Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
     /**

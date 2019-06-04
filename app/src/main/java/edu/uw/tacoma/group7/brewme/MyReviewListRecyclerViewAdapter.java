@@ -37,9 +37,9 @@ public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyRevi
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getBreweryName());
         holder.mContentView.setText(mValues.get(position).getUsername());
-        holder.mContentView.setText(mValues.get(position).getTitle());
-        //***Rating bar goes here ***
-        holder.mContentView.setText(mValues.get(position).getReview());
+//        holder.mContentView.setText(mValues.get(position).getTitle());
+//        //***Rating bar goes here ***
+//        holder.mContentView.setText(mValues.get(position).getReview());
 
 
     }

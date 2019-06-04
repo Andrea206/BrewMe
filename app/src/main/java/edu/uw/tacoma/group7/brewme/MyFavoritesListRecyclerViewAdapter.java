@@ -14,7 +14,6 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Brewery} and makes a call to the
  * specified {@link FavoritesListFragment.OnFavoritesListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyFavoritesListRecyclerViewAdapter extends RecyclerView.Adapter<MyFavoritesListRecyclerViewAdapter.ViewHolder> {
 
