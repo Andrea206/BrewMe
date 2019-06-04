@@ -38,7 +38,8 @@ public class SearchActivity extends AppCompatActivity
         implements Serializable, View.OnClickListener,
         SearchListFragment.OnListFragmentInteractionListener,
         SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener,
-        SearchFieldFragment.OnSearchFieldFragmentInteractionListener {
+        SearchFieldFragment.OnSearchFieldFragmentInteractionListener,
+ReviewListFragment.OnListFragmentInteractionListener{
 
 
     private SearchListFragment.OnListFragmentInteractionListener mListener;
@@ -116,6 +117,11 @@ public class SearchActivity extends AppCompatActivity
             Toast.makeText(this, "Error with JSON creation: " + e.getMessage(),
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onReviewListFragmentInteraction(String result) {
+
     }
 
     private class AddToFavsAsyncTask extends AsyncTask<String, Void, String> {

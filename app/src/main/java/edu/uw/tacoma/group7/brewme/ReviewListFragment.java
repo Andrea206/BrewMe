@@ -1,13 +1,30 @@
 package edu.uw.tacoma.group7.brewme;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
+import edu.uw.tacoma.group7.brewme.model.Brewery;
 import edu.uw.tacoma.group7.brewme.model.Review;
 
 /**
@@ -22,6 +39,11 @@ public class ReviewListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
+    private String mReviewResult;
+    private List<Review> mReviewList;
+
+    private static final String ARG_REVIEW_RESULT_VALUE= "ReviewList";
+
 
 
     /**
@@ -36,6 +58,7 @@ public class ReviewListFragment extends Fragment {
         ReviewListFragment fragment = new ReviewListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,11 +70,28 @@ public class ReviewListFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = this.getArguments();
+        mReviewResult = bundle.getString(ARG_REVIEW_RESULT_VALUE);
+        //Log.e("mReviewResult in onCreateView: ", mReviewResult);
+
+
+        try{
+            JSONObject resultObject = new JSONObject(mReviewResult);
+            mReviewList = Review.parseReviewJson(resultObject.getString("names"));
+            Log.e("mReviewResult in onCreateView: ", mReviewList.toString());
+
+        } catch (JSONException e) {
+
+        }
+
+
         View view = inflater.inflate(R.layout.fragment_reviewlist_list, container, false);
 
         // Set the adapter
@@ -64,6 +104,8 @@ public class ReviewListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            mRecyclerView.setAdapter(new MyReviewListRecyclerViewAdapter(mReviewList, mListener));
+            mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         }
         return view;
     }
@@ -97,6 +139,8 @@ public class ReviewListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Review item);
+        void onReviewListFragmentInteraction(String result);
     }
+
+
 }

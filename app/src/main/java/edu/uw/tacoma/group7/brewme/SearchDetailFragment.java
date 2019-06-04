@@ -20,6 +20,7 @@ import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ import edu.uw.tacoma.group7.brewme.model.Review;
  * {@link SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class SearchDetailFragment extends Fragment {
+public class SearchDetailFragment extends Fragment{
 
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
 
@@ -68,6 +69,7 @@ public class SearchDetailFragment extends Fragment {
     private final int REQUEST_SEND_SMS = 3;
 
     private OnAddToFavoritesFragmentInteractionListener mListener;
+    private ReviewListFragment.OnListFragmentInteractionListener mReviewListener;
 
 
 
@@ -136,9 +138,15 @@ public class SearchDetailFragment extends Fragment {
             }
         });
 
-        Log.e("Url params: ", mBrewery.getBreweryId() + mSharedPreferences.getString("Email", null));
-        new DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
-                mBrewery.getBreweryId());
+        mUserReviewsButton = view.findViewById(R.id.user_reviews_button);
+        mUserReviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
+                        mBrewery.getBreweryId());
+            }
+        });
+
 
         mShareButton = view.findViewById(R.id.share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {
@@ -430,29 +438,57 @@ public class SearchDetailFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(String result){
-            //mProgressBar.setVisibility(View.GONE);
-            try{
-                Log.e("Response ", result);
 
-                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
-                JSONObject resultObject = new JSONObject(result);
-                if(resultObject.getBoolean("success") == true){
-                    mReviewList = Review.parseReviewJson(resultObject.getString("names"));
+//            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG)
+//                    .show();
 
-                    if(!mReviewList.isEmpty()){
-                        Toast.makeText(getActivity(), mReviewList.get(0).getBreweryName(), Toast.LENGTH_SHORT)
-                        .show();
-                        Log.e("mReviewList: ", mReviewList.toString());
-                    }
+            JSONObject resultObject = null;
+            try {
+                resultObject = new JSONObject(result);
+                if(resultObject.getJSONArray("names").length() == 0 || resultObject.getJSONArray("names") == null
+                || resultObject.getBoolean("success") == false){
+                    Toast.makeText(getActivity(), "No review for this brewery yet!", Toast.LENGTH_LONG)
+                            .show();
+                }
+                else {
+                //Pass search input and search type to SearchListFragment
+                Bundle bundle = new Bundle();
+                bundle.putString("ReviewList", result);
+                ReviewListFragment reviewListFragment = new ReviewListFragment();
+                reviewListFragment.setArguments(bundle);
 
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_search_container, reviewListFragment)
+                .addToBackStack(null);
+        transaction.commit();
+
+                    //mReviewListener.onReviewListFragmentInteraction(result);
                 }
             } catch (JSONException e) {
-                Toast.makeText(getContext(), "No reviews found", Toast.LENGTH_LONG)
-                        .show();
+                e.printStackTrace();
             }
+
+
+
         }
     }//end DownloadBrewSearch
 
 
 
 }
+
+
+//            try{
+////                Log.e("Response ", result);
+////
+////                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
+////                JSONObject resultObject = new JSONObject(result);
+////                if(resultObject.getBoolean("success") == true){
+////                    mReviewList = Review.parseReviewJson(resultObject.getString("names"))
+////
+////                }
+////            } catch (JSONException e) {
+////                Toast.makeText(getContext(), "No reviews found", Toast.LENGTH_LONG)
+////                        .show();
+////            }

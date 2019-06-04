@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import edu.uw.tacoma.group7.brewme.model.Review;
 public class NewReviewFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    private int mBreweryId;
+    private String mBreweryId;
     private String mBreweryName;
     private Review mReview;
     private SharedPreferences mSharedPreferences;
@@ -80,9 +81,9 @@ public class NewReviewFragment extends Fragment {
         mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
 
         Bundle bundle = this.getArguments();
-        mBreweryId = bundle.getInt(BREWERY_ID_PARAM);
+        mBreweryId = bundle.getString(BREWERY_ID_PARAM);
         mBreweryName = bundle.getString(BREWERY_NAME_PARAM);
-        //Log.e("mBreweryName: ", mBreweryName);
+        Log.e("mBreweryName: ", mBreweryId);
         mBreweryNameTextView = view.findViewById(R.id.brewery_name_display);
         mBreweryNameTextView.setText(mBreweryName);
 
@@ -95,7 +96,7 @@ public class NewReviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Put review values into Review object to pass into webservice interaction
-                mReview = new Review(mBreweryId, mBreweryName,
+                mReview = new Review(Integer.parseInt(mBreweryId), mBreweryName,
                         mSharedPreferences.getString("Email", null), reviewTitle.getText().toString(),
                         (double)reviewRating.getRating(), review.getText().toString());
                 // *** Debugging ***
