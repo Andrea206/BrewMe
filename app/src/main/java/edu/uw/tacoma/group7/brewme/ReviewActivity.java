@@ -51,6 +51,8 @@ public class ReviewActivity extends AppCompatActivity
 
         String breweryId = reviewBrewery.getBreweryId();
         String breweryName = reviewBrewery.getName();
+        //Log.e("Brewery ID: ", breweryId);
+
         //Pass brewery name and brewery id to NewReviewFragment
         Bundle bundle = new Bundle();
         bundle.putString("breweryId", breweryId);
