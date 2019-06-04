@@ -38,9 +38,7 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
  */
 public class FavoritesListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnFavoritesListFragmentInteractionListener mListener;
     public List<Integer> mFavsIds;
@@ -55,7 +53,6 @@ public class FavoritesListFragment extends Fragment {
     public FavoritesListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static FavoritesListFragment newInstance(int columnCount) {
         FavoritesListFragment fragment = new FavoritesListFragment();
@@ -123,7 +120,6 @@ public class FavoritesListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFavoritesListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFavoritesListFragmentInteraction(String brewery);
     }
 

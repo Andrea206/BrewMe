@@ -38,7 +38,8 @@ public class SearchActivity extends AppCompatActivity
         implements Serializable, View.OnClickListener,
         SearchListFragment.OnListFragmentInteractionListener,
         SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener,
-        SearchFieldFragment.OnSearchFieldFragmentInteractionListener {
+        SearchFieldFragment.OnSearchFieldFragmentInteractionListener,
+ReviewListFragment.OnListFragmentInteractionListener{
 
 
     private SearchListFragment.OnListFragmentInteractionListener mListener;
@@ -118,6 +119,11 @@ public class SearchActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onReviewListFragmentInteraction(String result) {
+
+    }
+
     private class AddToFavsAsyncTask extends AsyncTask<String, Void, String> {
 
 
@@ -183,16 +189,6 @@ public class SearchActivity extends AppCompatActivity
 
     }
 
-//    /**
-//     * Called by the "New Review" button to launch the ReviewActivity.
-//     * @param view a View object
-//     */
-//    @Override
-//    public void launchUserReviews(View view){
-//        Intent myIntent = new Intent(this, ReviewActivity.class);
-//        myIntent.putExtra("ReviewBrewery", mDetailFragment.getArguments());
-//        mDetailFragment.startActivity(myIntent);
-//    }
 
 
 

@@ -14,11 +14,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +30,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.List;
+import javax.net.ssl.HttpsURLConnection;
 import edu.uw.tacoma.group7.brewme.model.Brewery;
+import edu.uw.tacoma.group7.brewme.model.Review;
 
 /**
  * SearchDetailFragment displays extended information about a brewery that is selected
@@ -38,7 +48,7 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
  * {@link SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class SearchDetailFragment extends Fragment {
+public class SearchDetailFragment extends Fragment{
 
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
 
@@ -50,6 +60,8 @@ public class SearchDetailFragment extends Fragment {
     private Button mShareButton;
     private FloatingActionButton mAddToFavsButton;
     private Button mUserReviewsButton;
+    private SharedPreferences mSharedPreferences;
+    private List<Review> mReviewList;
     private String mContactNumber;
 
     private final int PICK_CONTACT = 1;
@@ -57,6 +69,8 @@ public class SearchDetailFragment extends Fragment {
     private final int REQUEST_SEND_SMS = 3;
 
     private OnAddToFavoritesFragmentInteractionListener mListener;
+    private ReviewListFragment.OnListFragmentInteractionListener mReviewListener;
+
 
 
     public SearchDetailFragment() {
@@ -87,6 +101,7 @@ public class SearchDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mBrewery = (Brewery) getArguments().getSerializable(BREWERY_DETAILS_PARAM);
+            mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
         }
     }
 
@@ -106,8 +121,6 @@ public class SearchDetailFragment extends Fragment {
         String type = mBrewery.getBreweryType();
         String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
         String phone = mBrewery.getPhone();
-//        String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
-//                                "-" + phone.substring(6);
         String phoneFormatted = formatPhoneNumber(phone);
         mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
                 "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
@@ -124,6 +137,16 @@ public class SearchDetailFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
+
+        mUserReviewsButton = view.findViewById(R.id.user_reviews_button);
+        mUserReviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
+                        mBrewery.getBreweryId());
+            }
+        });
+
 
         mShareButton = view.findViewById(R.id.share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {
@@ -166,13 +189,18 @@ public class SearchDetailFragment extends Fragment {
         writeReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
-                //Bundle breweryBundle = new Bundle();
-                //breweryBundle.putSerializable("breweryObject", mBrewery);
-                myIntent.putExtra("ReviewBrewery", mBrewery);
-                //Log.e("Brewery Passed to Review Acivity: ", mBrewery.toString());
-                startActivity(myIntent);
+                if(mSharedPreferences.getBoolean("loggedin", true)) {
+                    Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
+                    myIntent.putExtra("ReviewBrewery", mBrewery);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast.makeText(getActivity(), "Must be logged in to write a review", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
+
+
         });
         return view;
     }
@@ -350,4 +378,117 @@ public class SearchDetailFragment extends Fragment {
 
 
 
+
+
+
+
+    /**
+     * AsyncTask class used for connecting to database webservice.
+     */
+    private class DownloadReviews extends AsyncTask<String, Void, String> {
+
+        //private ProgressBar mProgressBar;
+
+//        @Override
+//        protected void onProgressUpdate(Void... progress) {
+//            mProgressBar = getActivity().findViewById(R.id.progressBar);
+//            mProgressBar.setVisibility(View.VISIBLE);
+//            mProgressBar.getProgress();
+//        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpsURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpsURLConnection) urlObject.openConnection();
+                    urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+                    urlConnection.setRequestMethod("GET");
+                    //Added .addRequestProperty and .setRequestMethod("GET") per research about calling HTTP GET requests from Java
+                    // https://www.codingpedia.org/ama/how-to-handle-403-forbidden-http-status-code-in-java/
+                    //https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
+                    //https://stackoverflow.com/questions/24399294/android-asynctask-to-make-an-http-get-request
+
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    publishProgress();
+
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+                } catch (Exception e) {
+                    response = "Unable to download review, Reason: "
+                            + e.getMessage();
+                }
+                finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+
+        /**
+         * Uses JSON string response fetched from webservice to parse into list object.
+         * @param result String to be parsed.
+         */
+        @Override
+        protected void onPostExecute(String result){
+
+//            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG)
+//                    .show();
+
+            JSONObject resultObject = null;
+            try {
+                resultObject = new JSONObject(result);
+                if(resultObject.getJSONArray("names").length() == 0 || resultObject.getJSONArray("names") == null
+                || resultObject.getBoolean("success") == false){
+                    Toast.makeText(getActivity(), "No review for this brewery yet!", Toast.LENGTH_LONG)
+                            .show();
+                }
+                else {
+                //Pass search input and search type to SearchListFragment
+                Bundle bundle = new Bundle();
+                bundle.putString("ReviewList", result);
+                ReviewListFragment reviewListFragment = new ReviewListFragment();
+                reviewListFragment.setArguments(bundle);
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_search_container, reviewListFragment)
+                .addToBackStack(null);
+        transaction.commit();
+
+                    //mReviewListener.onReviewListFragmentInteraction(result);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+    }//end DownloadBrewSearch
+
+
+
 }
+
+
+//            try{
+////                Log.e("Response ", result);
+////
+////                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
+////                JSONObject resultObject = new JSONObject(result);
+////                if(resultObject.getBoolean("success") == true){
+////                    mReviewList = Review.parseReviewJson(resultObject.getString("names"))
+////
+////                }
+////            } catch (JSONException e) {
+////                Toast.makeText(getContext(), "No reviews found", Toast.LENGTH_LONG)
+////                        .show();
+////            }
