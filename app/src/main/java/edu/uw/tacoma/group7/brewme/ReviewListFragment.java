@@ -85,6 +85,8 @@ public class ReviewListFragment extends Fragment {
         try{
             JSONObject resultObject = new JSONObject(mReviewResult);
             mReviewList = Review.parseReviewJson(resultObject.getString("names"));
+
+            // *** Debugging ***
             Log.e("mReviewResult in onCreateView: ", mReviewList.toString());
 
         } catch (JSONException e) {
