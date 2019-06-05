@@ -456,7 +456,8 @@ public class SearchDetailFragment extends Fragment{
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_search_container, reviewListFragment);
+                .replace(R.id.fragment_search_container, reviewListFragment)
+                .addToBackStack(null);
         transaction.commit();
 
                     //mReviewListener.onReviewListFragmentInteraction(result);
