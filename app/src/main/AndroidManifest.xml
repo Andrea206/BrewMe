@@ -19,17 +19,21 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".FavoritesActivity"
+            android:screenOrientation="portrait"
             android:label="Favorites"/>
 
         <activity android:name=".ReviewActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_review"/>
 
         <activity
             android:name=".SearchActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
