@@ -185,8 +185,8 @@ public class SearchDetailFragment extends Fragment{
             fab.hide();
         }
 
-        Button writeReviewButton = view.findViewById(R.id.write_review_button);
-        writeReviewButton.setOnClickListener(new View.OnClickListener() {
+        mWriteReviewButton = view.findViewById(R.id.write_review_button);
+        mWriteReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mSharedPreferences.getString("Email", null) != null) {
@@ -407,10 +407,6 @@ public class SearchDetailFragment extends Fragment{
                     urlConnection = (HttpsURLConnection) urlObject.openConnection();
                     urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
                     urlConnection.setRequestMethod("GET");
-                    //Added .addRequestProperty and .setRequestMethod("GET") per research about calling HTTP GET requests from Java
-                    // https://www.codingpedia.org/ama/how-to-handle-403-forbidden-http-status-code-in-java/
-                    //https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
-                    //https://stackoverflow.com/questions/24399294/android-asynctask-to-make-an-http-get-request
 
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));

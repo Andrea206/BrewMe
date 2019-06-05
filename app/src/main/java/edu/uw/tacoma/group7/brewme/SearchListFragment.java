@@ -226,10 +226,8 @@ public class SearchListFragment extends Fragment {
                 SearchFieldFragment searchFieldFragment = new SearchFieldFragment();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_search_container, searchFieldFragment)
-                        .addToBackStack(null);
+                        .replace(R.id.fragment_search_container, searchFieldFragment);
                 transaction.commit();
-                //Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
             }
         }
     }//end DownloadBrewSearch

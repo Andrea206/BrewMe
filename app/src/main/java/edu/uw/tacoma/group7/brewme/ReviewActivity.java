@@ -32,6 +32,7 @@ public class ReviewActivity extends AppCompatActivity
         implements View.OnClickListener, Serializable,
         NewReviewFragment.OnFragmentInteractionListener{
     private JSONObject mArguments;
+    private Brewery reviewBrewery;
 
     /**
      * ReviewActivity onCreate retrieves Brewery object from the SearchDetailFragment.
@@ -47,7 +48,7 @@ public class ReviewActivity extends AppCompatActivity
 
         //Brewery object passed from Write Review button
         Intent detailIntent = getIntent();
-        Brewery reviewBrewery = (Brewery) detailIntent.getSerializableExtra("ReviewBrewery");
+        reviewBrewery = (Brewery) detailIntent.getSerializableExtra("ReviewBrewery");
 
         String breweryId = reviewBrewery.getBreweryId();
         String breweryName = reviewBrewery.getName();
@@ -64,6 +65,7 @@ public class ReviewActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_review_container, newReviewFragment)
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -162,15 +164,15 @@ public class ReviewActivity extends AppCompatActivity
                             .show();
                     getSupportFragmentManager().popBackStackImmediate();
                 } else {
-                    Toast.makeText(getBaseContext(), "Review couldn't be added: Reason:"
-                            + resultObject.getString("error"), Toast.LENGTH_SHORT).show();
-                    Log.e("Error adding review, result string: ", result);
+                    Toast.makeText(getBaseContext(), "Review couldn't be added, you have already posted a review for this brewery", Toast.LENGTH_SHORT).show();
 
+                    //*** Debugging ***
+                    Log.e("Error adding review, result string: ", result);
                     Log.e("Error adding review, error: ", resultObject.getString("error"));
+                    getSupportFragmentManager().popBackStack();
                 }
-            } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            } catch (JSONException e) {}
+
         }//end onPostExecute
 
 

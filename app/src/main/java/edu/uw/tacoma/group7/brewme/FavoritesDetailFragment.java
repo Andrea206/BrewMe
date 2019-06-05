@@ -14,11 +14,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
@@ -148,8 +160,8 @@ public class FavoritesDetailFragment extends Fragment {
 
         SharedPreferences sp = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
 
-        Button writeReviewButton = view.findViewById(R.id.fav_write_review_button);
-        writeReviewButton.setOnClickListener(new View.OnClickListener() {
+        mWriteReviewButton = view.findViewById(R.id.fav_write_review_button);
+        mWriteReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
@@ -160,6 +172,17 @@ public class FavoritesDetailFragment extends Fragment {
                 startActivity(myIntent);
             }
         });
+
+        mUserReviewsButton = view.findViewById(R.id.fav_user_reviews_button);
+        mUserReviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new FavoritesDetailFragment.DownloadReviews().execute("https://jamess33-services-backend.herokuapp.com/reviews/reviewsId?brewery_id=" +
+                        mBrewery.getBreweryId());
+            }
+        });
+
+
         return view;
     }
 
@@ -333,6 +356,83 @@ public class FavoritesDetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction();
     }
+
+    private class DownloadReviews extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpsURLConnection urlConnection = null;
+            for (String url : urls) {
+                try {
+                    URL urlObject = new URL(url);
+                    urlConnection = (HttpsURLConnection) urlObject.openConnection();
+                    urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
+                    urlConnection.setRequestMethod("GET");
+
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    publishProgress();
+
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+                } catch (Exception e) {
+                    response = "Unable to download review, Reason: "
+                            + e.getMessage();
+                }
+                finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+
+
+        /**
+         * Uses JSON string response fetched from webservice to parse into list object.
+         * @param result String to be parsed.
+         */
+        @Override
+        protected void onPostExecute(String result){
+
+//            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG)
+//                    .show();
+
+            JSONObject resultObject = null;
+            try {
+                resultObject = new JSONObject(result);
+                if(resultObject.getJSONArray("names").length() == 0 || resultObject.getJSONArray("names") == null
+                        || resultObject.getBoolean("success") == false){
+                    Toast.makeText(getActivity(), "No review for this brewery yet!", Toast.LENGTH_LONG)
+                            .show();
+                }
+                else {
+                    //Pass search input and search type to SearchListFragment
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ReviewList", result);
+                    ReviewListFragment reviewListFragment = new ReviewListFragment();
+                    reviewListFragment.setArguments(bundle);
+
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_favorites_container, reviewListFragment)
+                            .addToBackStack(null);
+                    transaction.commit();
+
+                    //mReviewListener.onReviewListFragmentInteraction(result);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+    }//end DownloadBrewSearch
+
 
 
 

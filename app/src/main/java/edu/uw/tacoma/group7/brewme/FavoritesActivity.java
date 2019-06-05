@@ -25,7 +25,7 @@ import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 public class FavoritesActivity extends AppCompatActivity implements
         FavoritesListFragment.OnFavoritesListFragmentInteractionListener,
-        FavoritesDetailFragment.OnFragmentInteractionListener {
+        FavoritesDetailFragment.OnFragmentInteractionListener, ReviewListFragment.OnListFragmentInteractionListener{
 
     private FavoritesDetailFragment mDetailFragment;
     private Brewery mBrewery;
@@ -55,6 +55,11 @@ public class FavoritesActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction() {
+
+    }
+
+    @Override
+    public void onReviewListFragmentInteraction(String result) {
 
     }
 
