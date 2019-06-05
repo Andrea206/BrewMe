@@ -223,11 +223,12 @@ public class SearchListFragment extends Fragment {
             } catch (JSONException e) {
                 Toast.makeText(getContext(), "No search results found", Toast.LENGTH_LONG)
                         .show();
-                SearchFieldFragment searchFieldFragment = new SearchFieldFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_search_container, searchFieldFragment);
-                transaction.commit();
+                getFragmentManager().popBackStackImmediate();
+//                SearchFieldFragment searchFieldFragment = new SearchFieldFragment();
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_search_container, searchFieldFragment);
+//                transaction.commit();
             }
         }
     }//end DownloadBrewSearch
