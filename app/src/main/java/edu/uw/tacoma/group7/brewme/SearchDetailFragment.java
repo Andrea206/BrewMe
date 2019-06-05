@@ -189,7 +189,8 @@ public class SearchDetailFragment extends Fragment{
         writeReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mSharedPreferences.getBoolean("loggedin", true)) {
+                if(mSharedPreferences.getString("Email", null) != null) {
+                    Log.e("Log in status: ", mSharedPreferences.getString("Email", null));
                     Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
                     myIntent.putExtra("ReviewBrewery", mBrewery);
                     startActivity(myIntent);
