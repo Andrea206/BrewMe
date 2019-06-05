@@ -418,8 +418,7 @@ public class FavoritesDetailFragment extends Fragment {
 
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.fragment_favorites_container, reviewListFragment)
-                            .addToBackStack(null);
+                            .replace(R.id.fragment_favorites_container, reviewListFragment);
                     transaction.commit();
 
                     //mReviewListener.onReviewListFragmentInteraction(result);
