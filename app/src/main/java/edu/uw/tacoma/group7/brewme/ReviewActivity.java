@@ -64,7 +64,6 @@ public class ReviewActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_review_container, newReviewFragment)
-                .addToBackStack(null)
                 .commit();
     }
 

@@ -41,10 +41,8 @@ public class FavoritesListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnFavoritesListFragmentInteractionListener mListener;
-    public List<Brewery> mFavsList;
     public List<Integer> mFavsIds;
     private RecyclerView mRecyclerView;
-    public List<Brewery> mTempBrews;
     public HashMap<Integer, String> myFavs;
 
 
@@ -125,6 +123,10 @@ public class FavoritesListFragment extends Fragment {
         void onFavoritesListFragmentInteraction(String brewery);
     }
 
+    public HashMap<Integer, String> getFavorites() {
+        return myFavs;
+    }
+
     private class DownloadFavoritesTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -192,68 +194,6 @@ public class FavoritesListFragment extends Fragment {
                 }
             }
             return favs;
-        }
-    }
-
-    /**
-     * AsyncTask class used for connecting to database webservice.
-     */
-    public class DownloadBrewSearch extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String response = "";
-            HttpsURLConnection urlConnection = null;
-            for (String url : urls) {
-                try {
-                    URL urlObject = new URL(url);
-                    urlConnection = (HttpsURLConnection) urlObject.openConnection();
-                    urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-                    urlConnection.setRequestMethod("GET");
-                    //Added .addRequestProperty and .setRequestMethod("GET") per research about calling HTTP GET requests from Java
-                    // https://www.codingpedia.org/ama/how-to-handle-403-forbidden-http-status-code-in-java/
-                    //https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
-                    //https://stackoverflow.com/questions/24399294/android-asynctask-to-make-an-http-get-request
-
-                    InputStream content = urlConnection.getInputStream();
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s = "";
-
-                    while ((s = buffer.readLine()) != null) {
-                        response += s;
-                    }
-                } catch (Exception e) {
-                    response = "Unable to download the brewery, Reason: "
-                            + e.getMessage();
-                }
-                finally {
-                    if (urlConnection != null)
-                        urlConnection.disconnect();
-                }
-            }
-            return response;
-        }
-
-
-        /**
-         * Uses JSON string response fetched from webservice to parse into list object and pass to ListView.
-         * @param result String to be parsed.
-         */
-        @Override
-        protected void onPostExecute(String result){
-            try{
-                Log.i("Response ", result);
-
-                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
-                //JSONObject resultObject = new JSONObject(result);
-                if(result != null){
-                    mTempBrews = Brewery.parseBreweryJson(result);
-                }
-            } catch (JSONException e) {
-                Toast.makeText(getContext(), "Error retrieving favorites", Toast.LENGTH_LONG)
-                        .show();
-                //Log.d("onPostExecute error: ", e.getMessage(), new Throwable());
-            }
         }
     }
 }
