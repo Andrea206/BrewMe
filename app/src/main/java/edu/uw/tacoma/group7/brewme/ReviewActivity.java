@@ -65,6 +65,7 @@ public class ReviewActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_review_container, newReviewFragment)
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -168,7 +169,7 @@ public class ReviewActivity extends AppCompatActivity
                     //*** Debugging ***
                     Log.e("Error adding review, result string: ", result);
                     Log.e("Error adding review, error: ", resultObject.getString("error"));
-                    getSupportFragmentManager().popBackStack();
+                    getSupportFragmentManager().popBackStackImmediate();
                 }
             } catch (JSONException e) {}
 
