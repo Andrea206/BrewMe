@@ -5,6 +5,7 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 
 package edu.uw.tacoma.group7.brewme;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -17,7 +18,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,26 +27,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
 import javax.net.ssl.HttpsURLConnection;
-
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 /**
  * FavoritesDetailFragment displays extended information about a brewery that is selected
- * from the search results list.
- * Activities that contain this fragment must implement the
+ * from the favorites list. Activities that contain this fragment must implement the
  * {@link SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener} interface
  * to handle interaction events.
  */
@@ -54,33 +48,25 @@ public class FavoritesDetailFragment extends Fragment {
 
     private static final String BREWERY_DETAILS_PARAM = "favoritedetailsparam";
 
-    private Brewery mBrewery;
-    private ImageView mBreweryImage;
-    private TextView mDescription;
-    private Button mWriteReviewButton;
-    private Button mGoogleMapButton;
-    private Button mShareButton;
-    private FloatingActionButton mAddToFavsButton;
-    private Button mUserReviewsButton;
-    private String mContactNumber;
-
     private final int PICK_CONTACT = 1;
     private final int REQUEST_READ_CONTACTS = 2;
     private final int REQUEST_SEND_SMS = 3;
 
-    private OnFragmentInteractionListener mListener;
+    private Brewery mBrewery;
+    private String mContactNumber;
 
+    private OnFragmentInteractionListener mListener;
 
     public FavoritesDetailFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * SearchDetailFragment using the provided parameters.
+     * Use this factory method to create a new instance of SearchDetailFragment using the provided
+     * parameters.
      *
      * @param param a Brewery object.
-     * @return new instance of fragment SearchDetailFragment.
+     * @return new instance of FavoritesDetailFragment.
      */
     public static FavoritesDetailFragment getFavoritesDetailFragment(Brewery param) {
         FavoritesDetailFragment fragment = new FavoritesDetailFragment();
@@ -91,7 +77,8 @@ public class FavoritesDetailFragment extends Fragment {
     }
 
     /**
-     * Retrieves Brewery object selected from SearchListFragment.
+     * Retrieves Brewery object selected from FavoritesListFragment.
+     *
      * @param savedInstanceState Bundle.
      */
     @Override
@@ -105,6 +92,7 @@ public class FavoritesDetailFragment extends Fragment {
     /**
      * Creates view of formatted Brewery information text, and links to more features such as
      * launching a map of the brewery.
+     *
      * @param inflater LayoutInflater.
      * @param container ViewGroup.
      * @param savedInstanceState Bundle.
@@ -114,18 +102,17 @@ public class FavoritesDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites_detail, container, false);
-        mDescription = view.findViewById(R.id.fav_brewery_description);
+        TextView mDescription = view.findViewById(R.id.fav_brewery_description);
         String type = mBrewery.getBreweryType();
         String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
         String phone = mBrewery.getPhone();
-//        String phoneFormatted = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) +
-//                                "-" + phone.substring(6);
+
         String phoneFormatted = formatPhoneNumber(phone);
         mDescription.setText(mBrewery.getName() + "\n" +  "Type: " + capType +
                 "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
                 ", " + mBrewery.getState() + "\n" + phoneFormatted +
                 "\n" + mBrewery.getWebsite());
-        mGoogleMapButton = view.findViewById(R.id.fav_google_maps_button);
+        Button mGoogleMapButton = view.findViewById(R.id.fav_google_maps_button);
         mGoogleMapButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -137,7 +124,7 @@ public class FavoritesDetailFragment extends Fragment {
             }
         });
 
-        mShareButton = view.findViewById(R.id.fav_share_button);
+        Button mShareButton = view.findViewById(R.id.fav_share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -160,20 +147,17 @@ public class FavoritesDetailFragment extends Fragment {
 
         SharedPreferences sp = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
 
-        mWriteReviewButton = view.findViewById(R.id.fav_write_review_button);
+        Button mWriteReviewButton = view.findViewById(R.id.fav_write_review_button);
         mWriteReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(getActivity(), ReviewActivity.class);
-                //Bundle breweryBundle = new Bundle();
-                //breweryBundle.putSerializable("breweryObject", mBrewery);
                 myIntent.putExtra("ReviewBrewery", mBrewery);
-                //Log.e("Brewery Passed to Review Acivity: ", mBrewery.toString());
                 startActivity(myIntent);
             }
         });
 
-        mUserReviewsButton = view.findViewById(R.id.fav_user_reviews_button);
+        Button mUserReviewsButton = view.findViewById(R.id.fav_user_reviews_button);
         mUserReviewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,8 +165,6 @@ public class FavoritesDetailFragment extends Fragment {
                         mBrewery.getBreweryId());
             }
         });
-
-
         return view;
     }
 
@@ -210,33 +192,22 @@ public class FavoritesDetailFragment extends Fragment {
      * @param grantResults an array of numbers detailing the results of the request
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_READ_CONTACTS: {
-
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     startActivityForResult(intent, PICK_CONTACT);
-
                 }
                 return;
             }
-
             case REQUEST_SEND_SMS: {
-
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     startActivityForResult(intent, PICK_CONTACT);
-
                 }
                 return;
             }
-
         }
     }
 
@@ -251,28 +222,20 @@ public class FavoritesDetailFragment extends Fragment {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if(requestCode == PICK_CONTACT){
             if(resultCode==Activity.RESULT_OK){
-
                 Uri uri = data.getData();
                 ContentResolver contentResolver = getActivity().getContentResolver();
                 Cursor contentCursor = contentResolver.query(uri, null, null,null, null);
-
                 if(contentCursor.moveToFirst()){
                     String id = contentCursor.getString(contentCursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-
-                    String hasPhone =
-                            contentCursor.getString(contentCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-
-                    if (hasPhone.equalsIgnoreCase("1"))
-                    {
+                    String hasPhone = contentCursor.getString(contentCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                    if (hasPhone.equalsIgnoreCase("1")) {
                         Cursor phones = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
                                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,null, null);
                         phones.moveToFirst();
                         mContactNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         Log.i("phoneNUmber", "The phone number is "+ mContactNumber);
-
                     } else {
                         mContactNumber = "";
                     }
@@ -280,16 +243,12 @@ public class FavoritesDetailFragment extends Fragment {
                 super.onActivityResult(requestCode, resultCode, data);
             }
             try {
-//                String message = "https://www.google.com/maps/search/?api=1&query="
-//                        + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
-//                        + mBrewery.getState();
                 String mapLink = "https://www.google.com/maps/search/?api=1&query="
                         + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
                         + mBrewery.getState();
                 mapLink = mapLink.replaceAll(" ", "%20");
                 String message = "Check out this brewery I found...\n" + mBrewery.getName() +"\n"
                         + mBrewery.getWebsite();
-
                 SmsManager.getDefault().sendTextMessage(mContactNumber, null,
                         message,null, null);
                 SmsManager.getDefault().sendTextMessage(mContactNumber, null,
@@ -357,6 +316,9 @@ public class FavoritesDetailFragment extends Fragment {
         void onFragmentInteraction();
     }
 
+    /**
+     * Downloads all reviews for a Brewery from a database hosted on the cloud.
+     */
     private class DownloadReviews extends AsyncTask<String, Void, String> {
 
         @Override
@@ -369,12 +331,10 @@ public class FavoritesDetailFragment extends Fragment {
                     urlConnection = (HttpsURLConnection) urlObject.openConnection();
                     urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
                     urlConnection.setRequestMethod("GET");
-
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                     String s = "";
                     publishProgress();
-
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -397,43 +357,29 @@ public class FavoritesDetailFragment extends Fragment {
          */
         @Override
         protected void onPostExecute(String result){
-
-//            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG)
-//                    .show();
-
             JSONObject resultObject = null;
             try {
                 resultObject = new JSONObject(result);
                 if(resultObject.getJSONArray("names").length() == 0 || resultObject.getJSONArray("names") == null
-                        || resultObject.getBoolean("success") == false){
+                        || !resultObject.getBoolean("success")){
                     Toast.makeText(getActivity(), "No review for this brewery yet!", Toast.LENGTH_LONG)
                             .show();
-                }
-                else {
+                } else {
                     //Pass search input and search type to SearchListFragment
                     Bundle bundle = new Bundle();
                     bundle.putString("ReviewList", result);
                     ReviewListFragment reviewListFragment = new ReviewListFragment();
                     reviewListFragment.setArguments(bundle);
-
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_favorites_container, reviewListFragment)
                             .addToBackStack(null);
                     transaction.commit();
-
-                    //mReviewListener.onReviewListFragmentInteraction(result);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
         }
     }//end DownloadBrewSearch
-
-
-
 
 }

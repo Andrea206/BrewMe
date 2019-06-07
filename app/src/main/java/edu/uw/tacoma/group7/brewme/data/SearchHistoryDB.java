@@ -3,31 +3,31 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme.data;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
-
 import edu.uw.tacoma.group7.brewme.R;
 
 public class SearchHistoryDB {
 
-    public static final int DB_VERSION = 1;
-    public static final String DB_NAME = "SearchHistoryDB.db";
-    private SearchHistoryDBHelper mSearchHistoryDBHelper;
+    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "SearchHistoryDB.db";
     private SQLiteDatabase mSQLiteDatabase;
 
     public SearchHistoryDB(Context context) {
-        mSearchHistoryDBHelper = new SearchHistoryDBHelper(context, DB_NAME, null, DB_VERSION);
+        SearchHistoryDBHelper mSearchHistoryDBHelper = new SearchHistoryDBHelper(context, DB_NAME, null, DB_VERSION);
         mSQLiteDatabase = mSearchHistoryDBHelper.getWritableDatabase();
     }
 
     /**
      * Inserts the search history into the local sqlite table. Returns true if successful, false otherwise.
-     * @param searchInput
+     * @param searchInput the text being typed
      * @return true or false
      */
     public boolean insertSearchHistory(String searchInput) {
@@ -58,14 +58,14 @@ public class SearchHistoryDB {
                 null,    // don't group the rows
                 null,     // don't filter by row groups
                 null       // The sort order
-                );
-                c.moveToFirst();
-                ArrayList<String> list = new ArrayList<>();
-                for (int i = 0; i<c.getCount(); i++) {
-                    String searchInput = c.getString(0);
-                    list.add(searchInput);
-                    c.moveToNext();
-                }
+        );
+        c.moveToFirst();
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i<c.getCount(); i++) {
+            String searchInput = c.getString(0);
+            list.add(searchInput);
+            c.moveToNext();
+        }
         return list;
     }
 
@@ -87,6 +87,7 @@ public class SearchHistoryDB {
  * SearchHistoryDBHelper for creating sqlite tables.
  */
 class SearchHistoryDBHelper extends SQLiteOpenHelper {
+
     private final String CREATE_HISTORY_SQL;
     private final String DROP_HISTORY_SQL;
 

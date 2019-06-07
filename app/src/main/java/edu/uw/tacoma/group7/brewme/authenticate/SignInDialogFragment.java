@@ -3,7 +3,9 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme.authenticate;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -22,8 +24,9 @@ import edu.uw.tacoma.group7.brewme.R;
  */
 public class SignInDialogFragment extends DialogFragment {
 
-    private SignInListenerInterface mListener;
     public static final String SIGN_IN_EMAIL = "email";
+
+    private SignInListenerInterface mListener;
 
     /**
      * Dialog that pops up for users to log in. Email and password input boxes and

@@ -5,6 +5,7 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 
 package edu.uw.tacoma.group7.brewme;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -27,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
@@ -36,15 +36,12 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 import edu.uw.tacoma.group7.brewme.model.Brewery;
-import edu.uw.tacoma.group7.brewme.model.Review;
 
 /**
  * SearchDetailFragment displays extended information about a brewery that is selected
- * from the search results list.
- * Activities that contain this fragment must implement the
+ * from the search results list. Activities that contain this fragment must implement the
  * {@link SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener} interface
  * to handle interaction events.
  */
@@ -52,26 +49,15 @@ public class SearchDetailFragment extends Fragment{
 
     private static final String BREWERY_DETAILS_PARAM = "brewerydetailsparam";
 
-    private Brewery mBrewery;
-    private ImageView mBreweryImage;
-    private TextView mDescription;
-    private Button mWriteReviewButton;
-    private Button mGoogleMapButton;
-    private Button mShareButton;
-    private FloatingActionButton mAddToFavsButton;
-    private Button mUserReviewsButton;
-    private SharedPreferences mSharedPreferences;
-    private List<Review> mReviewList;
-    private String mContactNumber;
-
     private final int PICK_CONTACT = 1;
     private final int REQUEST_READ_CONTACTS = 2;
     private final int REQUEST_SEND_SMS = 3;
 
+    private Brewery mBrewery;
+    private SharedPreferences mSharedPreferences;
+    private String mContactNumber;
+
     private OnAddToFavoritesFragmentInteractionListener mListener;
-    private ReviewListFragment.OnListFragmentInteractionListener mReviewListener;
-
-
 
     public SearchDetailFragment() {
         // Required empty public constructor
@@ -94,6 +80,7 @@ public class SearchDetailFragment extends Fragment{
 
     /**
      * Retrieves Brewery object selected from SearchListFragment.
+     *
      * @param savedInstanceState Bundle.
      */
     @Override
@@ -108,6 +95,7 @@ public class SearchDetailFragment extends Fragment{
     /**
      * Creates view of formatted Brewery information text, and links to more features such as
      * launching a map of the brewery.
+     *
      * @param inflater LayoutInflater.
      * @param container ViewGroup.
      * @param savedInstanceState Bundle.
@@ -117,7 +105,7 @@ public class SearchDetailFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_detail, container, false);
-        mDescription = view.findViewById(R.id.brewery_description);
+        TextView mDescription = view.findViewById(R.id.brewery_description);
         String type = mBrewery.getBreweryType();
         String capType = type.substring(0, 1).toUpperCase() + type.substring(1);
         String phone = mBrewery.getPhone();
@@ -126,7 +114,7 @@ public class SearchDetailFragment extends Fragment{
                 "\n" + mBrewery.getStreet() + " " + mBrewery.getCity() +
                 ", " + mBrewery.getState() + "\n" + phoneFormatted +
                 "\n" + mBrewery.getWebsite());
-        mGoogleMapButton = view.findViewById(R.id.google_maps_button);
+        Button mGoogleMapButton = view.findViewById(R.id.google_maps_button);
         mGoogleMapButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -138,7 +126,7 @@ public class SearchDetailFragment extends Fragment{
             }
         });
 
-        mUserReviewsButton = view.findViewById(R.id.user_reviews_button);
+        Button mUserReviewsButton = view.findViewById(R.id.user_reviews_button);
         mUserReviewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +136,7 @@ public class SearchDetailFragment extends Fragment{
         });
 
 
-        mShareButton = view.findViewById(R.id.share_button);
+        Button mShareButton = view.findViewById(R.id.share_button);
         mShareButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -184,8 +172,7 @@ public class SearchDetailFragment extends Fragment{
         } else {
             fab.hide();
         }
-
-        mWriteReviewButton = view.findViewById(R.id.write_review_button);
+        Button mWriteReviewButton = view.findViewById(R.id.write_review_button);
         mWriteReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,29 +221,20 @@ public class SearchDetailFragment extends Fragment{
                                            String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_READ_CONTACTS: {
-
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     startActivityForResult(intent, PICK_CONTACT);
-
                 }
                 return;
             }
 
             case REQUEST_SEND_SMS: {
-
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
                     startActivityForResult(intent, PICK_CONTACT);
-
                 }
                 return;
             }
-
         }
     }
 
@@ -300,16 +278,12 @@ public class SearchDetailFragment extends Fragment{
                 super.onActivityResult(requestCode, resultCode, data);
             }
             try {
-//                String message = "https://www.google.com/maps/search/?api=1&query="
-//                        + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
-//                        + mBrewery.getState();
                 String mapLink = "https://www.google.com/maps/search/?api=1&query="
                         + mBrewery.getName() + "%2C" + mBrewery.getCity() + "%2C"
                         + mBrewery.getState();
                 mapLink = mapLink.replaceAll(" ", "%20");
                 String message = "Check out this brewery I found...\n" + mBrewery.getName() +"\n"
                                  + mBrewery.getWebsite();
-
                 SmsManager.getDefault().sendTextMessage(mContactNumber, null,
                         message,null, null);
                 SmsManager.getDefault().sendTextMessage(mContactNumber, null,
@@ -372,30 +346,17 @@ public class SearchDetailFragment extends Fragment{
         mListener = null;
     }
 
-
+    /**
+     * Interface for the sdd to favorites floating action button listener.
+     */
     public interface OnAddToFavoritesFragmentInteractionListener {
         void onAddToFavoritesFragmentInteraction(String id, String name, String city, String state);
     }
-
-
-
-
-
-
 
     /**
      * AsyncTask class used for connecting to database webservice.
      */
     private class DownloadReviews extends AsyncTask<String, Void, String> {
-
-        //private ProgressBar mProgressBar;
-
-//        @Override
-//        protected void onProgressUpdate(Void... progress) {
-//            mProgressBar = getActivity().findViewById(R.id.progressBar);
-//            mProgressBar.setVisibility(View.VISIBLE);
-//            mProgressBar.getProgress();
-//        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -407,7 +368,6 @@ public class SearchDetailFragment extends Fragment{
                     urlConnection = (HttpsURLConnection) urlObject.openConnection();
                     urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
                     urlConnection.setRequestMethod("GET");
-
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                     String s = "";
@@ -428,64 +388,36 @@ public class SearchDetailFragment extends Fragment{
             return response;
         }
 
-
         /**
          * Uses JSON string response fetched from webservice to parse into list object.
          * @param result String to be parsed.
          */
         @Override
         protected void onPostExecute(String result){
-
-//            Toast.makeText(getActivity(), result, Toast.LENGTH_LONG)
-//                    .show();
-
             JSONObject resultObject = null;
             try {
                 resultObject = new JSONObject(result);
-                if(resultObject.getJSONArray("names").length() == 0 || resultObject.getJSONArray("names") == null
-                || resultObject.getBoolean("success") == false){
+                if(resultObject.getJSONArray("names").length() == 0
+                        || resultObject.getJSONArray("names") == null
+                        || !resultObject.getBoolean("success")) {
                     Toast.makeText(getActivity(), "No review for this brewery yet!", Toast.LENGTH_LONG)
                             .show();
-                }
-                else {
+                } else {
                 //Pass search input and search type to SearchListFragment
                 Bundle bundle = new Bundle();
                 bundle.putString("ReviewList", result);
                 ReviewListFragment reviewListFragment = new ReviewListFragment();
                 reviewListFragment.setArguments(bundle);
-
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_search_container, reviewListFragment)
-                .addToBackStack(null);
-        transaction.commit();
-
-                    //mReviewListener.onReviewListFragmentInteraction(result);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_search_container, reviewListFragment)
+                    .addToBackStack(null);
+                transaction.commit();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
         }
     }//end DownloadBrewSearch
 
-
-
 }
-
-
-//            try{
-////                Log.e("Response ", result);
-////
-////                // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
-////                JSONObject resultObject = new JSONObject(result);
-////                if(resultObject.getBoolean("success") == true){
-////                    mReviewList = Review.parseReviewJson(resultObject.getString("names"))
-////
-////                }
-////            } catch (JSONException e) {
-////                Toast.makeText(getContext(), "No reviews found", Toast.LENGTH_LONG)
-////                        .show();
-////            }

@@ -3,13 +3,14 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,16 +22,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import org.json.JSONException;
-import edu.uw.tacoma.group7.brewme.model.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
-
 import javax.net.ssl.HttpsURLConnection;
-
-import static android.widget.LinearLayout.HORIZONTAL;
+import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 /**
  * A fragment representing a list of Brewery search results.
@@ -42,13 +40,11 @@ public class SearchListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_SEARCH_KEY= "searchKey";
     private static final String ARG_SEARCH_VALUE= "searchValue";
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-    private List<Brewery> mBrewList;
-    private RecyclerView mRecyclerview;
-    private String mSearchKey;
-    private String mSearchValue;
 
+    private int mColumnCount = 1;
+
+    private RecyclerView mRecyclerview;
+    private OnListFragmentInteractionListener mListener;
 
     public SearchListFragment() {
     }
@@ -64,6 +60,7 @@ public class SearchListFragment extends Fragment {
 
     /**
      * Checks for column count available for device being used (determined by screen size).
+     *
      * @param savedInstanceState Bundle.
      */
     @Override
@@ -78,21 +75,18 @@ public class SearchListFragment extends Fragment {
 
     /**
      * Creates view for fragment based on device (phone vs. tablet), starts brewery search download.
+     *
      * @param inflater LayoutInflater.
      * @param container ViewGroup.
      * @param savedInstanceState Bundle.
      * @return View.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.searchlist_recyclerview, container, false);
-
-
         Bundle bundle = this.getArguments();
-        mSearchKey = bundle.getString(ARG_SEARCH_KEY);
-        mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
-
+        String mSearchKey = bundle.getString(ARG_SEARCH_KEY);
+        String mSearchValue = bundle.getString(ARG_SEARCH_VALUE);
         FloatingActionButton floatingActionButton = (FloatingActionButton)
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
@@ -106,7 +100,6 @@ public class SearchListFragment extends Fragment {
             } else {
                 mRecyclerview.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
             new DownloadBrewSearch().execute("https://api.openbrewerydb.org/breweries?" + mSearchKey + "=" + mSearchValue);
         }
 
@@ -210,7 +203,7 @@ public class SearchListFragment extends Fragment {
                 // Commented out JSONObject conversion, changed check and parseBreweryJson parameter to match generic String results
                 //JSONObject resultObject = new JSONObject(result);
                 if(result != null){
-                    mBrewList = Brewery.parseBreweryJson(result);
+                    List<Brewery> mBrewList = Brewery.parseBreweryJson(result);
 
                     //Show list
                     if(!mBrewList.isEmpty()){
@@ -224,11 +217,6 @@ public class SearchListFragment extends Fragment {
                 Toast.makeText(getContext(), "No search results found", Toast.LENGTH_LONG)
                         .show();
                 getFragmentManager().popBackStackImmediate();
-//                SearchFieldFragment searchFieldFragment = new SearchFieldFragment();
-//                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_search_container, searchFieldFragment);
-//                transaction.commit();
             }
         }
     }//end DownloadBrewSearch

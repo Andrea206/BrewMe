@@ -1,4 +1,11 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
+
 package edu.uw.tacoma.group7.brewme.model;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,13 +18,6 @@ import java.util.List;
  */
 public class Review implements Serializable {
 
-    private int mBreweryId;
-    private String mBreweryName;
-    private  String mUsername;
-    private String mTitle;
-    private double mRating;
-    private String mReview;
-
     public static final String BREWERY_ID = "brewery_id";
     public static final String BREWERY_NAME = "brewery_name";
     public static final String USERNAME = "username";
@@ -25,9 +25,14 @@ public class Review implements Serializable {
     public static final String RATING = "rating";
     public static final String REVIEW = "review";
 
+    private int mBreweryId;
+    private String mBreweryName;
+    private  String mUsername;
+    private String mTitle;
+    private double mRating;
+    private String mReview;
 
-    public Review(int breweryId, String breweryName,
-                  String username, String title,
+    public Review(int breweryId, String breweryName, String username, String title,
                   double rating, String review){
         this.mBreweryId = breweryId;
         this.mBreweryName = breweryName;
@@ -94,7 +99,6 @@ public class Review implements Serializable {
             if(!reviewJson.contains("\"brewery_id\":"))
                 throw new JSONException("Could not parse breweryJSON due to formatting.");
             JSONArray arr = new JSONArray(reviewJson);
-
             for(int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 Review review = new Review(obj.getInt(Review.BREWERY_ID), obj.getString(Review.BREWERY_NAME),
@@ -113,8 +117,3 @@ public class Review implements Serializable {
     }
 
 }// end Review class
-
-
-
-
-

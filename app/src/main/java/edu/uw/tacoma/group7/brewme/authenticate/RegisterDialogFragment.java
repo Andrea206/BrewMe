@@ -5,6 +5,7 @@ Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
 
 package edu.uw.tacoma.group7.brewme.authenticate;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,7 +15,6 @@ import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import edu.uw.tacoma.group7.brewme.R;
 
@@ -25,11 +25,12 @@ import edu.uw.tacoma.group7.brewme.R;
  */
 public class RegisterDialogFragment extends DialogFragment {
 
-    private RegisterListenerInterface mListener;
     public static final String SIGN_IN_EMAIL = "email";
     public static final String REGISTER_USERNAME = "Username";
     public static final String FIRST_NAME = "first";
     public static final String LAST_NAME = "last";
+
+    private RegisterListenerInterface mListener;
 
     /**
      * Dialog that opens when a user wants to register for the BrewMe app. Input boxes

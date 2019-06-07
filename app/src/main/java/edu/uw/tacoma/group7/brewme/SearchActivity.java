@@ -3,6 +3,7 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
 
 import android.content.Context;
@@ -16,10 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,7 +26,6 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 
@@ -39,18 +37,15 @@ public class SearchActivity extends AppCompatActivity
         SearchListFragment.OnListFragmentInteractionListener,
         SearchDetailFragment.OnAddToFavoritesFragmentInteractionListener,
         SearchFieldFragment.OnSearchFieldFragmentInteractionListener,
-ReviewListFragment.OnListFragmentInteractionListener{
-
-
-    private SearchListFragment.OnListFragmentInteractionListener mListener;
-    private SearchDetailFragment mDetailFragment;
-    private JSONObject mFavArguments;
+        ReviewListFragment.OnListFragmentInteractionListener {
 
     public static final String BREWERY_ID = "brewery_id";
     public static final String BREWERY_NAME= "brewery_name";
     public static final String USERNAME = "username";
     public static final String CITY = "city";
     public static final String STATE = "state";
+
+    private JSONObject mFavArguments;
 
     /**
      * Launches SearchFieldFragment, which contains input field for search function.
@@ -80,7 +75,7 @@ ReviewListFragment.OnListFragmentInteractionListener{
      */
     @Override
     public void onBrewListFragmentInteraction(Brewery item) {
-        mDetailFragment = SearchDetailFragment.getSearchDetailFragment(item);
+        SearchDetailFragment mDetailFragment = SearchDetailFragment.getSearchDetailFragment(item);
 
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction()
@@ -94,9 +89,18 @@ ReviewListFragment.OnListFragmentInteractionListener{
 
     @Override
     public void onSearchFieldFragmentInteraction(Uri uri) {
-
+        // Not used
     }
 
+    /**
+     * Builds a JSON object from the Strings passed and executes an async task to store the selected
+     * Brewery in a database hosted in the cloud.
+     *
+     * @param id the Brewery's Id
+     * @param name the Brewery's name
+     * @param city the city where the Brewery is located
+     * @param state the state where the Brewery is located
+     */
     @Override
     public void onAddToFavoritesFragmentInteraction(String id, String name, String city, String state) {
         Log.i("add to favs button", "in the listener");
@@ -121,11 +125,13 @@ ReviewListFragment.OnListFragmentInteractionListener{
 
     @Override
     public void onReviewListFragmentInteraction(String result) {
-
+        // Not used
     }
 
+    /**
+     * Stores the Brewery selected in a database hosted in the cloud.
+     */
     private class AddToFavsAsyncTask extends AsyncTask<String, Void, String> {
-
 
         private String TAG = "AsyncTask error";
 
@@ -172,7 +178,7 @@ ReviewListFragment.OnListFragmentInteractionListener{
         protected void onPostExecute(String result) {
             try {
                 JSONObject resultObject = new JSONObject(result);
-                if(resultObject.getBoolean("success") == true) {
+                if(resultObject.getBoolean("success")) {
                     Toast.makeText(getApplicationContext(),
                             "Added to favorites successfully!", Toast.LENGTH_SHORT)
                             .show();
