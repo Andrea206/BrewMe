@@ -3,7 +3,9 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,18 +32,11 @@ import edu.uw.tacoma.group7.brewme.data.SearchHistoryDB;
  */
 public class SearchFieldFragment extends Fragment {
 
-    private static final String SEARCH_FIELD_PARAM = "searchfieldparam";
-    private String BY_CITY = "by_city";
-    private String BY_STATE = "by_state";
-    private String BY_NAME = "by_name";
     private static String mSearchText;
-    private RadioGroup mRadioGroup;
-    private RadioButton mRadioButton;
     private AutoCompleteTextView mAutoCompleteTextView;
-    private Button mSearchButton;
     private SearchHistoryDB mSearchHistoryDB;
+
     private OnSearchFieldFragmentInteractionListener mListener;
-    private ArrayList<String> mHistoryArrayList;
 
     public SearchFieldFragment() {
         // Required empty public constructor
@@ -53,8 +48,7 @@ public class SearchFieldFragment extends Fragment {
      * @return A new instance of fragment SearchFieldFragment.
      */
     public static SearchFieldFragment getSearchFieldFragment() {
-        SearchFieldFragment fragment = new SearchFieldFragment();
-        return fragment;
+        return new SearchFieldFragment();
     }
 
     @Override
@@ -66,6 +60,7 @@ public class SearchFieldFragment extends Fragment {
      * Creates view for search input that includes OnClickListener for search button. When search button
      * is clicked the input text from user and search type is captured in a Bundle object and passed to
      * a new SearchListFragment.
+     *
      * @param inflater LayoutInflater.
      * @param container ViewGroup.
      * @param savedInstanceState Bundle.
@@ -84,7 +79,7 @@ public class SearchFieldFragment extends Fragment {
 
         //Attach search history and adapter only if Sqlite db has values present
         if(!mSearchHistoryDB.isTableEmpty()){
-            mHistoryArrayList = mSearchHistoryDB.getHistory();
+            ArrayList<String> mHistoryArrayList = mSearchHistoryDB.getHistory();
             //This adapter displays the search history  autocomplete text
             //**Must pass a String array to this adapter
             ArrayAdapter<String> searchHistoryAdapter = new ArrayAdapter<String>(getContext(),
@@ -97,7 +92,7 @@ public class SearchFieldFragment extends Fragment {
                 getActivity().findViewById(R.id.fab);
         floatingActionButton.hide();
 
-        mSearchButton = view.findViewById(R.id.button);
+        Button mSearchButton = view.findViewById(R.id.button);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +128,7 @@ public class SearchFieldFragment extends Fragment {
 
     /**
      * Passes uri object to OnSearchFieldFragmentInteractionListener.
+     *
      * @param uri Uri object.
      */
     public void onButtonPressed(Uri uri) {
@@ -143,6 +139,7 @@ public class SearchFieldFragment extends Fragment {
 
     /**
      * Attaches required OnSearchFieldFragmentInteractionListener, throws error if listener not implemented.
+     *
      * @param context Context object.
      */
     @Override
@@ -177,20 +174,24 @@ public class SearchFieldFragment extends Fragment {
     /**
      * Toggles the search type string needed to correctly format the GET statement passed to the webservice.
      * For example to search for a brewery by name the search key must be "by_name" in the GET statement.
+     *
      * @return search 'key' string.
      */
     private String getSearchKey() {
         String result;
-        mRadioGroup = (RadioGroup) getActivity().findViewById(R.id.radio_group);
+        RadioGroup mRadioGroup = (RadioGroup) getActivity().findViewById(R.id.radio_group);
         int selectedId = mRadioGroup.getCheckedRadioButtonId();
-        mRadioButton = (RadioButton) getActivity().findViewById(selectedId);
+        RadioButton mRadioButton = (RadioButton) getActivity().findViewById(selectedId);
         String selectedText = mRadioButton.getText().toString();
         Log.e("Selected button", selectedText);
         if(selectedText.equals("Search by city")) {
+            String BY_CITY = "by_city";
             result = BY_CITY;
         } else if (selectedText.equals("Search by state")) {
+            String BY_STATE = "by_state";
             result = BY_STATE;
         } else {
+            String BY_NAME = "by_name";
             result = BY_NAME;
         }
         return result;

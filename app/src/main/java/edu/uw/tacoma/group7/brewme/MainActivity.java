@@ -3,7 +3,9 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,8 +35,8 @@ import edu.uw.tacoma.group7.brewme.data.SearchHistoryDB;
 /**
  * MainActivity launches at start up of app, and is parent to login and register fragments.
  */
-public class MainActivity extends AppCompatActivity
-implements SignInDialogFragment.SignInListenerInterface,
+public class MainActivity extends AppCompatActivity implements
+        SignInDialogFragment.SignInListenerInterface,
         RegisterDialogFragment.RegisterListenerInterface {
 
     public static String EMAIL = "email";
@@ -42,18 +44,18 @@ implements SignInDialogFragment.SignInListenerInterface,
     public static String USERNAME = "username";
     public static String FIRST_NAME = "first";
     public static String LAST_NAME = "last";
+
     private SharedPreferences mSharedPreferences;
     private Button loginBtn;
     private Button logoutBtn;
-    private Button mFavsButton;
     private String mEmail;
     private String mPassword;
     private JSONObject mArguments;
     private JSONObject mRegisterArguments;
-    private SearchHistoryDB mSearchHistoryDB;
 
     /**
      * Checks for login, automatically logs in using SharedPreferences.
+     *
      * @param savedInstanceState a Bundle object
      */
     @Override
@@ -63,7 +65,7 @@ implements SignInDialogFragment.SignInListenerInterface,
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mSearchHistoryDB = new SearchHistoryDB(this);
+        SearchHistoryDB mSearchHistoryDB = new SearchHistoryDB(this);
         //If History table has values from previous session, delete table
         if (!mSearchHistoryDB.isTableEmpty()) {
             mSearchHistoryDB.deleteHistory();   // New table created in SearchFieldFragment
@@ -71,7 +73,7 @@ implements SignInDialogFragment.SignInListenerInterface,
 
         loginBtn = (Button) findViewById(R.id.login_btn);
         logoutBtn = (Button) findViewById(R.id.logout_btn);
-        mFavsButton = findViewById(R.id.angry_btn);
+        Button mFavsButton = findViewById(R.id.angry_btn);
 
         //Automatically log in if prefs are saved to device.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -85,6 +87,7 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Launches the login dialog.
+     *
      * @param v a View object
      */
     public void onClickLoginBtn(View v) {
@@ -95,6 +98,7 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Logs the user out of the application.
+     *
      * @param v a View object
      */
     public void onClickLogoutBtn(View v) {
@@ -111,6 +115,7 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Called by the search button to launch the SearchActivity.
+     *
      * @param view a View object
      */
     public void launchSearchActivity(View view){
@@ -120,6 +125,7 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Called by the search button to launch the FavoritesActivity.
+     *
      * @param view a View object
      */
     public void launchFavoritesActivity(View view) {
@@ -139,6 +145,7 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Checks if register input text is complete (no fields missing) and passwords match.
+     *
      * @param firstName String.
      * @param lastName String.
      * @param userName String.
@@ -163,9 +170,9 @@ implements SignInDialogFragment.SignInListenerInterface,
             registerDialogFragment.setArguments(bundle);
             registerDialogFragment.show(fragmentTransaction, "Register");
 
-            //Check if not all the fields are filled.
+        //Check if not all the fields are filled.
         } else if(firstName.equals("") || lastName.equals("") || userName.equals("") ||
-                email.equals("") || pwd.equals("") || pwd2.equals("")) {
+                  email.equals("") || pwd.equals("") || pwd2.equals("")) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT)
                     .show();
             Bundle bundle = new Bundle();
@@ -183,16 +190,14 @@ implements SignInDialogFragment.SignInListenerInterface,
 
     /**
      * Confirm that the email and password are in the online db.
+     *
      * @param email String.
      * @param password String.
      */
     private void checkLoginInfo(String email, String password) {
-//        boolean b = false;
         StringBuilder url = new StringBuilder(getString(R.string.post_login));
-
         mEmail = email;
         mPassword = password;
-
         mArguments = new JSONObject();
         try {
             mArguments.put(EMAIL, email);
@@ -288,7 +293,7 @@ implements SignInDialogFragment.SignInListenerInterface,
         protected void onPostExecute(String result) {
             try {
                 JSONObject resultObject = new JSONObject(result);
-                if(resultObject.getBoolean("success") == true) {
+                if(resultObject.getBoolean("success")) {
 
                     Toast.makeText(getApplicationContext(), "Registered " + mEmail, Toast.LENGTH_SHORT)
                             .show();
@@ -368,7 +373,7 @@ implements SignInDialogFragment.SignInListenerInterface,
         protected void onPostExecute(String result) {
             try {
                 JSONObject resultObject = new JSONObject(result);
-                if(resultObject.getBoolean("success") == true) {
+                if(resultObject.getBoolean("success")) {
 
                     mSharedPreferences
                             .edit()

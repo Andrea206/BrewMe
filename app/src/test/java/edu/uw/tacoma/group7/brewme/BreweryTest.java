@@ -7,9 +7,7 @@ package edu.uw.tacoma.group7.brewme;
 
 import org.json.JSONException;
 import org.junit.Test;
-
 import edu.uw.tacoma.group7.brewme.model.Brewery;
-
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;

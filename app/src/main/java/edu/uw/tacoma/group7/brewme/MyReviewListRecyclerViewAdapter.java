@@ -1,3 +1,9 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
+
 package edu.uw.tacoma.group7.brewme;
 
 import android.support.v7.widget.RecyclerView;
@@ -6,26 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import edu.uw.tacoma.group7.brewme.ReviewListFragment.OnListFragmentInteractionListener;
 import edu.uw.tacoma.group7.brewme.model.Review;
-
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Review} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * MyReviewListRecyclerViewAdapter is used to create a list view of the reviews for a specific
+ * Brewery, which is displayed in the ReviewListFragment {@link RecyclerView.Adapter} that can
+ * display a {@link Review}.
  */
 public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyReviewListRecyclerViewAdapter.ViewHolder> {
 
     private final List<Review> mValues;
-    private final OnListFragmentInteractionListener mListener;
 
+    /**
+     * Constructor for MyReviewListRecyclerViewAdapter, requires a List<Review> object and
+     * OnListFragmentInteractionListener.
+     *
+     * @param items List<Review> object.
+     * @param listener OnListFragmentInteractionListener.
+     */
     public MyReviewListRecyclerViewAdapter(List<Review> items, OnListFragmentInteractionListener listener) {
         mValues = items;
-        mListener = listener;
     }
 
+    /**
+     * View holder method that calls parent view and returns created ViewHolder.
+     *
+     * @param parent ViewGroup.
+     * @param viewType integer id.
+     * @return ViewHolder.
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -33,6 +50,12 @@ public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyRevi
         return new ViewHolder(view);
     }
 
+    /**
+     * Populates the Viewholder with formatted list data.
+     *
+     * @param holder ViewHolder.
+     * @param position integer value.
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
@@ -44,11 +67,19 @@ public class MyReviewListRecyclerViewAdapter extends RecyclerView.Adapter<MyRevi
 
     }
 
+    /**
+     * Returns the number of items in review list object.
+     *
+     * @return integer.
+     */
     @Override
     public int getItemCount() {
         return mValues.size();
     }
 
+    /**
+     * ViewHolder class.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mBreweryName;

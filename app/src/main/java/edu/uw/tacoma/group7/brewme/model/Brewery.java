@@ -3,7 +3,9 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme.model;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,15 +17,6 @@ import java.util.List;
  * Brewery class that defines custom data structure for holding brewery information.
  */
 public class Brewery implements Serializable {
-    private String mName;
-    private String mBreweryType;
-    private String mStreet;
-    private String mCity;
-    private String mState;
-    private String mPostalCode;
-    private String mPhone;
-    private String mWebsite;
-    private String mBrewId;
 
     public static final String NAME = "name";
     public static final String BREWERY_TYPE = "brewery_type";
@@ -35,6 +28,15 @@ public class Brewery implements Serializable {
     public static final String WEBSITE = "website_url";
     public static final String ID = "id";
 
+    private String mName;
+    private String mBreweryType;
+    private String mStreet;
+    private String mCity;
+    private String mState;
+    private String mPostalCode;
+    private String mPhone;
+    private String mWebsite;
+    private String mBrewId;
 
     public Brewery(String name, String breweryType, String street, String city, String state,
                    String postalCode, String phone, String website, String brewId) {
@@ -108,19 +110,14 @@ public class Brewery implements Serializable {
      * Parses JSON array into a List data structure containing custom Brewery objects.
      * @param breweryJson JSON string search results returned from web service.
      * @return List containing Brewery objects.
-     * @throws JSONException
+     * @throws JSONException if the JSON string does not contain an 'id' field
      */
     public static List<Brewery> parseBreweryJson(String breweryJson) throws JSONException {
         ArrayList<Brewery> breweryList = new ArrayList<>();
         if(breweryJson != null){
-            /**
-             *
-             */
             if(!breweryJson.contains("\"id\":"))
                 throw new JSONException("Could not parse breweryJSON due to formatting.");
             JSONArray arr = new JSONArray(breweryJson);
-
-
             for(int i = 0; i < arr.length(); i++) {
                 JSONObject obj = arr.getJSONObject(i);
                 Brewery brewery = new Brewery(obj.getString(Brewery.NAME),
@@ -133,7 +130,5 @@ public class Brewery implements Serializable {
         }
         return breweryList;
     }//end parseBreweryJson
-
-
 
 }//end Brewery

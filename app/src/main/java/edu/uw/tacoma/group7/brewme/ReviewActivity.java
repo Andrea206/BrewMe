@@ -3,11 +3,12 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +31,9 @@ import edu.uw.tacoma.group7.brewme.model.Review;
  */
 public class ReviewActivity extends AppCompatActivity
         implements View.OnClickListener, Serializable,
-        NewReviewFragment.OnFragmentInteractionListener{
+        NewReviewFragment.OnFragmentInteractionListener {
+
     private JSONObject mArguments;
-    private Brewery reviewBrewery;
 
     /**
      * ReviewActivity onCreate retrieves Brewery object from the SearchDetailFragment.
@@ -43,13 +44,10 @@ public class ReviewActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
-        // Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         //Brewery object passed from Write Review button
         Intent detailIntent = getIntent();
-        reviewBrewery = (Brewery) detailIntent.getSerializableExtra("ReviewBrewery");
-
+        Brewery reviewBrewery = (Brewery) detailIntent.getSerializableExtra("ReviewBrewery");
         String breweryId = reviewBrewery.getBreweryId();
         String breweryName = reviewBrewery.getName();
         //Log.e("Brewery ID: ", breweryId);
@@ -58,10 +56,8 @@ public class ReviewActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putString("breweryId", breweryId);
         bundle.putString("breweryName", breweryName);
-
         NewReviewFragment newReviewFragment = new NewReviewFragment();
         newReviewFragment.setArguments(bundle);
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_review_container, newReviewFragment)
@@ -77,12 +73,13 @@ public class ReviewActivity extends AppCompatActivity
     /**
      * Fragment interaction executes when Post Review button is pushed,
      * adding a new review to the Reviews database table.
+     *
      * @param review Review object.
      */
     @Override
     public void onNewReviewFragmentInteraction(Review review) {
         StringBuilder url = new StringBuilder(getString(R.string.add_review_endpoint));
-//Construct a JSONObject to build a formatted message to send.
+        //Construct a JSONObject to build a formatted message to send.
         mArguments = new JSONObject();
         try {
             mArguments.put(Review.BREWERY_ID, review.getBreweryId());
@@ -94,9 +91,7 @@ public class ReviewActivity extends AppCompatActivity
 
             // *** Debugging ***
             Log.e("JSON values in doInBackground: ", mArguments.toString());
-
             new AddReviewAsyncTask().execute(url.toString());
-
         } catch (JSONException e) {
             Toast.makeText(this, "Error with JSON creation: " + e.getMessage()
                     , Toast.LENGTH_SHORT).show();
@@ -109,9 +104,11 @@ public class ReviewActivity extends AppCompatActivity
      * AddReviewAsyncTask inner class for connecting and posting a new review to the database.
      */
     private class AddReviewAsyncTask extends AsyncTask<String, Void, String> {
+
         /**
          * doInBackground makes connection to Reviews table in database
-         * and attempts a POST request
+         * and attempts a POST request.
+         *
          * @param urls String url values.
          * @return String response from the database webservice.
          */
@@ -153,13 +150,14 @@ public class ReviewActivity extends AppCompatActivity
 
         /**
          * onPostExecute passes the result from doInBackground into a JSON object.
+         *
          * @param result String value.
          */
         @Override
         protected void onPostExecute(String result) {
             try {
                 JSONObject resultObject = new JSONObject(result);
-                if (resultObject.getBoolean("success") == true) {
+                if (resultObject.getBoolean("success")) {
                     Toast.makeText(getApplicationContext(), "Review added successfully", Toast.LENGTH_SHORT)
                             .show();
                     getSupportFragmentManager().popBackStackImmediate();

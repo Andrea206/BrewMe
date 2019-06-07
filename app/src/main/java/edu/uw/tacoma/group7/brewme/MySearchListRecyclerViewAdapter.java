@@ -3,32 +3,32 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
-import android.support.v7.widget.DividerItemDecoration;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import edu.uw.tacoma.group7.brewme.SearchListFragment.OnListFragmentInteractionListener;
-import edu.uw.tacoma.group7.brewme.model.*;
 import java.util.List;
-
-import static android.widget.LinearLayout.HORIZONTAL;
+import edu.uw.tacoma.group7.brewme.SearchListFragment.OnListFragmentInteractionListener;
+import edu.uw.tacoma.group7.brewme.model.Brewery;
 
 /**
  * MySearchListRecyclerViewAdapter is used to create a list view of the search results,
- * which is displayed in the SearchListFragment.
- * {@link RecyclerView.Adapter} that can display a {@link Brewery} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * which is displayed in the SearchListFragment {@link RecyclerView.Adapter} that can display a
+ * {@link Brewery} and makes a call to the specified {@link OnListFragmentInteractionListener}.
  */
-public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySearchListRecyclerViewAdapter.ViewHolder> {
+public class MySearchListRecyclerViewAdapter extends
+        RecyclerView.Adapter<MySearchListRecyclerViewAdapter.ViewHolder> {
 
     private final List<Brewery> mValues;
     private final OnListFragmentInteractionListener mListener;
 
     /**
      * Constructor for MySearchListRecyclerViewAdapter, requires a List<Brewery> object and OnListFragmentInteractionListener.
+     *
      * @param items List<Brewery> object.
      * @param listener OnListFragmentInteractionListener.
      */
@@ -39,6 +39,7 @@ public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySear
 
     /**
      * View holder method that calls parent view and returns created ViewHolder.
+     *
      * @param parent ViewGroup.
      * @param viewType integer id.
      * @return ViewHolder.
@@ -53,6 +54,7 @@ public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySear
 
     /**
      * Populates the Viewholder with formatted list data, onClickListener listens for item clicks.
+     *
      * @param holder ViewHolder.
      * @param position integer value.
      */
@@ -77,6 +79,7 @@ public class MySearchListRecyclerViewAdapter extends RecyclerView.Adapter<MySear
 
     /**
      * Returns the number of items in brewery list object.
+     *
      * @return integer.
      */
     @Override

@@ -3,7 +3,9 @@ TCSS450 Spring 2019
 BrewMe app
 Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
 */
+
 package edu.uw.tacoma.group7.brewme;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,8 +21,7 @@ import android.widget.TextView;
 import edu.uw.tacoma.group7.brewme.model.Review;
 
 /**
- * NewReviewFragment takes the review input from the user and put it in a database.
- *
+ * NewReviewFragment takes the review input from the user and puts it in a database.
  * Activities that contain this fragment must implement the
  * {@link NewReviewFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
@@ -29,17 +30,15 @@ import edu.uw.tacoma.group7.brewme.model.Review;
  */
 public class NewReviewFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private static final String BREWERY_ID_PARAM = "breweryId";
+    private static final String BREWERY_NAME_PARAM = "breweryName";
+
     private String mBreweryId;
     private String mBreweryName;
     private Review mReview;
     private SharedPreferences mSharedPreferences;
-    private TextView mBreweryNameTextView;
 
-
-    private static final String BREWERY_ID_PARAM = "breweryId";
-    private static final String BREWERY_NAME_PARAM = "breweryName";
-
+    private OnFragmentInteractionListener mListener;
 
 
     public NewReviewFragment() {
@@ -62,7 +61,7 @@ public class NewReviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
+            // Do nothing
         }
     }
 
@@ -77,21 +76,17 @@ public class NewReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_new_review, container, false);
-
         mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.LOGIN_PREFS), Context.MODE_PRIVATE);
-
         Bundle bundle = this.getArguments();
         mBreweryId = bundle.getString(BREWERY_ID_PARAM);
         mBreweryName = bundle.getString(BREWERY_NAME_PARAM);
         Log.e("mBreweryName: ", mBreweryId);
-        mBreweryNameTextView = view.findViewById(R.id.brewery_name_display);
+        TextView mBreweryNameTextView = view.findViewById(R.id.brewery_name_display);
         mBreweryNameTextView.setText(mBreweryName);
-
         final EditText reviewTitle = view.findViewById(R.id.title_edit_text);
         final RatingBar reviewRating = view.findViewById(R.id.rating_bar);
         final EditText review = view.findViewById(R.id.review_edit_text);
         Button postButton = view.findViewById(R.id.post_review_button);
-
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

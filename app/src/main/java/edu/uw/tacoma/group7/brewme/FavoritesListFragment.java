@@ -1,3 +1,9 @@
+/*
+TCSS450 Spring 2019
+BrewMe app
+Group 7: Gabriel Nieman, Andrea Moncada, James Schlaudraff
+*/
+
 package edu.uw.tacoma.group7.brewme;
 
 import android.content.Context;
@@ -8,16 +14,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,32 +28,30 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.net.ssl.HttpsURLConnection;
 
-import edu.uw.tacoma.group7.brewme.model.Brewery;
-
 /**
- * A fragment representing a list of Items.
- * <p/>
+ * A fragment representing a list of favorite Breweries.
  * Activities containing this fragment MUST implement the {@link OnFavoritesListFragmentInteractionListener}
  * interface.
  */
 public class FavoritesListFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
-    private OnFavoritesListFragmentInteractionListener mListener;
-    public List<Integer> mFavsIds;
-    private RecyclerView mRecyclerView;
     public HashMap<Integer, String> myFavs;
 
+    private static final String ARG_COLUMN_COUNT = "column-count";
+    private int mColumnCount = 1;
+
+    private OnFavoritesListFragmentInteractionListener mListener;
+
+    private RecyclerView mRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public FavoritesListFragment() {
+        // Do nothing
     }
 
     @SuppressWarnings("unused")
@@ -65,7 +66,6 @@ public class FavoritesListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -75,7 +75,6 @@ public class FavoritesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favoriteslist_list, container, false);
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -123,10 +122,19 @@ public class FavoritesListFragment extends Fragment {
         void onFavoritesListFragmentInteraction(String brewery);
     }
 
+    /**
+     * Returns a map of Brewery Ids mapped to that Brewery's name.
+     *
+     * @return a map
+     */
     public HashMap<Integer, String> getFavorites() {
         return myFavs;
     }
 
+    /**
+     * Downloads a list of favorite Breweries associated with a specific user from a database
+     * hosted in the cloud.
+     */
     private class DownloadFavoritesTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -143,12 +151,10 @@ public class FavoritesListFragment extends Fragment {
                     // https://www.codingpedia.org/ama/how-to-handle-403-forbidden-http-status-code-in-java/
                     //https://stackoverflow.com/questions/1485708/how-do-i-do-a-http-get-in-java
                     //https://stackoverflow.com/questions/24399294/android-asynctask-to-make-an-http-get-request
-
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                     String s = "";
                     publishProgress();
-
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
@@ -167,7 +173,7 @@ public class FavoritesListFragment extends Fragment {
         protected void onPostExecute(String result) {
             try {
                 JSONObject resultObject = new JSONObject(result);
-                if (resultObject.getBoolean("success") == true) {
+                if (resultObject.getBoolean("success")) {
                     // get brewery_ids from returned JSON
                     myFavs = parseFavoritesJSON(resultObject.getString("names"));
                     //Log.i("Brewery id from favorites table", mFavsIds.get(0).toString());
@@ -183,13 +189,11 @@ public class FavoritesListFragment extends Fragment {
         }
 
         private HashMap<Integer, String> parseFavoritesJSON(String favsJson) throws JSONException {
-            ArrayList<Integer> idList = new ArrayList<>();
             HashMap<Integer, String> favs = new HashMap<>();
             if (favsJson != null) {
                 JSONArray arr = new JSONArray(favsJson);
                 for (int i = 0; i < arr.length(); i++) {
                     JSONObject obj = arr.getJSONObject(i);
-                    idList.add(obj.getInt(SearchActivity.BREWERY_ID));
                     favs.put(obj.getInt(SearchActivity.BREWERY_ID), obj.getString(SearchActivity.BREWERY_NAME));
                 }
             }
